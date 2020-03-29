@@ -1,12 +1,38 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { BrowserRouter } from 'react-router-dom';
+import App from './pages/App';
+import theme from './config/theme';
 import * as serviceWorker from './serviceWorker';
+
+const GlobalStyle = createGlobalStyle`
+body, html{
+  max-width: 100vw;
+  background-color: ${p => p.theme.backgroundColor};
+  color: ${p => p.theme.strokeColor};
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+a {
+  cursor: pointer;
+  :visited {
+    color: ${p => p.theme.strokeColor};
+  }
+}
+`;
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <App />
+      </ThemeProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
