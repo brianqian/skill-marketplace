@@ -11,6 +11,7 @@ body, html{
   max-width: 100vw;
   background-color: ${p => p.theme.backgroundColor};
   color: ${p => p.theme.strokeColor};
+  font-family: ${p => p.theme.textFont};
 }
 *{
   margin: 0;

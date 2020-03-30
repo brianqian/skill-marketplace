@@ -1,13 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+import EditProfile from './EditProfile';
 
-const Container = styled.div`
-  background-color: #eaeaea;
-  color: blue;
-`;
+const Container = styled.div``;
 
 function App() {
-  return <Container>Does it work?</Container>;
+  return (
+    <Container>
+      <EditProfile />
+    </Container>
+  );
 }
 
 export default App;
