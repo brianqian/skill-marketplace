@@ -14,6 +14,7 @@ const MainForm = styled.main`
   flex: 4;
   box-shadow: 0px 10px 23px 0px rgba(0, 0, 0, 0.2);
   margin: 0 10vw;
+  padding: 2rem 4rem;
 `;
 
 const StyledForm = styled(Form)`
@@ -24,7 +25,7 @@ const StyledForm = styled(Form)`
   justify-content: flex-start;
 `;
 
-const SubsectionTitle = styled.h3`
+const SubsectionTitle = styled.h2`
   grid-row: 1;
   grid-column: 1/3;
 `;
@@ -44,11 +45,11 @@ function EditProfile() {
         <Formik
           initialValues={{ firstName: '', lastName: '', skill: '', rate: 0, email: '' }}
           validationSchema={Yup.object({
-            firstName: Yup.string().required('Required'),
+            firstName: Yup.string().required('*Required'),
             lastName: Yup.string(),
-            email: Yup.string().required('Required'),
-            skill: Yup.string().required('Required'),
-            rate: Yup.number().required('Required'),
+            email: Yup.string().required('*Required'),
+            skill: Yup.string().required('*Required'),
+            rate: Yup.number().required('*Required'),
           })}
           onSubmit={handleSubmit}
         >
