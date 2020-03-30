@@ -16,5 +16,6 @@
   "bugs": {
     "url": "https://github.com/brianqian/skill-marketplace/issues"
   },
-  "homepage": "https://github.com/brianqian/skill-marketplace#readme"
+  "homepage": "https://github.com/brianqian/skill-marketplace#readme",
+  "dependencies": {}
 }
