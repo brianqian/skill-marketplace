@@ -38,6 +38,11 @@
   },
   "postgres": {
     "client": "pg",
-    "connection": "postgres://postgres:@localhost:5432/skill_marketplace"
+    "connection": {
+      "host": "localhost",
+      "user": "gaurdianaq",
+      "password": "password",
+      "database": "skill_marketplace"
+    }
   }
 }
