@@ -12,9 +12,12 @@ const Container = styled.nav`
   padding: 5rem 0;
   font-family: 'Sen';
   transition: 0.2s ease-in;
-  > ul {
+  ul {
     list-style: none;
     position: fixed;
+  }
+  li {
+    padding: 0.5rem 0;
   }
   li:hover {
     color: ${p => p.theme.color.primary};

@@ -5,6 +5,7 @@ import SideNav from '../components/SideNav';
 import BasicInformation from '../components/Profile/BasicInformation';
 import AboutMe from '../components/Profile/AboutMe';
 import Contact from '../components/Profile/Contact';
+import Settings from '../components/Profile/Settings';
 import Client from '../utils/HTTPClient';
 
 const Container = styled.div`
@@ -41,6 +42,9 @@ const initialState = {
     email: '',
     phone: '',
   },
+  settings: {
+    password: '',
+  },
 };
 
 function EditProfile() {
@@ -75,7 +79,6 @@ function EditProfile() {
           })}
           title="Basic Information"
         />
-
         <AboutMe
           initialValues={state.aboutMe}
           validationSchema={Yup.object({
@@ -93,6 +96,13 @@ function EditProfile() {
               .email('Invalid email'),
           })}
           title="Contact"
+        />
+        <Settings
+          initialValues={state.settings}
+          validationSchema={Yup.object({
+            password: Yup.string().min(6, 'Must be at least 6 digits'),
+          })}
+          title="Settings"
         />
       </MainForm>
     </Container>
