@@ -1,5 +1,5 @@
 // contact_info-model.js - A KnexJS
-// 
+//
 // See http://knexjs.org/
 // for more of what you can do here.
 import Knex from 'knex';
@@ -11,14 +11,16 @@ export default function (app: Application) {
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.increments('id');
-        table.string('text');
+        table.increments('id').primary();
+        table.foreign('user_id').references('id').inTable('users');
+        table.foreign('contact_method').references('name').inTable('contact_methods');
+        table.string('contact_info', 256);
       })
         .then(() => console.log(`Created ${tableName} table`))
         .catch(e => console.error(`Error creating ${tableName} table`, e));
     }
   });
-  
+
 
   return db;
 }

@@ -12,8 +12,7 @@ export default function (app: Application) {
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.increments('id');
-
+        table.increments('id').primary();
         table.string('email', 256).unique();
         table.string('password', 64).notNullable();
         table.string('first_name', 32).notNullable();

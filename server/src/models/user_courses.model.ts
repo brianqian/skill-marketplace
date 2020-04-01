@@ -1,4 +1,4 @@
-// courses-model.js - A KnexJS
+// user_courses-model.js - A KnexJS
 //
 // See http://knexjs.org/
 // for more of what you can do here.
@@ -7,16 +7,14 @@ import { Application } from '../declarations';
 
 export default function (app: Application) {
   const db: Knex = app.get('knexClient');
-  const tableName = 'courses';
+  const tableName = 'user_courses';
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
         table.increments('id').primary();
-        table.string('name', 64).notNullable();
-        table.string('description', 1024).notNullable();
-        table.foreign('instructor_id').references('id').inTable('users');
-        table.foreign('category').references('name').inTable('categories');
-        table.float('rate', 6, 2);
+        table.foreign('course_id').references('id').inTable('courses').notNullable();
+        table.foreign('user_id').references('id').inTable('users').notNullable();
+        table.dateTime('date').notNullable();
       })
         .then(() => console.log(`Created ${tableName} table`))
         .catch(e => console.error(`Error creating ${tableName} table`, e));

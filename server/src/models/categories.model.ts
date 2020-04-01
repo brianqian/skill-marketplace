@@ -1,5 +1,5 @@
 // categories-model.js - A KnexJS
-// 
+//
 // See http://knexjs.org/
 // for more of what you can do here.
 import Knex from 'knex';
@@ -11,14 +11,13 @@ export default function (app: Application) {
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
-        table.increments('id');
-        table.string('text');
+        table.string('name', 128).primary();
       })
         .then(() => console.log(`Created ${tableName} table`))
         .catch(e => console.error(`Error creating ${tableName} table`, e));
     }
   });
-  
+
 
   return db;
 }
