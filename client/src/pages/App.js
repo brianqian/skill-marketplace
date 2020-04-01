@@ -12,8 +12,8 @@ function App() {
     <Container>
       <Header />
       <Switch>
-        <Route exact path="/" component={Home} />
         <Route exact path="/profile" component={EditProfile} />
+        <Route exact path="/" component={Home} />
       </Switch>
     </Container>
   );
