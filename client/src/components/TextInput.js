@@ -7,51 +7,33 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
-`;
-const StyledInput = styled.input`
-  grid-column: ${p => p.col};
-  grid-row: ${p => p.row};
-  border-radius: 8px;
-  font-size: 16px;
-  height: 40px;
-  padding: 0 0.5rem;
-  outline: none;
-  max-width: 400px;
-  border: 1px solid #aaa;
-  /* color: transparent; */
-  /* text-shadow: 0 0 0 #333; */
-  ::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  ::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  :focus {
-    border-color: ${p => p.theme.tailwind.blue4};
-    border-width: 1.5px;
+  & .error {
+    font-size: 0.8em;
+    color: red;
   }
 `;
 
 const StyledLabel = styled.label`
   text-transform: uppercase;
   color: #aaa;
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: 400;
+  font-size: 15px;
+`;
 
-  ${Container}:focus & {
-    color: red;
-  }
+const StyledInput = styled.input`
+  grid-column: ${p => p.col};
+  grid-row: ${p => p.row};
+  max-width: 400px;
 `;
 
 function TextInput({ label, row, col, ...props }) {
   const [field, meta] = useField(props);
+
   return (
     <Container row={row} col={col}>
       <StyledLabel htmlFor={props.id || props.name}>{label}</StyledLabel>
       <StyledInput className="text-input" {...field} {...props} />
-      {meta.touched && meta.error ? <div className="error">{meta.error}</div> : null}
+      {meta.value && meta.error ? <div className="error">{meta.error}</div> : null}
     </Container>
   );
 }

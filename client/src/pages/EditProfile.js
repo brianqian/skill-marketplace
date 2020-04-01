@@ -1,15 +1,16 @@
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, { useReducer, useEffect } from 'react';
 import styled from 'styled-components';
 import * as Yup from 'yup';
-import TextInput from '../components/TextInput';
+import SideNav from '../components/SideNav';
+import BasicInformation from '../components/Profile/BasicInformation';
+import AboutMe from '../components/Profile/AboutMe';
+import Contact from '../components/Profile/Contact';
+import Client from '../utils/HTTPClient';
 
 const Container = styled.div`
   display: flex;
 `;
-const SideNav = styled.nav`
-  flex: 1;
-`;
+
 const MainForm = styled.main`
   flex: 4;
   box-shadow: 0px 10px 23px 0px rgba(0, 0, 0, 0.2);
@@ -17,20 +18,27 @@ const MainForm = styled.main`
   padding: 2rem 4rem;
 `;
 
-const StyledForm = styled(Form)`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(4, 1fr);
-  align-items: center;
-  justify-content: flex-start;
-`;
+const reducer = (state, action) => {
+  switch (action.type){
+    case 
+  }
+}
 
-const SubsectionTitle = styled.h2`
-  grid-row: 1;
-  grid-column: 1/3;
-`;
+const initialState = {
+
+}
 
 function EditProfile() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const data = await Client.request('endpoint');
+      setUserData(data);
+    };
+    // fetchProfile()
+  }, []);
+
   const handleSubmit = (values, { setSubmitting }) => {
     setTimeout(() => {
       alert(JSON.stringify(values, null, 2));
@@ -42,26 +50,32 @@ function EditProfile() {
     <Container>
       <SideNav />
       <MainForm>
-        <Formik
-          initialValues={{ firstName: '', lastName: '', skill: '', rate: 0, email: '' }}
+        <BasicInformation
+          initialValues={{ firstName: '', lastName: '', specialization: '', rate: 0, email: '' }}
           validationSchema={Yup.object({
             firstName: Yup.string().required('*Required'),
             lastName: Yup.string(),
-            email: Yup.string().required('*Required'),
-            skill: Yup.string().required('*Required'),
+            specialization: Yup.string().required('*Required'),
             rate: Yup.number().required('*Required'),
           })}
+        />
+
+        <AboutMe
+          initialValues={{ description: '' }}
+          validationSchema={Yup.object({
+            description: Yup.string(),
+          })}
           onSubmit={handleSubmit}
-        >
-          <StyledForm>
-            <SubsectionTitle>Basic Information</SubsectionTitle>
-            <TextInput row={2} col={1} label="First Name" name="firstName" type="text" />
-            <TextInput row={2} col={2} label="Last Name" name="lastName" type="text" />
-            <TextInput row={3} col={1} label="Email" name="email" type="text" />
-            <TextInput row={4} col={1} label="Skill" name="skill" type="text" />
-            <TextInput row={5} col={1} label="Rate" name="rate" type="number" />
-          </StyledForm>
-        </Formik>
+        />
+        <Contact
+          initialValues={{ description: '' }}
+          validationSchema={Yup.object({
+            phone: Yup.string().min(10, 'Must be at least 10 digits'),
+            email: Yup.string()
+              .required('*Required')
+              .email('Invalid email'),
+          })}
+        />
       </MainForm>
     </Container>
   );
