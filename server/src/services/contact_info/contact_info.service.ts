@@ -12,9 +12,10 @@ declare module '../../declarations' {
   }
 }
 
-export default function (app: Application) {
+export default async function (app: Application) {
+  let model = await createModel(app);
   const options = {
-    Model: createModel(app),
+    Model: model,
     paginate: app.get('paginate')
   };
 

@@ -8,26 +8,17 @@ import { Application } from '../declarations';
 export default function (app: Application) {
   const db: Knex = app.get('knexClient');
   const tableName = 'contact_methods';
-  let isDone:boolean = true;
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
         console.log("contact_methods");
         table.string('name').primary();
       })
-        .then(() => { console.log(`Created ${tableName} table`); isDone=true;})
-        .catch(e => {console.error(`Error creating ${tableName} table`, e); isDone=true;});
-    }
-    else
-    {
-      isDone = true;
+        .then(() => console.log(`Created ${tableName} table`))
+        .catch(e => console.error(`Error creating ${tableName} table`, e));
     }
   });
 
-  while (!isDone)
-  {
-    //wait for table to finish being created or throw an error
-  }
 
 
   return db;

@@ -8,7 +8,6 @@ import Knex from 'knex';
 export default function (app: Application) {
   const db: Knex = app.get('knexClient');
   const tableName = 'users';
-  let isDone:boolean = false;
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
@@ -26,18 +25,9 @@ export default function (app: Application) {
         //table.string('auth0Id');
 
       })
-        .then(() => { console.log(`Created ${tableName} table`); isDone=true;})
-        .catch(e => {console.error(`Error creating ${tableName} table`, e); isDone=true;});
-    }
-    else
-    {
-      isDone = true;
+        .then(() => console.log(`Created ${tableName} table`))
+        .catch(e => console.error(`Error creating ${tableName} table`, e));
     }
   });
-
-  while (!isDone)
-  {
-    //wait for table to finish being created or throw an error
-  }
   return db;
 }

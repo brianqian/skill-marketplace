@@ -8,7 +8,6 @@ import { Application } from '../declarations';
 export default function (app: Application) {
   const db: Knex = app.get('knexClient');
   const tableName = 'courses';
-  let isDone = true;
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
@@ -16,24 +15,16 @@ export default function (app: Application) {
         table.increments('id').primary();
         table.string('name', 64).notNullable();
         table.string('description', 1024).notNullable();
+        table.integer('instructor_id').unsigned().notNullable();
+        table.string('category').unsigned().notNullable();
         table.foreign('instructor_id').references('id').inTable('users');
         table.foreign('category').references('name').inTable('categories');
         table.float('rate', 6, 2);
       })
-        .then(() => { console.log(`Created ${tableName} table`); isDone=true;})
-        .catch(e => {console.error(`Error creating ${tableName} table`, e); isDone=true;});
-    }
-    else
-    {
-      isDone = true;
+        .then(() => console.log(`Created ${tableName} table`))
+        .catch(e => console.error(`Error creating ${tableName} table`, e));
     }
   });
-
-  while (!isDone)
-  {
-    //wait for table to finish being created or throw an error
-  }
-
 
   return db;
 }
