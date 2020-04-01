@@ -1,5 +1,5 @@
 import React, { useReducer, useEffect } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import * as Yup from 'yup';
 import SideNav from '../components/SideNav';
 import BasicInformation from '../components/Profile/BasicInformation';
@@ -12,21 +12,36 @@ const Container = styled.div`
 `;
 
 const MainForm = styled.main`
-  flex: 4;
   box-shadow: 0px 10px 23px 0px rgba(0, 0, 0, 0.2);
-  margin: 0 10vw;
   padding: 2rem 4rem;
+  margin: 0 0 150px 0;
+  flex-basis: 1200px;
 `;
 
 const reducer = (state, action) => {
-  switch (action.type){
-    case 
+  switch (action.type) {
+    case 'INITIALIZE_USER':
+      return { ...state, user: action.payload };
+    default:
+      console.error('Invalid reducer in Edit Profile');
   }
-}
+};
 
 const initialState = {
-
-}
+  basic: {
+    firstName: '',
+    lastName: '',
+    specialization: '',
+    rate: 0,
+  },
+  aboutMe: {
+    description: '',
+  },
+  contact: {
+    email: '',
+    phone: '',
+  },
+};
 
 function EditProfile() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -34,7 +49,7 @@ function EditProfile() {
   useEffect(() => {
     const fetchProfile = async () => {
       const data = await Client.request('endpoint');
-      setUserData(data);
+      // setUserData(data);
     };
     // fetchProfile()
   }, []);
@@ -51,30 +66,33 @@ function EditProfile() {
       <SideNav />
       <MainForm>
         <BasicInformation
-          initialValues={{ firstName: '', lastName: '', specialization: '', rate: 0, email: '' }}
+          initialValues={state.basic}
           validationSchema={Yup.object({
             firstName: Yup.string().required('*Required'),
             lastName: Yup.string(),
             specialization: Yup.string().required('*Required'),
             rate: Yup.number().required('*Required'),
           })}
+          title="Basic Information"
         />
 
         <AboutMe
-          initialValues={{ description: '' }}
+          initialValues={state.aboutMe}
           validationSchema={Yup.object({
             description: Yup.string(),
           })}
           onSubmit={handleSubmit}
+          title="About Me"
         />
         <Contact
-          initialValues={{ description: '' }}
+          initialValues={state.contact}
           validationSchema={Yup.object({
             phone: Yup.string().min(10, 'Must be at least 10 digits'),
             email: Yup.string()
               .required('*Required')
               .email('Invalid email'),
           })}
+          title="Contact"
         />
       </MainForm>
     </Container>
