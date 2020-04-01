@@ -3,7 +3,7 @@ import styled from 'styled-components/macro';
 
 const Container = styled.nav`
   color: ${p => p.theme.color.gray};
-  font-size: 1.2em;
+  font-size: 1.15em;
   line-height: 1.5em;
   user-select: none;
   width: 300px;
