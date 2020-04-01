@@ -10,6 +10,22 @@ const Container = styled.main`
 
 const SearchField = styled.form`
   display: flex;
+  padding: 1rem;
+  input {
+    border-radius: 5px;
+    min-height: 30px;
+    border: 1px solid #aaa;
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 0.5rem;
+  }
+  select {
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 `;
 
 const Results = styled.section`

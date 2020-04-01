@@ -3,12 +3,12 @@ const theme = {
   strokeColor: 'black',
   // ORIGINAL VALUE bs: "0 12px 24px 0 rgba(0, 0, 0, 0.09)",
   bs: '0 10px 23px -5px rgba(0,0,0,.2)',
-  textFont: 'Roboto',
+  textFont: 'Source Sans Pro',
   accent: 'darkorange',
   color: {
     primary: '#63B3ED', // tailwind.blue4
     black: '#1d1d1d',
-    gray: '#718096', // tailwind.gray3
+    gray: '#aaa',
   },
   changeOpacity: (color, opacity) => {
     const opacityHexCodes = {
