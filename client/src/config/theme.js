@@ -5,6 +5,9 @@ const theme = {
   bs: '0 10px 23px -5px rgba(0,0,0,.2)',
   textFont: 'Source Sans Pro',
   accent: 'darkorange',
+  color: {
+    primary: '#63B3ED', // tailwind.blue4
+  },
   changeOpacity: (color, opacity) => {
     const opacityHexCodes = {
       0: '00',
