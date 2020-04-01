@@ -7,5 +7,6 @@ export class Users extends Service {
       ...options,
       name: 'users'
     });
+    console.log("inside users.class");
   }
 }

@@ -8,10 +8,11 @@ import Knex from 'knex';
 export default function (app: Application) {
   const db: Knex = app.get('knexClient');
   const tableName = 'users';
-
+  let isDone:boolean = false;
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
+        console.log("users");
         table.increments('id').primary();
         table.string('email', 256).unique();
         table.string('password', 64).notNullable();
@@ -25,10 +26,18 @@ export default function (app: Application) {
         //table.string('auth0Id');
 
       })
-        .then(() => console.log(`Created ${tableName} table`))
-        .catch(e => console.error(`Error creating ${tableName} table`, e));
+        .then(() => { console.log(`Created ${tableName} table`); isDone=true;})
+        .catch(e => {console.error(`Error creating ${tableName} table`, e); isDone=true;});
+    }
+    else
+    {
+      isDone = true;
     }
   });
 
+  while (!isDone)
+  {
+    //wait for table to finish being created or throw an error
+  }
   return db;
 }

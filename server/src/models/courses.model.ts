@@ -8,9 +8,11 @@ import { Application } from '../declarations';
 export default function (app: Application) {
   const db: Knex = app.get('knexClient');
   const tableName = 'courses';
+  let isDone = true;
   db.schema.hasTable(tableName).then(exists => {
     if(!exists) {
       db.schema.createTable(tableName, table => {
+        console.log("courses");
         table.increments('id').primary();
         table.string('name', 64).notNullable();
         table.string('description', 1024).notNullable();
@@ -18,10 +20,19 @@ export default function (app: Application) {
         table.foreign('category').references('name').inTable('categories');
         table.float('rate', 6, 2);
       })
-        .then(() => console.log(`Created ${tableName} table`))
-        .catch(e => console.error(`Error creating ${tableName} table`, e));
+        .then(() => { console.log(`Created ${tableName} table`); isDone=true;})
+        .catch(e => {console.error(`Error creating ${tableName} table`, e); isDone=true;});
+    }
+    else
+    {
+      isDone = true;
     }
   });
+
+  while (!isDone)
+  {
+    //wait for table to finish being created or throw an error
+  }
 
 
   return db;
