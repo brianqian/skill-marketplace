@@ -5,11 +5,10 @@ import ProfileSubsection from '../Layout/ProfileSubsection';
 
 function Contact(props) {
   return (
-    <Formik {...props}>
-      <ProfileSubsection title="About Course">
-        <TextInput row={1} col={1} label="Description" name="description" type="text" />
-      </ProfileSubsection>
-    </Formik>
+    <ProfileSubsection {...props}>
+      <TextInput row={2} col={1} label="Phone" name="phone" type="text" />
+      <TextInput row={3} col={1} label="Email" name="email" type="email" />
+    </ProfileSubsection>
   );
 }
 

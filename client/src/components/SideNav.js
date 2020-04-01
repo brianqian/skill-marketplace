@@ -1,9 +1,23 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 const Container = styled.nav`
+  color: ${p => p.theme.color.gray};
+  font-size: 1.2em;
+  line-height: 1.5em;
+  user-select: none;
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  padding: 5rem 0;
+  font-family: 'Sen';
+  transition: 0.2s ease-in;
   > ul {
     list-style: none;
+    position: fixed;
+  }
+  li:hover {
+    color: ${p => p.theme.color.primary};
   }
 `;
 
