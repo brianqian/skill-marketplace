@@ -1,16 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Star from './Icons/Star';
 import Avatar from './Avatar';
-
-const Container = styled.div`
-  height: 350px;
-  width: 300px;
-  box-shadow: 0px 10px 23px 0px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
 
 const Content = styled.div`
   padding: 1rem;
@@ -48,12 +40,14 @@ function Card({ name, classTitle, rating = 3, rate }) {
   const starCount = Math.round(rating);
 
   return (
-    <Container>
+    <>
       <Content>
         <StyledAvatar size={95} />
         <Text>
           <p>Name</p>
-          <h3 title={classTitle}>Class</h3>
+          <h3 title={classTitle}>
+            <Link to="/class">Class</Link>
+          </h3>
           <div>
             {Array(5)
               .fill()
@@ -65,7 +59,7 @@ function Card({ name, classTitle, rating = 3, rate }) {
         </Text>
       </Content>
       <div>Send Message</div>
-    </Container>
+    </>
   );
 }
 

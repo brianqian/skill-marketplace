@@ -6,7 +6,7 @@ const theme = {
   textFont: 'Source Sans Pro',
   accent: 'darkorange',
   color: {
-    primary: '#63B3ED', // tailwind.blue4
+    primary: '#25D5D8',
     black: '#1d1d1d',
     gray: '#aaa',
   },
