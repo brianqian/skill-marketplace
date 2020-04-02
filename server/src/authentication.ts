@@ -18,5 +18,5 @@ export default function(app: Application) {
   authentication.register('local', new LocalStrategy());
 
   app.use('/authentication', authentication);
-  app.configure(expressOauth());
+  //app.configure(expressOauth());
 }
