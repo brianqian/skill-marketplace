@@ -2,7 +2,6 @@
 import { ServiceAddons } from '@feathersjs/feathers';
 import { Application } from '../../declarations';
 import { Users } from './users.class';
-import createModel from '../../models/users.model';
 import hooks from './users.hooks';
 
 // Add this service to the service type index
@@ -14,7 +13,7 @@ declare module '../../declarations' {
 
 export default function (app: Application) {
   const options = {
-    Model: createModel(app),
+    Model: app.get('knexClient'),
     paginate: app.get('paginate')
   };
 
