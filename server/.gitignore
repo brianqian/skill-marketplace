@@ -2,6 +2,8 @@
 logs
 *.log
 
+curlscripts
+
 # Runtime data
 pids
 *.pid
