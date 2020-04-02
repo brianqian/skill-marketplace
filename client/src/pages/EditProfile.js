@@ -7,16 +7,10 @@ import AboutMe from '../components/Profile/AboutMe';
 import Contact from '../components/Profile/Contact';
 import Settings from '../components/Profile/Settings';
 import Client from '../utils/HTTPClient';
+import Card from '../components/Card';
 
 const Container = styled.div`
   display: flex;
-`;
-
-const MainForm = styled.main`
-  box-shadow: 0px 10px 23px 0px rgba(0, 0, 0, 0.2);
-  padding: 2rem 4rem;
-  margin: 0 0 150px 0;
-  flex-basis: 1200px;
 `;
 
 const reducer = (state, action) => {
@@ -68,7 +62,7 @@ function EditProfile() {
   return (
     <Container>
       <SideNav />
-      <MainForm>
+      <Card w="1200px" m="0 0 150px 0" p="2rem 4rem" flexDirection="column">
         <BasicInformation
           initialValues={state.basic}
           validationSchema={Yup.object({
@@ -104,7 +98,7 @@ function EditProfile() {
           })}
           title="Settings"
         />
-      </MainForm>
+      </Card>
     </Container>
   );
 }

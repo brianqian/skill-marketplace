@@ -8,12 +8,11 @@ const Client = {
       },
     });
     if (resp.status !== 200) {
-      console.error(resp.message);
-      return { status: resp.status, error: resp.message };
+      return { status: resp.status, message: resp.message };
     }
 
     const data = await resp.json();
-    return data;
+    return { data };
   },
 };
 

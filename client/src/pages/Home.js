@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Card from '../components/Card';
+import CardContent from '../components/HomeCard';
 
 const Container = styled.main`
   display: flex;
@@ -59,7 +60,9 @@ function Home() {
         {Array(10)
           .fill()
           .map(() => (
-            <Card />
+            <Card h="350px" w="300px" flexDirection="column" align="center">
+              <CardContent />
+            </Card>
           ))}
       </Results>
     </Container>

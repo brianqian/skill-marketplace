@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import Avatar from './Avatar';
 
 const Container = styled.header`
   height: 6rem;
@@ -31,13 +32,6 @@ const Logo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const Avatar = styled.div`
-  height: 50px;
-  width: 50px;
-  border-radius: 25px;
-  background-color: ${p => p.theme.color.primary};
 `;
 
 function Header() {
