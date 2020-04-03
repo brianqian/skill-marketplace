@@ -1,13 +1,24 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
+import EditProfile from './EditProfile';
+import Header from '../components/Header';
+import Home from './Home';
+import { Switch, Route } from 'react-router-dom';
+import ClassProfile from './ClassProfile';
 
-const Container = styled.div`
-  background-color: #eaeaea;
-  color: blue;
-`;
+const Container = styled.div``;
 
 function App() {
-  return <Container>Does it work?</Container>;
+  return (
+    <Container>
+      <Header />
+      <Switch>
+        <Route exact path="/profile" component={EditProfile} />
+        <Route exact path="/" component={Home} />
+        <Route path="/class" component={ClassProfile} />
+      </Switch>
+    </Container>
+  );
 }
 
 export default App;
