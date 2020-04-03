@@ -36,13 +36,5 @@
       }
     }
   },
-  "postgres": {
-    "client": "pg",
-    "connection": {
-      "host": "localhost",
-      "user": "gaurdianaq",
-      "password": "password",
-      "database": "skill_marketplace"
-    }
-  }
+  "db_client": "pg"
 }
