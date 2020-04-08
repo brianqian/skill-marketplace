@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
-import App from './pages/App';
+import App from './App';
 import theme from './config/theme';
 import * as serviceWorker from './serviceWorker';
 

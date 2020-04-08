@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import EditProfile from './EditProfile';
-import Header from '../components/Header';
-import Home from './Home';
 import { Switch, Route } from 'react-router-dom';
-import ClassProfile from './ClassProfile';
+import EditProfile from './pages/EditProfile';
+import Header from './components/Header';
+import Home from './pages/Home';
+import ClassProfile from './pages/ClassProfile';
+import Login from "./components/Login";
 
 const Container = styled.div``;
 
@@ -14,6 +15,7 @@ function App() {
       <Header />
       <Switch>
         <Route exact path="/profile" component={EditProfile} />
+        <Route exact path="/login" component={Login} />
         <Route exact path="/" component={Home} />
         <Route path="/class" component={ClassProfile} />
       </Switch>
