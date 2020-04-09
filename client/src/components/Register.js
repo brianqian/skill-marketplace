@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import HttpClient from '../utils/HTTPClient'
+import HttpClient from '../utils/HTTPClient';
+import Authenticate from '../utils/Authenticator';
 
 const Container = styled.div`
   display: flex;
@@ -16,8 +17,19 @@ function RegisterForm() {
     const [formValue, setFormValue] = useState({});
     const handleSubmit = e => {
         e.preventDefault();
-        HttpClient.request('/users/', 'POST', JSON.stringify(formValue)).then(data => {
-            console.log(data);
+        HttpClient.request('/users/', 'POST', JSON.stringify(formValue)).then(resp => {
+            if (resp.status === 201)
+            {
+                Authenticate(formValue.email, formValue.password).then(result => {
+                    console.log(result);
+                    if (result) {
+                        console.log("Successfully registered and logged in!");
+                        window.location.assign('/');
+                    } else {
+                        console.log("This shouldn't happen, you just registered, must be something wrong on the backend...");
+                    }
+                });
+            }
         });
 
     };
