@@ -6,7 +6,7 @@ import HTTPClient from './HTTPClient'
 async function Authenticate(email, password)
 {
     let result = false;
-    await HTTPClient.request('/authentication', 'POST', JSON.stringify({ 'strategy': 'local', email, password })).then(
+    await HTTPClient.request('/authentication', 'POST', { 'strategy': 'local', email, password }).then(
         async resp => {
             console.log(resp.status);
             if (resp.status === 200 || resp.status === 201)

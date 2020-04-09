@@ -7,7 +7,7 @@ const Client = {
     };
 
     headers['Content-Type'] = 'application/json';
-    const resp = await fetch(endpoint, { method, headers, body});
+    const resp = await fetch(endpoint, { 'method': method, 'headers': headers, 'body': JSON.stringify(body)});
     return resp;
   },
   request_no_body: async (endpoint, method = 'GET') => { // call for GET/DELETE

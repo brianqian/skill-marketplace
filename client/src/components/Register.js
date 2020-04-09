@@ -17,7 +17,7 @@ function RegisterForm() {
     const [formValue, setFormValue] = useState({});
     const handleSubmit = e => {
         e.preventDefault();
-        HttpClient.request('/users/', 'POST', JSON.stringify(formValue)).then(resp => {
+        HttpClient.request('/users/', 'POST', formValue).then(resp => {
             if (resp.status === 201)
             {
                 Authenticate(formValue.email, formValue.password).then(result => {
