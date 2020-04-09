@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useFetch from '../components/hooks/useFetch'
+import Authenticate from '../utils/Authenticator'
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -14,8 +14,22 @@ const InputContainer = styled.div`
 
 function LoginForm() {
     const [formValue, setFormValue] = useState({});
+    // TODO Display error messages to the user
     const handleSubmit = e => {
         e.preventDefault();
+        Authenticate(formValue.email, formValue.password).then(result => {
+            console.log(result);
+            if (result)
+            {
+                console.log("Successfully logged in!");
+                window.location.assign('/');
+            }
+            else
+            {
+                console.log("Username or password was incorrect");
+            }
+        });
+
         console.log(formValue);
     };
     const handleChange = e => {

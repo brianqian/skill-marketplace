@@ -8,12 +8,7 @@ const Client = {
 
     headers['Content-Type'] = 'application/json';
     const resp = await fetch(endpoint, { method, headers, body});
-    console.log(resp.status);
-    if (resp.status !== 200 && resp.status !== 201) {
-      return { status: resp.status, message: resp.message };
-    }
-    const data = await resp.json();
-    return { data };
+    return resp;
   },
   request_no_body: async (endpoint, method = 'GET') => { // call for GET/DELETE
     const token = localStorage.getItem('token');
@@ -22,12 +17,7 @@ const Client = {
       Authorization: auth,
     };
     const resp = await fetch(endpoint, { method, headers});
-    console.log(resp.status);
-    if (resp.status !== 200) {
-      return { status: resp.status, message: resp.message };
-    }
-    const data = await resp.json();
-    return { data };
+    return resp;
   },
 };
 export default Client;

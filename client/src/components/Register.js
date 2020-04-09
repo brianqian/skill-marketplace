@@ -16,8 +16,10 @@ function RegisterForm() {
     const [formValue, setFormValue] = useState({});
     const handleSubmit = e => {
         e.preventDefault();
-        HttpClient.request('/users/', 'POST', JSON.stringify(formValue));
-        console.log(formValue);
+        HttpClient.request('/users/', 'POST', JSON.stringify(formValue)).then(data => {
+            console.log(data);
+        });
+
     };
     const handleChange = e => {
         const { name, value } = e.target;
