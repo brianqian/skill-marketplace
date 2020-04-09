@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import useFetch from '../components/hooks/useFetch'
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -11,7 +12,7 @@ const InputContainer = styled.div`
   display: flex;
 `;
 
-function Login() {
+function LoginForm() {
     const [formValue, setFormValue] = useState({});
     const handleSubmit = e => {
         e.preventDefault();
@@ -37,4 +38,5 @@ function Login() {
       </Container>
     );
 }
-export default Login;
+
+export default LoginForm;
