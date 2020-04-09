@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/macro';
+import { Link } from 'react-router-dom';
 
 const Container = styled.nav`
   color: ${p => p.theme.color.gray};
@@ -33,7 +34,9 @@ function SideNav() {
         <li>About Course</li>
         <li>Contact</li>
         <li>Settings</li>
+        <Link to="/profile/classes">Class Management</Link>
       </ul>
+      <div></div>
     </Container>
   );
 }

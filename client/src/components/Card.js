@@ -31,7 +31,7 @@ Card.propTypes = {
   center: PropTypes.bool, // align-items && justify-content center
   boxShadow: PropTypes.string,
   className: PropTypes.string,
-  flexDirection: PropTypes.oneOf(['row, column']),
+  flexDirection: PropTypes.oneOf(['row', 'column']),
   align: PropTypes.string,
   justify: PropTypes.string,
 };

@@ -1,5 +1,5 @@
 import { useReducer, useEffect } from 'react';
-import Client from '../../utils/HTTPClient';
+import Client from '../utils/HTTPClient';
 
 const initialState = {
   data: '',
@@ -29,6 +29,7 @@ const useFetch = (endpoint, method, body) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!endpoint) return;
       dispatch({ type: 'FETCHING' });
       const resp = await Client.request(endpoint, method, body);
       if (resp.error) {
