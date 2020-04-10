@@ -13,7 +13,7 @@ const InputContainer = styled.div`
   display: flex;
 `;
 
-function RegisterForm() {
+function RegisterForm(props) {
     const [formValue, setFormValue] = useState({});
     const handleSubmit = e => {
         e.preventDefault();
@@ -24,7 +24,7 @@ function RegisterForm() {
                     console.log(result);
                     if (result === 201) {
                         console.log("Successfully registered and logged in!");
-                        window.location.assign('/');
+                        props.history.push('/');
                     } else {
                         console.log("This shouldn't happen, you just registered, must be something wrong on the backend...");
                     }
