@@ -1,12 +1,38 @@
 drop table if exists categories, users, contact_methods, contact_info, courses, ratings, user_courses;
 
 create table categories(
-    name varchar(128) primary key not null
+    name varchar(128) primary key
     );
+
+insert into categories (name) values ('Cooking');
+insert into categories (name) values ('Arts & Crafts');
+insert into categories (name) values ('Coding');
+insert into categories (name) values ('Music');
+insert into categories (name) values ('Business');
+insert into categories (name) values ('Photography/Film');
+insert into categories (name) values ('UI/UX Design');
+insert into categories (name) values ('Fashion');
+insert into categories (name) values ('Writing');
+
 
 create table contact_methods(
     name varchar(128) primary key
 );
+
+insert into contact_methods (name) values ('E-Mail');
+insert into contact_methods (name) values ('Discord');
+insert into contact_methods (name) values ('Facebook');
+insert into contact_methods (name) values ('Skype');
+insert into contact_methods (name) values ('Phone');
+insert into contact_methods (name) values ('Signal');
+
+create table roles(
+    name varchar(128) primary key
+);
+
+insert into roles (name) values ('Normal');
+insert into roles (name) values ('Moderator');
+insert into roles (name) values ('Admin');
 
 create table users(
     id serial primary key,
@@ -15,8 +41,9 @@ create table users(
     first_name varchar(32) not null,
     last_name varchar(32) not null,
     description varchar(1024),
-    is_instructor boolean default false
-    );
+    is_instructor boolean default false,
+    role varchar(128) references roles(name) not null default 'Normal'
+);
 
 create table courses(
     id serial primary key,

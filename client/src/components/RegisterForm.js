@@ -22,7 +22,7 @@ function RegisterForm() {
             {
                 Authenticate(formValue.email, formValue.password).then(result => {
                     console.log(result);
-                    if (result.status === 201) {
+                    if (result === 201) {
                         console.log("Successfully registered and logged in!");
                         window.location.assign('/');
                     } else {

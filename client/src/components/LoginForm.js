@@ -19,7 +19,7 @@ function LoginForm() {
         e.preventDefault();
         Authenticate(formValue.email, formValue.password).then(result => {
             console.log(result);
-            if (result.status === 201)
+            if (result === 201)
             {
                 console.log("Successfully logged in!");
                 window.location.assign('/');
