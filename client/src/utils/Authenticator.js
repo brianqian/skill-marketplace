@@ -5,7 +5,7 @@ import HTTPClient from './HTTPClient'
  */
 async function Authenticate(email, password)
 {
-    let result = false;
+    let result = 200;
     await HTTPClient.request('/authentication', 'POST', { 'strategy': 'local', email, password }).then(
         async resp => {
             console.log(resp.status);
@@ -14,9 +14,9 @@ async function Authenticate(email, password)
                 await resp.json().then(data => {
                     console.log(data);
                     localStorage.setItem('token', data.accessToken);
-                    result = true;
                 });
             }
+            result = resp.status;
         }
     );
     return result;
