@@ -8,7 +8,7 @@ const StyledForm = styled(Form)`
   grid-template-rows: repeat(4, minmax(40px, 1fr));
   align-items: center;
   justify-content: flex-start;
-  padding: 2rem 5rem;
+  padding: 1rem 4rem;
   border-bottom: 1px solid ${p => p.theme.changeOpacity('#cccccc', 50)};
 `;
 

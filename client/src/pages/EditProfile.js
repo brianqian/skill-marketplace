@@ -1,17 +1,12 @@
 import React, { useReducer, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import * as Yup from 'yup';
-import SideNav from '../components/SideNav';
 import BasicInformation from '../components/Profile/BasicInformation';
 import AboutMe from '../components/Profile/AboutMe';
 import Contact from '../components/Profile/Contact';
 import Settings from '../components/Profile/Settings';
 import Client from '../utils/HTTPClient';
-import Card from '../components/Card';
-
-const Container = styled.div`
-  display: flex;
-`;
+import Layout from '../components/Layout/ProfilePageLayout';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -60,46 +55,43 @@ function EditProfile() {
   };
 
   return (
-    <Container>
-      <SideNav />
-      <Card w="1200px" m="0 0 150px 0" p="2rem 4rem" flexDirection="column">
-        <BasicInformation
-          initialValues={state.basic}
-          validationSchema={Yup.object({
-            firstName: Yup.string().required('*Required'),
-            lastName: Yup.string(),
-            specialization: Yup.string().required('*Required'),
-            rate: Yup.number().required('*Required'),
-          })}
-          title="Basic Information"
-        />
-        <AboutMe
-          initialValues={state.aboutMe}
-          validationSchema={Yup.object({
-            description: Yup.string(),
-          })}
-          onSubmit={handleSubmit}
-          title="About Me"
-        />
-        <Contact
-          initialValues={state.contact}
-          validationSchema={Yup.object({
-            phone: Yup.string().min(10, 'Must be at least 10 digits'),
-            email: Yup.string()
-              .required('*Required')
-              .email('Invalid email'),
-          })}
-          title="Contact"
-        />
-        <Settings
-          initialValues={state.settings}
-          validationSchema={Yup.object({
-            password: Yup.string().min(6, 'Must be at least 6 digits'),
-          })}
-          title="Settings"
-        />
-      </Card>
-    </Container>
+    <Layout>
+      <BasicInformation
+        initialValues={state.basic}
+        validationSchema={Yup.object({
+          firstName: Yup.string().required('*Required'),
+          lastName: Yup.string(),
+          specialization: Yup.string().required('*Required'),
+          rate: Yup.number().required('*Required'),
+        })}
+        title="Basic Information"
+      />
+      <AboutMe
+        initialValues={state.aboutMe}
+        validationSchema={Yup.object({
+          description: Yup.string(),
+        })}
+        onSubmit={handleSubmit}
+        title="About Me"
+      />
+      <Contact
+        initialValues={state.contact}
+        validationSchema={Yup.object({
+          phone: Yup.string().min(10, 'Must be at least 10 digits'),
+          email: Yup.string()
+            .required('*Required')
+            .email('Invalid email'),
+        })}
+        title="Contact"
+      />
+      <Settings
+        initialValues={state.settings}
+        validationSchema={Yup.object({
+          password: Yup.string().min(6, 'Must be at least 6 digits'),
+        })}
+        title="Settings2"
+      />
+    </Layout>
   );
 }
 

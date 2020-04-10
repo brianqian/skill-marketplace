@@ -44,7 +44,7 @@ function Header() {
         <a href="#">Browse</a>
         <a href="#">Inbox</a>
         <Avatar />
-        <Link to="/profile">Profile</Link>
+        <Link to="/profile/home">Profile</Link>
       </Nav>
     </Container>
   );

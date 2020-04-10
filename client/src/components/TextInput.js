@@ -8,7 +8,7 @@ const Container = styled.div`
   grid-row: ${p => p.row};
   display: flex;
   flex-direction: column;
-  padding: 1.5rem;
+  padding: 1rem;
   & .error {
     font-size: 0.85em;
     color: red;
