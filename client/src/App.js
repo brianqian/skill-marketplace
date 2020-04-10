@@ -22,7 +22,6 @@ function App() {
         <Route exact path="/profile/classes" component={EditClasses} />
         <Route exact path="/" component={Home} />
         <Route path="/class" component={ClassProfile} />
-        {/* <AuthPage /> */}
       </Switch>
     </Container>
   );

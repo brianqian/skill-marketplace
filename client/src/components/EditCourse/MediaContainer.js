@@ -12,7 +12,8 @@ const Container = styled.div`
 const MediaPlaceholder = styled.div`
   width: 100px;
   height: 100px;
-  background-color: ${p => p.theme.color.primary};
+  border: 4px dashed lightgray;
+  border-radius: 8px;
 `;
 
 function MediaContainer() {
