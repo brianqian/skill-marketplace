@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 import { Link } from 'react-router-dom';
 
@@ -10,12 +10,13 @@ const Container = styled.nav`
   width: 300px;
   display: flex;
   justify-content: center;
-  padding: 5rem 0;
   font-family: 'Sen';
   transition: 0.2s ease-in;
+
   ul {
     list-style: none;
-    position: fixed;
+    position: ${p => (p.isLocked ? 'fixed' : 'relative')};
+    top: 5rem;
   }
   li {
     padding: 0.5rem 0;
@@ -26,8 +27,24 @@ const Container = styled.nav`
 `;
 
 function SideNav() {
+  const [locked, setLocked] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const distanceFromTop = ref.current.getBoundingClientRect().y;
+      if (locked && distanceFromTop < 0) return;
+      if (!locked && distanceFromTop > 0) return;
+      setLocked(distanceFromTop < 0);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [locked]);
+
   return (
-    <Container>
+    <Container ref={ref} isLocked={locked}>
       <ul>
         <li>Basic Information</li>
         <li>About Me</li>
@@ -36,7 +53,6 @@ function SideNav() {
         <li>Settings</li>
         <Link to="/profile/classes">Class Management</Link>
       </ul>
-      <div></div>
     </Container>
   );
 }
