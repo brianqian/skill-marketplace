@@ -31,7 +31,14 @@ const useFetch = (endpoint, method, body) => {
     const fetchData = async () => {
       if (!endpoint) return;
       dispatch({ type: 'FETCHING' });
-      const resp = await Client.request(endpoint, method, body);
+      let resp;
+      if (!body) {
+        resp = await Client.request_no_body(endpoint, method);
+      }
+      else
+      {
+        resp = await Client.request(endpoint, method, body);
+      }
       if (resp.error) {
         dispatch({ type: 'ERROR', payload: resp });
       } else if (isMounted) {

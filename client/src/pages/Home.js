@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Card from '../components/Card';
 import HomeCard from '../components/HomeCard';
+import useFetch from "../hooks/useFetch";
+import { CATEGORIES_ROUTE } from "../Routes";
+import Client from "../utils/HTTPClient";
 
 const Container = styled.main`
   display: flex;
@@ -44,6 +47,17 @@ function Home() {
   const handleSubmit = e => {
     e.preventDefault();
   };
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+      Client.request_no_body(CATEGORIES_ROUTE).then(result => {
+          setCategories(result);
+          console.log(categories);
+      });
+  });
+
+
   return (
     <Container>
       <h1>Learning for anyone, anywhere</h1>
