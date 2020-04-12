@@ -1,21 +1,25 @@
+package org.covid19support
+
 import io.ktor.application.*
-import io.ktor.http.*
+import io.ktor.features.DefaultHeaders
 import io.ktor.response.*
 import io.ktor.routing.*
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
 
-fun main(args: Array<String>) {
-    val server = embeddedServer(Netty, port = 8080) {
-        routing {
-            get("/") {
-                call.respondText("Hello World!", ContentType.Text.Plain)
-            }
-            get("/demo") {
-                call.respondText("HELLO WORLD!")
-            }
+fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+
+fun Application.test(testing: Boolean = false) {
+    install(DefaultHeaders)
+    routing {
+        get ("/cheese") {
+            call.respondText("GOUDA!")
         }
     }
-    server.start(wait = true)
 }
 
+fun Application.test2(testing: Boolean = false) {
+    routing {
+        get("/tiger") {
+            call.respondText("White")
+        }
+    }
+}
