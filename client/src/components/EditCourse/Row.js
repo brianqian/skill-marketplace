@@ -41,14 +41,24 @@ const SaveButton = styled.input`
   height: 40px;
   background-color: ${p => p.theme.color.primary};
   border-style: none;
+  align-self: flex-end;
+  border-radius: 10px;
+  text-transform: uppercase;
+  font-size: 0.75em;
+  color: white;
+  outline: none;
+  padding: 0.5rem 1rem;
+  :active {
+    transform: translateY(1px);
+  }
 `;
 
 const filler =
   'Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque repellendus in amet ipsam, rem ducimus beatae, recusandae temporibus ea aliquam, quia eos quo voluptatum. Ipsum, officia. Totam iste qui ducimus!Officiis sed officia, eligendi sint eos tempora nam vel facilis numquam autem repudiandae nobis laudantium unde velit! Quasi, minus explicabo, doloribus accusantium alias non, voluptas excepturi obcaecati error sint molestiae.';
 
 function Row({ classInfo, isActive }) {
-  const handleSubmit = () => {
-    console.log('submitted');
+  const handleSubmit = e => {
+    console.log('submitted', e.target.value);
   };
 
   return (
