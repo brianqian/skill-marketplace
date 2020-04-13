@@ -22,11 +22,11 @@ const reducer = (state, action) => {
     case 'DELETE_ENDPOINT':
       return { ...state, endpoint, method: 'DELETE' };
     case 'SET_DATA':
-      return { ...state, data: payload, isLoading: false };
+      return { ...state, data: payload, isLoading: false, endpoint: '' };
     case 'FETCHING':
       return { ...state, isLoading: true };
     case 'ERROR':
-      return { ...state, error: payload, isLoading: false };
+      return { ...state, error: payload, isLoading: false, endpoint: '' };
     default:
       console.error('USE FETCH ERROR');
   }
@@ -80,12 +80,12 @@ const useFetch = () => {
     console.log('posting endpoint', endpoint, body);
     dispatch({ type: 'POST_ENDPOINT', endpoint, body });
   };
-  const put = (endpoint, body) => {
+  const put = async (endpoint, body) => {
     if (!endpoint) return;
     dispatch({ type: 'PUT_ENDPOINT', endpoint, body });
   };
 
-  const del = (endpoint, body) => {
+  const del = async (endpoint, body) => {
     if (!endpoint) return;
     dispatch({ type: 'DELETE_ENDPOINT', endpoint, body });
   };
