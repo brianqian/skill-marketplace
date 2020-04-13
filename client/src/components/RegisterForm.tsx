@@ -43,25 +43,6 @@ function RegisterForm({ registerUser }) {
     e.preventDefault();
     await fetch.get('https://pokeapi.co/api/v2/pokemon/ditto');
     console.log('DATA', data);
-
-    // const { email, password } = formValue;
-    // registerUser(formValue);
-
-    // HttpClient.request('/users', 'POST', formValue).then(resp => {
-    //   if (resp.status === 201) {
-    //     Authenticate(formValue.email, formValue.password).then(result => {
-    //       console.log(result);
-    //       if (result.status === 201) {
-    //         console.log('Successfully registered and logged in!');
-    //         window.location.assign('/');
-    //       } else {
-    //         console.log(
-    //           "This shouldn't happen, you just registered, must be something wrong on the backend..."
-    //         );
-    //       }
-    //     });
-    //   }
-    // });
   };
   const handleChange = e => {
     const { name, value } = e.target;
