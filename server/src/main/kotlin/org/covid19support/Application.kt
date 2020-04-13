@@ -7,10 +7,11 @@ import io.ktor.routing.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-fun Application.test(testing: Boolean = false) {
+fun Application.main() {
     install(DefaultHeaders)
     routing {
         get ("/cheese") {
+            org.covid19support.DbSettings
             call.respondText("GOUDA!")
         }
     }
