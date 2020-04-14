@@ -12,17 +12,17 @@ const InputContainer = styled.div`
   display: flex;
 `;
 
-function LoginForm() {
+function LoginForm(props) {
     const [formValue, setFormValue] = useState({});
     // TODO Display error messages to the user
     const handleSubmit = e => {
         e.preventDefault();
         Authenticate(formValue.email, formValue.password).then(result => {
             console.log(result);
-            if (result.status === 201)
+            if (result === 201)
             {
                 console.log("Successfully logged in!");
-                window.location.assign('/');
+                props.history.push('/');
             }
             else
             {
