@@ -75,8 +75,7 @@ fun Application.users_module() {
             }
             if (result != null) {
                 val passhash:String = result!![Users.email]
-                if (BCrypt.checkpw(loginInfo.password, passhash))
-                {
+                if (BCrypt.checkpw(loginInfo.password, passhash)) {
                     success = true
                 }
             }
@@ -88,10 +87,6 @@ fun Application.users_module() {
                 call.respond(HttpStatusCode.BadRequest, "Invalid email or password")
             }
 
-        }
-
-        get("/dummy") {
-            call.respond(HttpStatusCode.fromValue(418),"I WON'T BREW COFFEE!!!!")
         }
     }
 }
