@@ -5,15 +5,16 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.routing.*
 import io.ktor.response.*
+import io.ktor.sessions.sessions
+import io.ktor.sessions.set
 import org.covid19support.DbSettings
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.covid19support.SessionAuth
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.*
 import org.mindrot.jbcrypt.BCrypt
+import org.covid19support.modules.authentication.Token
 
-fun Application.users() {
+fun Application.users_module() {
     routing {
         get("/users") {
             val users: MutableList<User> = mutableListOf<User>()
@@ -45,16 +46,52 @@ fun Application.users() {
         }
         post("/users") {
             val newUser: User = call.receive<User>()
+            var id:Int = -1
             transaction (DbSettings.db) {
-                Users.insert {
+                id = Users.insertAndGetId {
                     it[email] = newUser.email
                     it[password] = BCrypt.hashpw(newUser.password, BCrypt.gensalt())
                     it[first_name] = newUser.first_name
                     it[last_name] = newUser.last_name
                     it[description] = newUser.description
                     it[is_instructor] = newUser.is_instructor
+                }.value
+            }
+            if (id != -1) {
+                call.sessions.set(SessionAuth(Token.create(id, newUser.email)))
+                call.respond(HttpStatusCode.Created, "Successfully registered " + newUser.email)
+            }
+            else {
+                call.respond(HttpStatusCode.BadRequest, "Failed to register user")
+            }
+        }
+
+        post( "/session/login") {
+            val loginInfo: Login = call.receive<Login>()
+            var result:ResultRow? = null
+            var success:Boolean = false
+            transaction(DbSettings.db) {
+                result = Users.select{Users.email eq loginInfo.email}.firstOrNull()
+            }
+            if (result != null) {
+                val passhash:String = result!![Users.email]
+                if (BCrypt.checkpw(loginInfo.password, passhash))
+                {
+                    success = true
                 }
             }
+            if (success) {
+                call.sessions.set(SessionAuth(Token.create(result!![Users.id].value, loginInfo.email)))
+                call.respond(HttpStatusCode.OK, "Successfully logged in!")
+            }
+            else {
+                call.respond(HttpStatusCode.BadRequest, "Invalid email or password")
+            }
+
+        }
+
+        get("/dummy") {
+            call.respond(HttpStatusCode.fromValue(418),"I WON'T BREW COFFEE!!!!")
         }
     }
 }
