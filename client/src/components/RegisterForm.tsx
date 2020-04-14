@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import HttpClient from '../utils/HTTPClient';
 import Authenticate from '../utils/Authenticator';
-import useFetch from '../hooks/useFetch';
+import useFetch from '../hooks/useFetch/useFetch';
 
 const Container = styled.div`
   display: flex;
@@ -41,7 +41,8 @@ function RegisterForm({ registerUser }) {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    await fetch.get('https://pokeapi.co/api/v2/pokemon/ditto');
+    const url = '/api/auth/register';
+    await fetch.get({ url });
     console.log('DATA', data);
   };
   const handleChange = e => {

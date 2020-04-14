@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, SyntheticEvent } from 'react';
 import styled from 'styled-components';
 import Authenticate from '../utils/Authenticator';
+import useFetch from '../hooks/useFetch/useFetch';
 
 const Container = styled.div`
   display: flex;
@@ -12,45 +13,28 @@ const InputContainer = styled.div`
   display: flex;
 `;
 
-<<<<<<< HEAD
-function LoginForm(props) {
-    const [formValue, setFormValue] = useState({});
-    // TODO Display error messages to the user
-    const handleSubmit = e => {
-        e.preventDefault();
-        Authenticate(formValue.email, formValue.password).then(result => {
-            console.log(result);
-            if (result === 201)
-            {
-                console.log("Successfully logged in!");
-                props.history.push('/');
-            }
-            else
-            {
-                console.log("Username or password was incorrect");
-            }
-        });
-=======
-function LoginForm() {
-  const [formValue, setFormValue] = useState({});
-  // TODO Display error messages to the user
-  const handleSubmit = e => {
-    e.preventDefault();
-    Authenticate(formValue.email, formValue.password).then(result => {
-      console.log(result);
-      if (result === 201) {
-        console.log('Successfully logged in!');
-        window.location.assign('/');
-      } else {
-        console.log('Username or password was incorrect');
-      }
-    });
->>>>>>> WIP
+type FormValue = {
+  email: string;
+  password: string;
+};
 
-    console.log(formValue);
+function LoginForm() {
+  const [formValue, setFormValue] = useState<FormValue>({ email: '', password: '' });
+  const { data, error, fetch, isLoading } = useFetch();
+  // TODO Display error messages to the user
+  const handleSubmit = async (e: SyntheticEvent) => {
+    e.preventDefault();
+    const url = '/api/auth/login';
+    const { email, password } = formValue;
+    await fetch.post({ url, body: { email, password } });
+    localStorage.setToken('token', data);
   };
-  const handleChange = e => {
-    const { name, value } = e.target;
+
+  const handleChange = (e: SyntheticEvent) => {
+    const { name, value } = e.target as typeof e.target & {
+      name: 'email' | 'password';
+      value: 'string';
+    };
     setFormValue({ ...formValue, [name]: value });
   };
   return (

@@ -1,16 +1,17 @@
 import { useReducer, useEffect } from 'react';
-import Client from '../utils/HTTPClient';
+import Client from '../../utils/HTTPClient';
+import { ActionType, StateType, AjaxParam } from './types';
 
-const initialState = {
+const initialState: StateType = {
   data: '',
-  error: null,
+  error: undefined,
   endpoint: '',
   method: '',
   body: '',
   isLoading: false,
 };
 
-const reducer = (state, action) => {
+const reducer = (state: StateType, action: ActionType) => {
   const { type, payload, body, endpoint } = action;
   switch (type) {
     case 'GET_ENDPOINT':
@@ -71,23 +72,18 @@ const useFetch = () => {
     };
   }, [endpoint, method, body]);
 
-  const get = async (endpoint, token) => {
-    if (!endpoint) return;
-    dispatch({ type: 'GET_ENDPOINT', endpoint });
+  const get = async ({ url, token }: AjaxParam) => {
+    dispatch({ type: 'GET_ENDPOINT', url, token });
   };
-  const post = async (endpoint, body, token) => {
-    if (!endpoint) return;
-    console.log('posting endpoint', endpoint, body);
-    dispatch({ type: 'POST_ENDPOINT', endpoint, body });
+  const post = async ({ url, body, token }: AjaxParam) => {
+    dispatch({ type: 'POST_ENDPOINT', url, body, token });
   };
-  const put = async (endpoint, body) => {
-    if (!endpoint) return;
-    dispatch({ type: 'PUT_ENDPOINT', endpoint, body });
+  const put = async ({ url, body, token }: AjaxParam) => {
+    dispatch({ type: 'PUT_ENDPOINT', url, body, token });
   };
 
-  const del = async (endpoint, body) => {
-    if (!endpoint) return;
-    dispatch({ type: 'DELETE_ENDPOINT', endpoint, body });
+  const del = async ({ url, body, token }: AjaxParam) => {
+    dispatch({ type: 'DELETE_ENDPOINT', url, body, token });
   };
 
   const fetch = {

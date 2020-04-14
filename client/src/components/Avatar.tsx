@@ -1,14 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
+const Container = styled.div<Props>`
   height: ${p => p.size}px;
   width: ${p => p.size}px;
   border-radius: ${p => p.size / 2}px;
   background-color: ${p => p.theme.color.primary};
 `;
 
-function Avatar({ size = '50', src, className = '' }) {
+type Props = {
+  size?: number;
+  // src: string;
+  className?: string;
+};
+
+function Avatar({ size = 50, src, className = '' }: Props) {
   return <Container className={className} size={size}></Container>;
 }
 
