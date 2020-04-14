@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback, useState } from 'react';
+import React, { useEffect, useRef, useCallback, useState, ReactNode } from 'react';
 import styled from 'styled-components';
 import SideNav from '../SideNav';
 import Card from '../Card';
@@ -7,7 +7,7 @@ const Container = styled.div`
   display: flex;
 `;
 
-function ProfilePageLayout({ children }) {
+function ProfilePageLayout({ children }: { children: ReactNode }) {
   const [sections, setSections] = useState({});
 
   // SideNav needs click listeners that scroll to each section

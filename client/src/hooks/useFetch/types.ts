@@ -9,20 +9,21 @@ export type ActionType = {
     | 'ERROR';
   payload?: any;
   body?: any;
-  endpoint: string;
+  endpoint?: string;
+  token?: string;
 };
 
 export type StateType = {
-  data: any;
+  data?: any;
   error?: string;
   endpoint?: string;
   method?: string;
-  body: any;
+  body?: any;
   isLoading: boolean;
 };
 
 export type AjaxParam = {
-  url: string;
+  endpoint: string;
   token?: string;
   body?: any;
 };

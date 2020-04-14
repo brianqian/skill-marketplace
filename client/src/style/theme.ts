@@ -1,4 +1,10 @@
-const theme = {
+import { DefaultTheme } from 'styled-components';
+
+interface HexCodes {
+  [opacity: number]: string;
+}
+
+const theme: DefaultTheme = {
   backgroundColor: 'white',
   strokeColor: 'black',
   // ORIGINAL VALUE bs: "0 12px 24px 0 rgba(0, 0, 0, 0.09)",
@@ -11,7 +17,7 @@ const theme = {
     gray: '#aaa',
   },
   changeOpacity: (color, opacity) => {
-    const opacityHexCodes = {
+    const opacityHexCodes: HexCodes = {
       0: '00',
       1: '03',
       2: '05',

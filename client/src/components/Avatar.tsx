@@ -4,13 +4,13 @@ import styled from 'styled-components';
 const Container = styled.div<Props>`
   height: ${p => p.size}px;
   width: ${p => p.size}px;
-  border-radius: ${p => p.size / 2}px;
+  border-radius: 100%;
   background-color: ${p => p.theme.color.primary};
 `;
 
 type Props = {
   size?: number;
-  // src: string;
+  src?: string;
   className?: string;
 };
 
