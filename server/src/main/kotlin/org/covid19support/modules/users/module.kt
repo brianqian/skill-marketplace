@@ -47,6 +47,7 @@ fun Application.users_module() {
         post("/users") {
             val newUser: User = call.receive<User>()
             var id:Int = -1
+            Users.insert {  }
             transaction (DbSettings.db) {
                 id = Users.insertAndGetId {
                     it[email] = newUser.email

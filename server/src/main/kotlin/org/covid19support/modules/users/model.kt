@@ -1,5 +1,6 @@
 package org.covid19support.modules.users
 
+import org.covid19support.modules.roles.Roles
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 
@@ -11,7 +12,8 @@ data class User(
         val first_name: String,
         val last_name: String,
         val description: String?,
-        val is_instructor: Boolean
+        val is_instructor: Boolean,
+        val role: String
 )
 
 data class Login(
@@ -19,16 +21,16 @@ data class Login(
         val password: String
 )
 
-object Users : IntIdTable() {
+object Users : IntIdTable("users") {
     val email: Column<String> = varchar("email", 256).uniqueIndex()
     val password: Column<String> = varchar("password", 64)
     val first_name: Column<String> = varchar("first_name", 32)
     val last_name: Column<String> = varchar("last_name", 32)
     val description: Column<String?> = varchar("description", 1024).nullable()
     val is_instructor: Column<Boolean> = bool("is_instructor").default(false)
-
+    val role: Column<String> = varchar("role", 128).references(Roles.name).default("Normal")
     fun toUser(resultRow: ResultRow): User {
-        return User(resultRow[id].value, resultRow[email], resultRow[password], resultRow[first_name], resultRow[last_name], resultRow[description], resultRow[is_instructor])
+        return User(resultRow[id].value, resultRow[email], resultRow[password], resultRow[first_name], resultRow[last_name], resultRow[description], resultRow[is_instructor], resultRow[role])
     }
 }
 
