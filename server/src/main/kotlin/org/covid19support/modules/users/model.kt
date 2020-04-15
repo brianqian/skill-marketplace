@@ -29,6 +29,7 @@ object Users : IntIdTable("users") {
     val description: Column<String?> = varchar("description", 1024).nullable()
     val is_instructor: Column<Boolean> = bool("is_instructor").default(false)
     val role: Column<String> = varchar("role", 128).references(Roles.name).default("Normal")
+
     fun toUser(resultRow: ResultRow): User {
         return User(resultRow[id].value, resultRow[email], resultRow[password], resultRow[first_name], resultRow[last_name], resultRow[description], resultRow[is_instructor], resultRow[role])
     }

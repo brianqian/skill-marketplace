@@ -6,6 +6,7 @@ data class Category(val name: String)
 
 object Categories : Table("categories") {
     val name: Column<String> = varchar("name", 128).primaryKey()
+
     fun toCategory(resultRow: ResultRow): Category {
         return Category(resultRow[name])
     }
