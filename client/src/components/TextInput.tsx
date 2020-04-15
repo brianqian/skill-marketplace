@@ -1,9 +1,14 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { useField } from 'formik';
+import { useField, FieldInputProps } from 'formik';
 import styled from 'styled-components/macro';
 
-const Container = styled.div`
+type ContainerProps = {
+  col: number | string;
+  row: number | string;
+};
+
+const Container = styled.div<ContainerProps>`
   grid-column: ${p => p.col};
   grid-row: ${p => p.row};
   display: flex;
@@ -48,7 +53,14 @@ const StyledInput = styled.input`
   }
 `;
 
-function TextInput({ label, row, col, ...props }) {
+type Props = {
+  label: string;
+  row: number | string;
+  col: number | string;
+  id?: any;
+} & FieldInputProps<''>;
+
+function TextInput({ label, row, col, ...props }: Props) {
   const [field, meta] = useField(props);
 
   return (

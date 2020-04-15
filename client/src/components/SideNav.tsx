@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 import { Link } from 'react-router-dom';
 
+type Props = {};
+
 const Container = styled.nav`
   color: ${p => p.theme.color.gray};
   font-size: 1.15em;
@@ -26,7 +28,7 @@ const Container = styled.nav`
   }
 `;
 
-function SideNav() {
+function SideNav({ sections }) {
   const [locked, setLocked] = useState(false);
   const ref = useRef(null);
 

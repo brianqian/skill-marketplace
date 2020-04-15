@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import theme from './config/theme';
+import theme from './style/theme';
 import * as serviceWorker from './serviceWorker';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 const GlobalStyle = createGlobalStyle`
 body, html{
@@ -28,12 +30,14 @@ a {
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <App />
-      </ThemeProvider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <App />
+        </ThemeProvider>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
