@@ -27,7 +27,15 @@ fun Application.users_module() {
                     users.add(Users.toUser(it))
                 }
             }
-            call.respond(users)
+            if (users.isEmpty())
+            {
+                call.respond("No users found!")
+            }
+            else
+            {
+                call.respond(users)
+            }
+
         }
         get("/users/{id}") {
             var user: User? = null
