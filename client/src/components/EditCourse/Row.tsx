@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, SyntheticEvent } from 'react';
 import styled from 'styled-components';
 import MediaContainer from './MediaContainer';
 
@@ -56,9 +56,17 @@ const SaveButton = styled.input`
 const filler =
   'Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque repellendus in amet ipsam, rem ducimus beatae, recusandae temporibus ea aliquam, quia eos quo voluptatum. Ipsum, officia. Totam iste qui ducimus!Officiis sed officia, eligendi sint eos tempora nam vel facilis numquam autem repudiandae nobis laudantium unde velit! Quasi, minus explicabo, doloribus accusantium alias non, voluptas excepturi obcaecati error sint molestiae.';
 
-function Row({ classInfo, isActive }) {
-  const handleSubmit = e => {
-    console.log('submitted', e.target.value);
+type Props = {
+  classInfo: any; // replace with interface class
+  isActive: boolean;
+};
+
+function Row({ classInfo, isActive }: Props) {
+  const handleSubmit = (e: SyntheticEvent) => {
+    const { value } = e.target as typeof e.target & {
+      value: string;
+    };
+    console.log('submitted', value);
   };
 
   return (

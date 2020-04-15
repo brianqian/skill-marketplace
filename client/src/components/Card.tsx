@@ -3,19 +3,19 @@ import React from 'react';
 import styled from 'styled-components';
 
 type Props = {
-  h: string | number; // height
-  w: string | number; // width
-  m: string | number; // margin
-  p: string | number; // padding
-  f: string | number; // flex
-  center: boolean;
-  boxShadow: string;
-  flexDirection: 'row' | 'column';
-  align: 'center' | 'flex-start' | 'flex-end';
-  justify: 'center' | 'flex-start' | 'flex-end' | 'space-between' | 'space-around';
-  children: React.ReactNode;
-  isFlex: boolean;
+  h?: string | number; // height
+  w?: string | number; // width
+  m?: string | number; // margin
+  p?: string | number; // padding
+  f?: string | number; // flex
+  center?: boolean;
+  boxShadow?: string;
+  flexDirection?: 'row' | 'column';
+  align?: 'center' | 'flex-start' | 'flex-end';
+  justify?: 'center' | 'flex-start' | 'flex-end' | 'space-between' | 'space-around';
+  isFlex?: boolean;
   className?: string;
+  children?: React.ReactNode;
 };
 
 const Container = styled.div<Props>`

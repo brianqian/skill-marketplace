@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, SyntheticEvent } from 'react';
 import styled from 'styled-components';
-import HttpClient from '../utils/HTTPClient';
-import Authenticate from '../utils/Authenticator';
 import useFetch from '../hooks/useFetch/useFetch';
+import { REGISTER_ROUTE } from '../Routes';
+import { useHistory } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -14,39 +14,36 @@ const InputContainer = styled.div`
   display: flex;
 `;
 
-<<<<<<< HEAD
-function RegisterForm(props) {
-    const [formValue, setFormValue] = useState({});
-    const handleSubmit = e => {
-        e.preventDefault();
-        HttpClient.request('/users/', 'POST', formValue).then(resp => {
-            if (resp.status === 201)
-            {
-                Authenticate(formValue.email, formValue.password).then(result => {
-                    console.log(result);
-                    if (result === 201) {
-                        console.log("Successfully registered and logged in!");
-                        props.history.push('/');
-                    } else {
-                        console.log("This shouldn't happen, you just registered, must be something wrong on the backend...");
-                    }
-                });
-            }
-        });
-=======
-function RegisterForm({ registerUser }) {
-  const [formValue, setFormValue] = useState({});
-  const { data, error, fetch, isLoading } = useFetch();
->>>>>>> WIP
+type FormT = {
+  email: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+};
 
-  const handleSubmit = async e => {
+function RegisterForm() {
+  const [formValue, setFormValue] = useState<FormT>({
+    email: '',
+    password: '',
+    first_name: '',
+    last_name: '',
+  });
+
+  const { data, error, fetch, isLoading } = useFetch();
+  const history = useHistory();
+
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    const url = '/api/auth/register';
-    await fetch.get({ url });
-    console.log('DATA', data);
+    await fetch.post(REGISTER_ROUTE, { body: formValue });
+    localStorage.setItem('token', data);
+    history.push('/');
   };
-  const handleChange = e => {
-    const { name, value } = e.target;
+
+  const handleChange = (e: SyntheticEvent) => {
+    const { name, value } = e.target as typeof e.target & {
+      name: 'email' | 'password' | 'first_name' | 'last_name';
+      value: string;
+    };
     setFormValue({ ...formValue, [name]: value });
   };
   return (

@@ -4,8 +4,12 @@ import TextInput from '../TextInput';
 
 const Container = styled.div``;
 
-function EditableCell({ canEdit }) {
-  return <Container>{canEdit ? <TextInput /> : <p>{classInfo.title}</p>}</Container>;
+type Props = {
+  canEdit: boolean;
+};
+
+function EditableCell({ canEdit }: Props) {
+  // return <Container>{canEdit ? <TextInput /> : <p>{classInfo.title}</p>}</Container>;
 }
 
 export default EditableCell;

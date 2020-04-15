@@ -23,7 +23,6 @@ export type StateType = {
 };
 
 export type AjaxParam = {
-  endpoint: string;
   token?: string;
   body?: any;
 };

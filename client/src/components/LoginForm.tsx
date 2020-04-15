@@ -1,7 +1,8 @@
 import React, { useState, SyntheticEvent } from 'react';
 import styled from 'styled-components';
-import Authenticate from '../utils/Authenticator';
 import useFetch from '../hooks/useFetch/useFetch';
+import { LOGIN_ROUTE } from '../Routes';
+import { useHistory } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -13,21 +14,23 @@ const InputContainer = styled.div`
   display: flex;
 `;
 
-type FormValue = {
+type FormT = {
   email: string;
   password: string;
 };
 
 function LoginForm() {
-  const [formValue, setFormValue] = useState<FormValue>({ email: '', password: '' });
+  const [formValue, setFormValue] = useState<FormT>({ email: '', password: '' });
   const { data, error, fetch, isLoading } = useFetch();
+  const history = useHistory();
   // TODO Display error messages to the user
+
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    const url = '/api/auth/login';
     const { email, password } = formValue;
-    await fetch.post({ url, body: { email, password } });
+    await fetch.post(LOGIN_ROUTE, { body: { email, password } });
     localStorage.setToken('token', data);
+    history.push('/');
   };
 
   const handleChange = (e: SyntheticEvent) => {

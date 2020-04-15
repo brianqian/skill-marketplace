@@ -1,17 +1,17 @@
-import { useReducer, useEffect, Reducer } from 'react';
+import { useReducer, useEffect } from 'react';
 import Client from '../../utils/HTTPClient';
 import { ActionType, StateType, AjaxParam } from './types';
 
 const initialState: StateType = {
   data: '',
-  error: '',
+  error: undefined,
   endpoint: '',
   method: '',
   body: '',
   isLoading: false,
 };
 
-const reducer = (state: StateType, action: ActionType): StateType => {
+const reducer = (state: StateType, action: ActionType) => {
   const { type, payload, body, endpoint } = action;
   switch (type) {
     case 'GET_ENDPOINT':
@@ -44,21 +44,9 @@ const useFetch = () => {
       if (!endpoint) return;
       console.log('fetching...');
       dispatch({ type: 'FETCHING' });
-<<<<<<< HEAD
-      let resp;
-      if (!body) {
-        resp = await Client.request_no_body(endpoint, method);
-      }
-      else
-      {
-        resp = await Client.request(endpoint, method, body);
-      }
-      if (resp.error) {
-=======
       const resp = await Client.request(endpoint, method, body);
       console.log('resp2', resp);
       if (resp?.error?.status && isMounted) {
->>>>>>> WIP
         dispatch({ type: 'ERROR', payload: resp });
       } else if (isMounted) {
         console.log('resp3data', resp);
@@ -73,17 +61,24 @@ const useFetch = () => {
     };
   }, [endpoint, method, body]);
 
-  const get = async ({ endpoint, token }: AjaxParam) => {
+  const get = async (endpoint: string, options?: AjaxParam) => {
+    const token = options?.token;
     dispatch({ type: 'GET_ENDPOINT', endpoint, token });
   };
-  const post = async ({ endpoint, body, token }: AjaxParam) => {
+  const post = async (endpoint: string, options?: AjaxParam) => {
+    const token = options?.token;
+    const body = options?.body;
     dispatch({ type: 'POST_ENDPOINT', endpoint, body, token });
   };
-  const put = async ({ endpoint, body, token }: AjaxParam) => {
+  const put = async (endpoint: string, options: AjaxParam) => {
+    const token = options?.token;
+    const body = options?.body;
     dispatch({ type: 'PUT_ENDPOINT', endpoint, body, token });
   };
 
-  const del = async ({ endpoint, body, token }: AjaxParam) => {
+  const del = async (endpoint: string, options: AjaxParam) => {
+    const token = options?.token;
+    const body = options?.body;
     dispatch({ type: 'DELETE_ENDPOINT', endpoint, body, token });
   };
 

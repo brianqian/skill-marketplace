@@ -7,7 +7,11 @@ const Container = styled.div`
   display: flex;
 `;
 
-function ProfilePageLayout({ children }: { children: ReactNode }) {
+type Props = {
+  children: ReactNode;
+};
+
+function ProfilePageLayout({ children }: Props) {
   const [sections, setSections] = useState({});
 
   // SideNav needs click listeners that scroll to each section

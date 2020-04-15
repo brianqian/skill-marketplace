@@ -7,7 +7,6 @@ export const CLASSES_ROUTE = '/classes';
 export const EDIT_CLASSES_ROUTE = PROFILE_ROUTE + CLASSES_ROUTE;
 export const EDIT_PROFILE_ROUTE = PROFILE_ROUTE + HOME_ROUTE;
 
-
 // Back End Routes
 export const USERS_ROUTE = '/users';
 export const COURSES_ROUTE = '/courses';

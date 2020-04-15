@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components/macro';
 import { Switch, Route } from 'react-router-dom';
 import EditProfile from './pages/EditProfile';
@@ -8,7 +8,7 @@ import ClassProfile from './pages/ClassProfile';
 import EditClasses from './pages/EditCourses';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import { LOGIN_ROUTE, REGISTER_ROUTE, EDIT_CLASSES_ROUTE, EDIT_PROFILE_ROUTE } from "./Routes";
+import { LOGIN_ROUTE, REGISTER_ROUTE, EDIT_CLASSES_ROUTE, EDIT_PROFILE_ROUTE } from './Routes';
 
 const Container = styled.div``;
 
