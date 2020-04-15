@@ -36,7 +36,14 @@ const Text = styled.div`
   flex: 3;
 `;
 
-function Card({ name, classTitle, rating = 3, rate }) {
+type Props = {
+  name: string;
+  classTitle: string;
+  rating?: number;
+  rate: number;
+};
+
+function Card({ name, classTitle, rating = 3, rate }: Props) {
   const starCount = Math.round(rating);
 
   return (
@@ -50,7 +57,7 @@ function Card({ name, classTitle, rating = 3, rate }) {
           </h3>
           <div>
             {Array(5)
-              .fill()
+              .fill(null)
               .map((star, i) => {
                 return <Star isActive={i < starCount} size={12} />;
               })}

@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 
-const Container = styled.div`
+const Container = styled.div<Props>`
   color: ${p => p.theme.color.primary};
   border: 1.5px solid ${p => p.theme.color.primary};
   background-color: ${p => p.primary && p.theme.color.primary};
@@ -16,25 +15,19 @@ const Container = styled.div`
   padding: 0.5rem;
 `;
 
-function Button({ className, children, primary, secondary }) {
+type Props = {
+  primary?: boolean;
+  secondary?: boolean;
+  children: React.ReactNode;
+  className?: string;
+};
+
+function Button({ className, children, primary, secondary }: Props) {
   return (
     <Container className={className} primary={primary} secondary={secondary}>
       {children}
     </Container>
   );
 }
-
-Button.propTypes = {
-  primary: PropTypes.bool,
-  secondary: PropTypes.bool,
-  children: PropTypes.element.isRequired,
-  className: PropTypes.string,
-};
-
-Button.defaultProps = {
-  primary: true,
-  secondary: false,
-  className: '',
-};
 
 export default Button;
