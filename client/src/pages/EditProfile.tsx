@@ -47,12 +47,14 @@ function EditProfile() {
     // fetchProfile()
   }, []);
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      setSubmitting(false);
-    }, 400);
-  };
+  // const handleSubmit = (values, { setSubmitting }) => {
+  //   setTimeout(() => {
+  //     alert(JSON.stringify(values, null, 2));
+  //     setSubmitting(false);
+  //   }, 400);
+  // };
+
+  const handleSubmit = () => {};
 
   return (
     <Layout>
@@ -64,6 +66,7 @@ function EditProfile() {
           specialization: Yup.string().required('*Required'),
           rate: Yup.number().required('*Required'),
         })}
+        onSubmit={handleSubmit}
         title="Basic Information"
       />
       <AboutMe
@@ -82,6 +85,7 @@ function EditProfile() {
             .required('*Required')
             .email('Invalid email'),
         })}
+        onSubmit={handleSubmit}
         title="Contact"
       />
       <Settings
@@ -89,6 +93,7 @@ function EditProfile() {
         validationSchema={Yup.object({
           password: Yup.string().min(6, 'Must be at least 6 digits'),
         })}
+        onSubmit={handleSubmit}
         title="Settings2"
       />
     </Layout>

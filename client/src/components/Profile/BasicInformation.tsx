@@ -2,7 +2,11 @@ import React from 'react';
 import TextInput from '../TextInput';
 import ProfileSubsection from '../Layout/ProfileSubsection';
 
-function BasicInformation(props) {
+type Props = {
+  title: string;
+};
+
+function BasicInformation({ ...props }) {
   return (
     <ProfileSubsection {...props}>
       <TextInput row={2} col={1} label="First Name*" name="firstName" type="text" />

@@ -22,7 +22,7 @@ const Description = styled.textarea`
   font-family: ${p => p.theme.textFont};
 `;
 
-const Cell = styled.div`
+const Cell = styled.div<{ flex: number }>`
   flex: ${p => p.flex};
 `;
 
