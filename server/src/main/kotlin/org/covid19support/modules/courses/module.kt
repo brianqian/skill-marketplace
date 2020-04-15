@@ -11,6 +11,7 @@ fun Application.courses_module() {
     routing {
         get("/courses") {
             val courses: MutableList<Course> = mutableListOf<Course>()
+            call.respondText("Not Implemented Yet!")
         }
     }
 }
