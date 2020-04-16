@@ -17,6 +17,7 @@ const Container = styled.nav`
 
   ul {
     list-style: none;
+    // @ts-ignore
     position: ${p => (p.isLocked ? 'fixed' : 'relative')};
     top: 5rem;
   }
@@ -28,12 +29,14 @@ const Container = styled.nav`
   }
 `;
 
+// @ts-ignore
 function SideNav({ sections }) {
   const [locked, setLocked] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
+      // @ts-ignore
       const distanceFromTop = ref.current.getBoundingClientRect().y;
       if (locked && distanceFromTop < 0) return;
       if (!locked && distanceFromTop > 0) return;
@@ -46,6 +49,7 @@ function SideNav({ sections }) {
   }, [locked]);
 
   return (
+      // @ts-ignore
     <Container ref={ref} isLocked={locked}>
       <ul>
         <li>Basic Information</li>
