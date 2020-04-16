@@ -3,16 +3,11 @@ package org.covid19support.modules.courses
 import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.application.*
 import io.ktor.http.HttpStatusCode
+import io.ktor.request.receive
 import io.ktor.routing.*
 import io.ktor.response.*
-import io.ktor.sessions.*
-import org.covid19support.DbSettings
-import org.covid19support.SessionAuth
-import org.covid19support.constants.SHAME
-import org.covid19support.constants.UNAUTHORIZED
-import org.covid19support.modules.authentication.Token
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.covid19support.constants.INVALID_BODY
+import org.covid19support.modules.authentication.authenticate
 
 fun Application.courses_module() {
     routing {
@@ -22,35 +17,22 @@ fun Application.courses_module() {
         }
 
         get("/courses/test") {
-            val token: String? = call.sessions.get<SessionAuth>()?.token
-            if (token != null)
-            {
-                val decodedToken: DecodedJWT? = Token.verify(token)
-                if (decodedToken != null) {
-                    call.respond("authenticated!")
-                }
-                else {
-                    call.respond(HttpStatusCode.Unauthorized, SHAME)
-                }
-            }
-            else {
-                call.respond(HttpStatusCode.Unauthorized, UNAUTHORIZED)
+            val decodedToken: DecodedJWT? = authenticate(call)
+            if (decodedToken != null) {
+                call.respond("AUTHENTICATED!")
             }
         }
 
         post("/courses") {
-           val token: String? = call.sessions.get<SessionAuth>()?.token
-            if (token != null) {
-                val decodedToken: DecodedJWT? = Token.verify(token)
-                if (decodedToken != null) {
+            val decodedToken: DecodedJWT? = authenticate(call)
+            if (decodedToken != null) {
+                val course: Course? = call.receive<Course>()
+                if (course != null) {
 
                 }
                 else {
-                    call.respond(HttpStatusCode.Unauthorized, SHAME)
+                    call.respond(HttpStatusCode.BadRequest, INVALID_BODY)
                 }
-            }
-            else {
-                call.respond(HttpStatusCode.Unauthorized, UNAUTHORIZED)
             }
         }
     }
