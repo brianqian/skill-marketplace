@@ -7,6 +7,7 @@ import Contact from '../components/Profile/Contact';
 import Settings from '../components/Profile/Settings';
 import Client from '../utils/HTTPClient';
 import Layout from '../components/Layout/ProfilePageLayout';
+import {FormikConfig, FormikHelpers, FormikValues} from "formik/dist/types";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -56,21 +57,22 @@ function EditProfile() {
 
   const handleSubmit = () => {};
 
+
+
   return (
     <Layout>
       <BasicInformation
-        initialValues={state.basic}
+          formikInfo={{initialValues: state.basic, onSubmit: handleSubmit}}
         validationSchema={Yup.object({
           firstName: Yup.string().required('*Required'),
           lastName: Yup.string(),
           specialization: Yup.string().required('*Required'),
           rate: Yup.number().required('*Required'),
         })}
-        onSubmit={handleSubmit}
         title="Basic Information"
       />
       <AboutMe
-        initialValues={state.aboutMe}
+          formikInfo={{initialValues: state.aboutMe, onSubmit: handleSubmit}}
         validationSchema={Yup.object({
           description: Yup.string(),
         })}
