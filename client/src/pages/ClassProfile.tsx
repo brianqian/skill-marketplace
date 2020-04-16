@@ -28,7 +28,11 @@ const StyledButton = styled(Button)`
 
 const ClassInfo = styled.div``;
 
-function ClassProfile({ classId }) {
+type Props = {
+  classId: string;
+};
+
+function ClassProfile({ classId }: Props) {
   // const {data, error} = useFetch(`endpont/${classId}`)
 
   return (

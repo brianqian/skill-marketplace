@@ -8,7 +8,7 @@ import Settings from '../components/Profile/Settings';
 import Client from '../utils/HTTPClient';
 import Layout from '../components/Layout/ProfilePageLayout';
 
-const reducer = (state, action) => {
+const reducer = (state: any, action: any) => {
   switch (action.type) {
     case 'INITIALIZE_USER':
       return { ...state, user: action.payload };
@@ -39,25 +39,10 @@ const initialState = {
 function EditProfile() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const data = await Client.request('endpoint');
-      // setUserData(data);
-    };
-    // fetchProfile()
-  }, []);
-
-  const handleSubmit = (values, { setSubmitting }) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      setSubmitting(false);
-    }, 400);
-  };
-
   return (
     <Layout>
-      <BasicInformation
-        initialValues={state.basic}
+      {/* <BasicInformation
+          formikInfo={{initialValues: state.basic, onSubmit: handleSubmit}}
         validationSchema={Yup.object({
           firstName: Yup.string().required('*Required'),
           lastName: Yup.string(),
@@ -67,7 +52,7 @@ function EditProfile() {
         title="Basic Information"
       />
       <AboutMe
-        initialValues={state.aboutMe}
+          formikInfo={{initialValues: state.aboutMe, onSubmit: handleSubmit}}
         validationSchema={Yup.object({
           description: Yup.string(),
         })}
@@ -82,6 +67,7 @@ function EditProfile() {
             .required('*Required')
             .email('Invalid email'),
         })}
+        onSubmit={handleSubmit}
         title="Contact"
       />
       <Settings
@@ -89,8 +75,9 @@ function EditProfile() {
         validationSchema={Yup.object({
           password: Yup.string().min(6, 'Must be at least 6 digits'),
         })}
+        onSubmit={handleSubmit}
         title="Settings2"
-      />
+      /> */}
     </Layout>
   );
 }

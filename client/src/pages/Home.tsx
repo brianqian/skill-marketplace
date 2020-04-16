@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Card from '../components/Card';
 import HomeCard from '../components/HomeCard';
-import useFetch from "../hooks/useFetch";
-import { CATEGORIES_ROUTE } from "../Routes";
-import Client from "../utils/HTTPClient";
+import useFetch from '../hooks/useFetch/useFetch';
+import { CATEGORIES_ROUTE } from '../Routes';
+import Client from '../utils/HTTPClient';
 
 const Container = styled.main`
   display: flex;
@@ -49,14 +49,16 @@ function Home() {
   };
 
   const [categories, setCategories] = useState([]);
-
+  const { fetch, data, error } = useFetch();
   useEffect(() => {
-      Client.request_no_body(CATEGORIES_ROUTE).then(result => {
-          setCategories(result);
-          console.log(categories);
-      });
-  });
+    fetch.get(CATEGORIES_ROUTE);
+    async function fetchCategories() {
+      await fetch.get(CATEGORIES_ROUTE);
+      if (!error) setCategories(data);
+    }
 
+    fetchCategories();
+  }, []);
 
   return (
     <Container>
@@ -72,10 +74,15 @@ function Home() {
       </SearchField>
       <Results>
         {Array(10)
-          .fill()
+          .fill(null)
           .map(() => (
             <Card h="350px" w="300px" flexDirection="column" align="center">
-              <HomeCard />
+              <HomeCard
+                classTitle="class title"
+                instructor="instructor name"
+                rate={22}
+                rating={3}
+              />
             </Card>
           ))}
       </Results>

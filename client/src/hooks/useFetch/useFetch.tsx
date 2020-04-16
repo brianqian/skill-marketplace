@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useReducer, useEffect } from 'react';
 import Client from '../../utils/HTTPClient';
 import { ActionType, StateType, AjaxParam } from './types';

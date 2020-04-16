@@ -22,7 +22,7 @@ const Description = styled.textarea`
   font-family: ${p => p.theme.textFont};
 `;
 
-const Cell = styled.div`
+const Cell = styled.div<{ flex: number }>`
   flex: ${p => p.flex};
 `;
 
@@ -57,8 +57,8 @@ const filler =
   'Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque repellendus in amet ipsam, rem ducimus beatae, recusandae temporibus ea aliquam, quia eos quo voluptatum. Ipsum, officia. Totam iste qui ducimus!Officiis sed officia, eligendi sint eos tempora nam vel facilis numquam autem repudiandae nobis laudantium unde velit! Quasi, minus explicabo, doloribus accusantium alias non, voluptas excepturi obcaecati error sint molestiae.';
 
 type Props = {
-  classInfo: any; // replace with interface class
-  isActive: boolean;
+  classInfo?: any; // TODO: make mandatory
+  isActive?: boolean;
 };
 
 function Row({ classInfo, isActive }: Props) {

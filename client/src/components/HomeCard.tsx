@@ -37,13 +37,13 @@ const Text = styled.div`
 `;
 
 type Props = {
-  name: string;
+  instructor: string;
   classTitle: string;
   rating?: number;
   rate: number;
 };
 
-function Card({ name, classTitle, rating = 3, rate }: Props) {
+function Card({ instructor, classTitle, rating = 3, rate }: Props) {
   const starCount = Math.round(rating);
 
   return (
@@ -51,7 +51,7 @@ function Card({ name, classTitle, rating = 3, rate }: Props) {
       <Content>
         <StyledAvatar size={95} />
         <Text>
-          <p>Name</p>
+          <p>{instructor}</p>
           <h3 title={classTitle}>
             <Link to="/class">Class</Link>
           </h3>
@@ -62,7 +62,7 @@ function Card({ name, classTitle, rating = 3, rate }: Props) {
                 return <Star isActive={i < starCount} size={12} />;
               })}
           </div>
-          <p>Rate</p>
+          <p>{rate}</p>
         </Text>
       </Content>
       <div>Send Message</div>
