@@ -10,6 +10,7 @@ import io.ktor.sessions.set
 import org.covid19support.DbSettings
 import org.covid19support.SQLState
 import org.covid19support.SessionAuth
+import org.covid19support.constants.INVALID_BODY
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.*
 import org.jetbrains.exposed.exceptions.*
@@ -56,52 +57,63 @@ fun Application.users_module() {
             }
         }
         post("/users") {
-            val newUser: User = call.receive<User>()
+            val newUser: User? = call.receive<User>()
             var id:Int = -1
-            try {
-                transaction (DbSettings.db) {
-                    id = Users.insertAndGetId {
-                        it[email] = newUser.email
-                        it[password] = BCrypt.hashpw(newUser.password, BCrypt.gensalt())
-                        it[first_name] = newUser.first_name
-                        it[last_name] = newUser.last_name
-                        it[description] = newUser.description
-                        it[is_instructor] = newUser.is_instructor
-                    }.value
-                }
-                call.sessions.set(SessionAuth(Token.create(id, newUser.email)))
-                call.respond(HttpStatusCode.Created, "Successfully registered " + newUser.email)
-            }
-            catch (ex:ExposedSQLException)
+            if (newUser != null)
             {
-                when (ex.sqlState) {
-                    SQLState.UNIQUE_CONSTRAINT_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, "Email already taken!")
-                    else -> call.respond(HttpStatusCode.InternalServerError, "Oh No... Something went wrong!")
+                try {
+                    transaction (DbSettings.db) {
+                        id = Users.insertAndGetId {
+                            it[email] = newUser.email
+                            it[password] = BCrypt.hashpw(newUser.password, BCrypt.gensalt())
+                            it[first_name] = newUser.first_name
+                            it[last_name] = newUser.last_name
+                            it[description] = newUser.description
+                            it[is_instructor] = newUser.is_instructor
+                        }.value
+                    }
+                    call.sessions.set(SessionAuth(Token.create(id, newUser.email)))
+                    call.respond(HttpStatusCode.Created, "Successfully registered " + newUser.email)
+                }
+                catch (ex:ExposedSQLException)
+                {
+                    when (ex.sqlState) {
+                        SQLState.UNIQUE_CONSTRAINT_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, "Email already taken!")
+                        else -> call.respond(HttpStatusCode.InternalServerError, "Oh No... Something went wrong!")
+                    }
                 }
             }
+            else {
+                call.respond(HttpStatusCode.BadRequest, INVALID_BODY)
+            }
+
         }
 
         post( "/session/login") {
-            val loginInfo: Login = call.receive<Login>()
+            val loginInfo: Login? = call.receive<Login>()
             var result:ResultRow? = null
             var success:Boolean = false
-            transaction(DbSettings.db) {
-                result = Users.select{Users.email eq loginInfo.email}.firstOrNull()
-            }
-            if (result != null) {
-                val passhash:String = result!![Users.email]
-                if (BCrypt.checkpw(loginInfo.password, passhash)) {
-                    success = true
+            if (loginInfo != null) {
+                transaction(DbSettings.db) {
+                    result = Users.select{Users.email eq loginInfo.email}.firstOrNull()
+                }
+                if (result != null) {
+                    val passhash:String = result!![Users.email]
+                    if (BCrypt.checkpw(loginInfo.password, passhash)) {
+                        success = true
+                    }
+                }
+                if (success) {
+                    call.sessions.set(SessionAuth(Token.create(result!![Users.id].value, loginInfo.email)))
+                    call.respond(HttpStatusCode.OK, "Successfully logged in!")
+                }
+                else {
+                    call.respond(HttpStatusCode.BadRequest, "Invalid email or password")
                 }
             }
-            if (success) {
-                call.sessions.set(SessionAuth(Token.create(result!![Users.id].value, loginInfo.email)))
-                call.respond(HttpStatusCode.OK, "Successfully logged in!")
-            }
             else {
-                call.respond(HttpStatusCode.BadRequest, "Invalid email or password")
+                call.respond(HttpStatusCode.BadRequest, INVALID_BODY)
             }
-
         }
     }
 }
