@@ -1,4 +1,4 @@
-package org.covid19support.modules.authentication
+package org.covid19support.authentication
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier

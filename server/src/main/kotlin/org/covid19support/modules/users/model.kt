@@ -12,8 +12,8 @@ data class User(
         val first_name: String,
         val last_name: String,
         val description: String?,
-        val is_instructor: Boolean,
-        val role: String
+        val is_instructor: Boolean = false,
+        val role: String = "Normal"
 )
 
 data class Login(

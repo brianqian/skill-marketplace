@@ -2,7 +2,6 @@ package org.covid19support.modules.ratings
 
 import org.covid19support.modules.courses.Courses
 import org.covid19support.modules.users.Users
-import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 
 data class Rating(val id: Int?,
@@ -11,13 +10,15 @@ data class Rating(val id: Int?,
                   val rating: Short,
                   val comment: String)
 
-object Ratings : IntIdTable("ratings") {
+object Ratings : Table("ratings") {
+    val id: Column<Int> = integer("id").autoIncrement()
     val user_id: Column<Int> = integer("user_id").references(Users.id)
     val course_id: Column<Int> = integer("course_id").references(Courses.id)
     val rating: Column<Short> = short("rating")
     val comment: Column<String> = varchar("comment", 512)
+    override val primaryKey = PrimaryKey(id, name = "PK_Ratings_Id")
 
     fun toRating(resultRow: ResultRow): Rating {
-        return Rating(resultRow[id].value, resultRow[user_id], resultRow[course_id], resultRow[rating], resultRow[comment])
+        return Rating(resultRow[id], resultRow[user_id], resultRow[course_id], resultRow[rating], resultRow[comment])
     }
 }

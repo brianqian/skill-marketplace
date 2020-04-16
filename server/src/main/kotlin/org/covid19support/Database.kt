@@ -5,6 +5,7 @@ import org.jetbrains.exposed.sql.Database
 //will add more to this as I run across more
 enum class SQLState(val code: String) {
     UNIQUE_CONSTRAINT_VIOLATION("23505"),
+    FOREIGN_KEY_VIOLATION("23503")
 
 }
 

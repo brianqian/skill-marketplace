@@ -10,12 +10,13 @@ import io.ktor.sessions.set
 import org.covid19support.DbSettings
 import org.covid19support.SQLState
 import org.covid19support.SessionAuth
+import org.covid19support.constants.INTERNAL_ERROR
 import org.covid19support.constants.INVALID_BODY
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.*
 import org.jetbrains.exposed.exceptions.*
 import org.mindrot.jbcrypt.BCrypt
-import org.covid19support.modules.authentication.Token
+import org.covid19support.authentication.Token
 
 
 fun Application.users_module() {
@@ -59,8 +60,7 @@ fun Application.users_module() {
         post("/users") {
             val newUser: User? = call.receive<User>()
             var id:Int = -1
-            if (newUser != null)
-            {
+            if (newUser != null) {
                 try {
                     transaction (DbSettings.db) {
                         id = Users.insertAndGetId {
@@ -75,11 +75,11 @@ fun Application.users_module() {
                     call.sessions.set(SessionAuth(Token.create(id, newUser.email)))
                     call.respond(HttpStatusCode.Created, "Successfully registered " + newUser.email)
                 }
-                catch (ex:ExposedSQLException)
-                {
+                catch (ex:ExposedSQLException) {
                     when (ex.sqlState) {
                         SQLState.UNIQUE_CONSTRAINT_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, "Email already taken!")
-                        else -> call.respond(HttpStatusCode.InternalServerError, "Oh No... Something went wrong!")
+                        SQLState.FOREIGN_KEY_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, ex.localizedMessage)
+                        else -> call.respond(HttpStatusCode.InternalServerError, INTERNAL_ERROR)
                     }
                 }
             }
