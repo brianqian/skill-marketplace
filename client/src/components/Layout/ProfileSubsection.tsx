@@ -1,14 +1,8 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, ReactElement } from 'react';
 import styled from 'styled-components/macro';
-import {Formik, FormikHelpers, FormikProps, Form, Field, FieldProps, FormikValues, FormikConfig} from 'formik';
+import { useForm } from 'react-hook-form';
 
-type Props = {
-  children: ReactNode;
-  formikInfo: FormikConfig<FormikValues>;
-  title: string;
-};
-
-const StyledForm = styled(Form)`
+const StyledForm = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(4, minmax(40px, 1fr));
@@ -23,14 +17,24 @@ const SubsectionTitle = styled.h2`
   grid-column: 1/3;
 `;
 
-function ProfileSubsection({ children, formikInfo, title, ...props }: Props) {
+type Props = {
+  children: ReactElement | ReactElement[];
+  title: string;
+  // submitHandler: (x: any) => void;
+};
+
+function ProfileSubsection({ children, title }: Props) {
+  const { register, handleSubmit, errors } = useForm();
+
+  // const refChildren = React.Children.map(children, child => {
+  //   return React.cloneElement(child, { ref: (e: any) => register(e) });
+  // });
+
   return (
-    <Formik {...formikInfo}>
-      <StyledForm>
-        <SubsectionTitle>{title}</SubsectionTitle>
-        {children}
-      </StyledForm>
-    </Formik>
+    <StyledForm>
+      <SubsectionTitle>{title}</SubsectionTitle>
+      {children}
+    </StyledForm>
   );
 }
 

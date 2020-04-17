@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Avatar from './Avatar';
+import { EDIT_PROFILE_ROUTE } from '../Routes';
 
 const Container = styled.header`
   height: 6rem;
@@ -44,7 +45,7 @@ function Header() {
         <a href="#">Browse</a>
         <a href="#">Inbox</a>
         <Avatar />
-        <Link to="/profile/home">Profile</Link>
+        <Link to={EDIT_PROFILE_ROUTE}>Profile</Link>
       </Nav>
     </Container>
   );

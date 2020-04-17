@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, SyntheticEvent } from 'react';
 import styled from 'styled-components';
 import Card from '../components/Card';
 import HomeCard from '../components/HomeCard';
@@ -44,7 +44,7 @@ const Results = styled.section`
 `;
 
 function Home() {
-  const handleSubmit = e => {
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
   };
 

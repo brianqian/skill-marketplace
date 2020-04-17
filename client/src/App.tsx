@@ -9,7 +9,13 @@ import EditClasses from './pages/EditCourses';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AddCourse from './pages/AddCourse';
-import { LOGIN_ROUTE, REGISTER_ROUTE, EDIT_CLASSES_ROUTE, EDIT_PROFILE_ROUTE, TEMP_COURSE_ROUTE } from './Routes';
+import {
+  LOGIN_ROUTE,
+  REGISTER_ROUTE,
+  EDIT_CLASSES_ROUTE,
+  EDIT_PROFILE_ROUTE,
+  TEMP_COURSE_ROUTE,
+} from './Routes';
 
 const Container = styled.div``;
 
@@ -24,7 +30,7 @@ function App() {
         <Route exact path={EDIT_CLASSES_ROUTE} component={EditClasses} />
         <Route exact path={TEMP_COURSE_ROUTE} component={AddCourse} />
         <Route exact path="/" component={Home} />
-        <Route path="/class" component={ClassProfile} />
+        <Route path="/class" component={ClassProfile} /> */}
       </Switch>
     </Container>
   );
