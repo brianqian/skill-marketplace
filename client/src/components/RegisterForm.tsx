@@ -34,8 +34,8 @@ function RegisterForm() {
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    await fetch.post(REGISTER_ROUTE, { body: formValue });
-    localStorage.setItem('token', data);
+    const { email, password, first_name, last_name } = formValue;
+    await fetch.post(REGISTER_ROUTE, { body: { email, password, first_name, last_name} });
     history.push('/');
   };
 

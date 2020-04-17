@@ -31,7 +31,7 @@ fun Application.users_module() {
             }
             if (users.isEmpty())
             {
-                call.respond("No users found!")
+                call.respond(HttpStatusCode.NoContent, "No users found!")
             }
             else
             {
@@ -51,7 +51,7 @@ fun Application.users_module() {
 
             }
             if (user == null) {
-                call.respondText("User not found!", status = HttpStatusCode.BadRequest)
+                call.respond(HttpStatusCode.NoContent, "User not found!")
             }
             else {
                 call.respond(user as User)
@@ -62,20 +62,21 @@ fun Application.users_module() {
             var id:Int = -1
             if (newUser != null) {
                 try {
+                    val passhash = BCrypt.hashpw(newUser.password, BCrypt.gensalt())
                     transaction (DbSettings.db) {
                         id = Users.insertAndGetId {
                             it[email] = newUser.email
-                            it[password] = BCrypt.hashpw(newUser.password, BCrypt.gensalt())
+                            it[password] = passhash
                             it[first_name] = newUser.first_name
                             it[last_name] = newUser.last_name
                             it[description] = newUser.description
-                            it[is_instructor] = newUser.is_instructor
                         }.value
                     }
                     call.sessions.set(SessionAuth(Token.create(id, newUser.email)))
                     call.respond(HttpStatusCode.Created, "Successfully registered " + newUser.email)
                 }
                 catch (ex:ExposedSQLException) {
+                    log.error(ex.message)
                     when (ex.sqlState) {
                         SQLState.UNIQUE_CONSTRAINT_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, "Email already taken!")
                         SQLState.FOREIGN_KEY_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, ex.localizedMessage)
@@ -89,25 +90,42 @@ fun Application.users_module() {
 
         }
 
+        get ("/passwordtest") {
+            val password:String = "gaurdianAQ#123"
+            val passhash = BCrypt.hashpw(password, BCrypt.gensalt())
+            val result = BCrypt.checkpw(password, passhash)
+            val result2 = BCrypt.checkpw(password, "\$2a\$10\$7PajJoLSBcJ7zYbFYb9QwOiKiloybBR4I232Ioy7lWBDeTCgedD3e")
+            val result3 = BCrypt.checkpw(password, "\$2a\$10\$zk2YNusT8SJ3C/r3Je/kZu06MLWtR6gPT85N.tZXGCZJ2IMVvuqFS")
+            call.respondText(password+'\n'+passhash+'\n'+result.toString() + '\n' + result2.toString() + '\n' + result3.toString())
+        }
+
         post( "/session/login") {
             val loginInfo: Login? = call.receive<Login>()
             var result:ResultRow? = null
             var success:Boolean = false
+            log.info(loginInfo?.email)
+            log.info(loginInfo?.password)
             if (loginInfo != null) {
                 transaction(DbSettings.db) {
                     result = Users.select{Users.email eq loginInfo.email}.firstOrNull()
                 }
                 if (result != null) {
-                    val passhash:String = result!![Users.email]
+                    log.info(result!![Users.password])
+                    val passhash:String = result!![Users.password]
+                    if (loginInfo.password == "gaurdianAQ#123")
+                        log.info(BCrypt.checkpw("gaurdianAQ#123", passhash).toString())
+                        log.info(BCrypt.checkpw(loginInfo.password, passhash).toString())
                     if (BCrypt.checkpw(loginInfo.password, passhash)) {
                         success = true
                     }
                 }
                 if (success) {
+                    log.info("validated")
                     call.sessions.set(SessionAuth(Token.create(result!![Users.id].value, loginInfo.email)))
                     call.respond(HttpStatusCode.OK, "Successfully logged in!")
                 }
                 else {
+                    log.info("nope")
                     call.respond(HttpStatusCode.BadRequest, "Invalid email or password")
                 }
             }

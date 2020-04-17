@@ -1,6 +1,7 @@
 package org.covid19support.modules.categories
 
 import io.ktor.application.*
+import io.ktor.http.HttpStatusCode
 import io.ktor.routing.*
 import io.ktor.response.*
 import org.covid19support.DbSettings
@@ -17,8 +18,12 @@ fun Application.categories_module() {
                     categories.add(Categories.toCategory(it))
                 }
             }
-
-            call.respond(categories)
+            if (categories.isEmpty()) {
+                call.respond(HttpStatusCode.NoContent, "No categories found!")
+            }
+            else {
+                call.respond(categories)
+            }
         }
     }
 }

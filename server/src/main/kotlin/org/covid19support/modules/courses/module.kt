@@ -1,5 +1,6 @@
 package org.covid19support.modules.courses
 
+import com.auth0.jwt.interfaces.Claim
 import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.application.*
 import io.ktor.http.HttpStatusCode
@@ -19,13 +20,36 @@ fun Application.courses_module() {
     routing {
         get("/courses") {
             val courses: MutableList<Course> = mutableListOf<Course>()
-            call.respondText("Not Implemented Yet!")
+            transaction(DbSettings.db) {
+                val results:List<ResultRow> = Courses.selectAll().toList()
+                results.forEach {
+                    courses.add(Courses.toCourse(it))
+                }
+            }
+            if (courses.isEmpty()) {
+                call.respond(HttpStatusCode.NoContent, "No courses found!")
+            }
+            else {
+                call.respond(HttpStatusCode.OK, courses)
+            }
         }
 
-        get("/courses/test") {
-            val decodedToken: DecodedJWT? = authenticate(call)
-            if (decodedToken != null) {
-                call.respond("AUTHENTICATED!")
+        get("/courses/{id}") {
+            var course: Course? = null
+            val id:Int = call.parameters["id"]!!.toInt()
+            transaction(DbSettings.db) {
+                val result:ResultRow? = Courses.select{ Courses.id eq id}.firstOrNull()
+
+                if (result != null) {
+                    course = Courses.toCourse(result)
+                }
+
+            }
+            if (course == null) {
+                call.respond(HttpStatusCode.NoContent,"Course not found!")
+            }
+            else {
+                call.respond(course as Course)
             }
         }
 
@@ -39,11 +63,12 @@ fun Application.courses_module() {
                             Courses.insert {
                                 it[name] = course.name
                                 it[description] = course.description
-                                it[instructor_id] = course.instructor_id
+                                it[instructor_id] = decodedToken.claims["id"]!!.asInt()
                                 it[category] = course.category
                                 it[rate] = course.rate
                             }
                         }
+                        call.respond(HttpStatusCode.Created, "Successfully created course!")          
                     }
                     catch (ex:ExposedSQLException) {
                         when(ex.sqlState) {

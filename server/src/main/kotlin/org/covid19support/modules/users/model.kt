@@ -1,13 +1,17 @@
 package org.covid19support.modules.users
 
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
 import org.covid19support.modules.roles.Roles
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
+import java.lang.reflect.Type
 
 data class User(
         val id: Int?,
         val email: String,
-        @Transient
         val password: String,
         val first_name: String,
         val last_name: String,
@@ -15,6 +19,20 @@ data class User(
         val is_instructor: Boolean = false,
         val role: String = "Normal"
 )
+
+class UserSerializer : JsonSerializer<User> {
+    override fun serialize(src: User?, srcType: Type?, context: JsonSerializationContext?): JsonElement {
+        val output: JsonObject = JsonObject()
+        output.addProperty("email", src?.email)
+        output.addProperty("first_name", src?.first_name)
+        output.addProperty("last_name", src?.last_name)
+        output.addProperty("description", src?.description)
+        output.addProperty("is_instructor", src?.is_instructor)
+        output.addProperty("role", src?.role)
+        return output
+    }
+
+}
 
 data class Login(
         val email: String,

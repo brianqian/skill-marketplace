@@ -5,6 +5,8 @@ import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.gson.gson
 import io.ktor.sessions.*
+import org.covid19support.modules.users.User
+import org.covid19support.modules.users.UserSerializer
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -13,7 +15,7 @@ fun Application.main() {
     install(DefaultHeaders)
     install(ContentNegotiation) {
         gson {
-
+            registerTypeAdapter(User::class.java, UserSerializer())
         }
     }
     install(Sessions) {
