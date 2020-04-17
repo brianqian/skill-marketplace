@@ -90,15 +90,6 @@ fun Application.users_module() {
 
         }
 
-        get ("/passwordtest") {
-            val password:String = "gaurdianAQ#123"
-            val passhash = BCrypt.hashpw(password, BCrypt.gensalt())
-            val result = BCrypt.checkpw(password, passhash)
-            val result2 = BCrypt.checkpw(password, "\$2a\$10\$7PajJoLSBcJ7zYbFYb9QwOiKiloybBR4I232Ioy7lWBDeTCgedD3e")
-            val result3 = BCrypt.checkpw(password, "\$2a\$10\$zk2YNusT8SJ3C/r3Je/kZu06MLWtR6gPT85N.tZXGCZJ2IMVvuqFS")
-            call.respondText(password+'\n'+passhash+'\n'+result.toString() + '\n' + result2.toString() + '\n' + result3.toString())
-        }
-
         post( "/session/login") {
             val loginInfo: Login? = call.receive<Login>()
             var result:ResultRow? = null
