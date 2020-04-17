@@ -2,7 +2,7 @@
 export const LOGIN_ROUTE = '/login';
 export const TEMP_COURSE_ROUTE = '/addcourse';
 export const REGISTER_ROUTE = '/register';
-export const PROFILE_ROUTE = 'profile';
+export const PROFILE_ROUTE = '/profile';
 export const HOME_ROUTE = '/home';
 export const CLASSES_ROUTE = '/classes';
 export const EDIT_CLASSES_ROUTE = PROFILE_ROUTE + CLASSES_ROUTE;

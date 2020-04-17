@@ -26,11 +26,10 @@ function App() {
       <Switch>
         <Route exact path={LOGIN_ROUTE} component={Login} />
         <Route exact path={REGISTER_ROUTE} component={Register} />
-        <Route exact path={EDIT_PROFILE_ROUTE} component={EditProfile} />
+        <Route path={EDIT_PROFILE_ROUTE} component={EditProfile} />
         <Route exact path={EDIT_CLASSES_ROUTE} component={EditClasses} />
-        <Route exact path={TEMP_COURSE_ROUTE} component={AddCourse} />
+        <Route path="/class" component={ClassProfile} />
         <Route exact path="/" component={Home} />
-        <Route path="/class" component={ClassProfile} /> */}
       </Switch>
     </Container>
   );
