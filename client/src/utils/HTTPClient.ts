@@ -39,13 +39,14 @@ const Client = {
       console.log(options);
       const resp = await fetch(endpoint, options);
       console.log('resp1', resp);
-      if (resp.status >= 300) {
+      if (!resp.ok) {
         const error = { status: resp.status, message: resp.statusText };
         throw Error(JSON.stringify(error));
       }
       const data = await resp.json();
       return data;
     } catch (err) {
+      err = JSON.parse(err);
       console.error(err);
       err.status = err.status || 500;
       err.message = err.message || 'Server error';

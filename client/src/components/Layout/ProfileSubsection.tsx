@@ -1,11 +1,14 @@
 import React, { ReactNode, ReactElement } from 'react';
 import styled from 'styled-components/macro';
-import { useForm } from 'react-hook-form';
 
-const StyledForm = styled.div`
+type FormT = {
+  rows: number;
+};
+
+const StyledForm = styled.div<FormT>`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(4, minmax(40px, 1fr));
+  grid-template-rows: repeat(${p => p.rows}, minmax(40px, 1fr));
   align-items: center;
   justify-content: flex-start;
   padding: 1rem 4rem;
@@ -24,14 +27,10 @@ type Props = {
 };
 
 function ProfileSubsection({ children, title }: Props) {
-  const { register, handleSubmit, errors } = useForm();
-
-  // const refChildren = React.Children.map(children, child => {
-  //   return React.cloneElement(child, { ref: (e: any) => register(e) });
-  // });
+  const numOfRows = Math.ceil(React.Children.count(children) / 2);
 
   return (
-    <StyledForm>
+    <StyledForm rows={numOfRows}>
       <SubsectionTitle>{title}</SubsectionTitle>
       {children}
     </StyledForm>
