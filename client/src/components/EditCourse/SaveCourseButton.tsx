@@ -6,21 +6,23 @@ const Container = styled(Button)`
   align-self: flex-end;
   width: 130px;
   margin: 0.5rem;
-  background-color: white;
-  color: ${p => p.theme.color.primary};
 `;
 
 type Props = {
-  isActive?: boolean;
   handleClick: () => void;
 };
 
-const SaveCourseButton = ({ isActive, handleClick }: Props) => {
-  const [confirm, setConfirm] = useState(false);
+const SaveCourseButton = ({ handleClick }: Props) => {
+  const [isActive, setIsActive] = useState(true);
+
+  const onClick = () => {
+    if (isActive) handleClick();
+    setIsActive(false);
+  };
 
   return (
-    <Container onClick={handleClick}>
-      <p>Save Changes</p>
+    <Container onClick={onClick} primary={isActive}>
+      {isActive ? <p>Save Changes</p> : <p>Changes Saved!</p>}
     </Container>
   );
 };

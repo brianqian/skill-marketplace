@@ -8,10 +8,6 @@ const Container = styled(Button)`
   align-self: flex-end;
   width: 130px;
   margin: 0.5rem;
-  > p {
-    width: 100%;
-    height: 100%;
-  }
 `;
 
 type Props = {

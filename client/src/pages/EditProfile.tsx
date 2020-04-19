@@ -37,7 +37,11 @@ const initialState = {
 
 function EditProfile() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register } = useForm({
+    defaultValues: {
+      firstName: 'brian',
+    },
+  });
   const submitForm = (form: {}) => {
     console.log(form);
   };
@@ -57,13 +61,13 @@ function EditProfile() {
           <TextInput row={2} col={2} label="Last Name" name="lastName" type="text" ref={register} />
           <TextInput
             row={3}
-            col={1}
+            col={2}
             label="Specialty"
             name="specialty"
             type="text"
             ref={register}
           />
-          <TextInput row={4} col={1} label="Rate*" name="rate" type="number" ref={register} />
+          <TextInput row={3} col={1} label="Rate*" name="rate" type="number" ref={register} />
         </ProfileSubsection>
         <ProfileSubsection title="About Me">
           <TextInput
