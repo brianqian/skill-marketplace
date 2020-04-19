@@ -3,9 +3,14 @@ import Client from '../../utils/HTTPClient';
 import { CATEGORIES_ROUTE } from '../../Routes';
 import { AppDispatch } from '../store';
 
-const initialState = {
+type StateShape = {
+  categories: string[];
+  error: number | null;
+};
+
+const initialState: StateShape = {
   categories: [],
-  error: '',
+  error: null,
 };
 
 const userSlice = createSlice({
@@ -25,6 +30,7 @@ export const { setCategories, setError } = userSlice.actions;
 
 export const getCategories = () => async (dispatch: AppDispatch) => {
   const categories = await Client.request(CATEGORIES_ROUTE);
+  console.log('CATEGORIES', categories);
   if (categories.status) {
     dispatch(setError(categories.status));
   } else {

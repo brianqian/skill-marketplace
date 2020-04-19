@@ -46,7 +46,7 @@ const Client = {
       const data = await resp.json();
       return data;
     } catch (err) {
-      err = JSON.parse(err);
+      err = JSON.parse(err.message);
       console.error(err);
       err.status = err.status || 500;
       err.message = err.message || 'Server error';

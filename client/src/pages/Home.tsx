@@ -2,9 +2,9 @@ import React, { useState, useEffect, SyntheticEvent } from 'react';
 import styled from 'styled-components';
 import Card from '../components/Card';
 import HomeCard from '../components/HomeCard';
-import useFetch from '../hooks/useFetch/useFetch';
-import { CATEGORIES_ROUTE } from '../Routes';
-import Client from '../utils/HTTPClient';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCategories } from '../redux/AppState/appSlice';
+import { RootState } from '../redux/reducer';
 
 const Container = styled.main`
   display: flex;
@@ -48,16 +48,10 @@ function Home() {
     e.preventDefault();
   };
 
-  const [categories, setCategories] = useState([]);
-  const { fetch, data, error } = useFetch();
+  const dispatch = useDispatch();
+  const categories = useSelector((state: RootState) => state.app.categories);
   useEffect(() => {
-    fetch.get(CATEGORIES_ROUTE);
-    async function fetchCategories() {
-      await fetch.get(CATEGORIES_ROUTE);
-      if (!error) setCategories(data);
-    }
-
-    fetchCategories();
+    dispatch(getCategories());
   }, []);
 
   return (
