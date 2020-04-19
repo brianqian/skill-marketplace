@@ -18,8 +18,23 @@ const Header = styled.header`
 `;
 
 const Subsection = styled.div`
-  width: 50%;
+  padding: 0 20%;
   margin: 1.5rem auto;
+`;
+
+const ImagePlaceholder = styled.div`
+  height: 400px;
+  background-color: blue;
+  width: 1000px;
+  margin: auto;
+  opacity: 0.3;
+`;
+const ImageCarouselPlaceholder = styled.div`
+  height: 100px;
+  background-color: red;
+  opacity: 0.3;
+  width: 1000px;
+  margin: auto;
 `;
 
 const StyledButton = styled(Button)`
@@ -32,7 +47,7 @@ type Props = {
   classId: string;
 };
 
-function ClassProfile({ classId }: Props) {
+function CourseProfile({ classId }: Props) {
   // const {data, error} = useFetch(`endpont/${classId}`)
 
   return (
@@ -43,8 +58,10 @@ function ClassProfile({ classId }: Props) {
           <h3>NAME</h3>
           <h1>CLASS TITLE</h1>
         </Header>
+        <ImagePlaceholder />
+        <ImageCarouselPlaceholder />
         <Subsection>
-          <h3>About Me</h3>
+          <h3>About the Instructor</h3>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi at aliquid asperiores,
             velit illum quis dolor eaque dolorem ad perspiciatis distinctio odio accusantium libero,
@@ -85,4 +102,4 @@ function ClassProfile({ classId }: Props) {
     </Container>
   );
 }
-export default ClassProfile;
+export default CourseProfile;

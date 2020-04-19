@@ -2,7 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import Layout from '../components/Layout/ProfilePageLayout';
 import Row from '../components/EditCourse/Row';
+import { Link } from 'react-router-dom';
 import Button from '../components/Button';
+import { ADD_CLASS_ROUTE } from '../Routes';
 
 type Flex = {
   flex?: number;
@@ -40,9 +42,14 @@ const Header = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  align-self: flex-end;
   width: 130px;
   margin: 0.5rem 0;
+`;
+
+const AddClassLink = styled(Link)`
+  display: flex;
+  justify-content: flex-end;
+  text-decoration: none;
 `;
 
 // Grid columns:
@@ -62,7 +69,9 @@ const courses = [
 function EditCourses() {
   return (
     <Layout>
-      <StyledButton primary>Add Course</StyledButton>
+      <AddClassLink to={ADD_CLASS_ROUTE}>
+        <StyledButton primary>Add Course</StyledButton>
+      </AddClassLink>
       <Table>
         <Header>
           <Column flex={2}>

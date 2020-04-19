@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 import { Link } from 'react-router-dom';
+import { EDIT_CLASSES_ROUTE } from '../Routes';
 
 type Props = {};
 
@@ -49,7 +50,7 @@ function SideNav({ sections }) {
   }, [locked]);
 
   return (
-      // @ts-ignore
+    // @ts-ignore
     <Container ref={ref} isLocked={locked}>
       <ul>
         <li>Basic Information</li>
@@ -57,7 +58,7 @@ function SideNav({ sections }) {
         <li>About Course</li>
         <li>Contact</li>
         <li>Settings</li>
-        <Link to="/profile/classes">Class Management</Link>
+        <Link to={EDIT_CLASSES_ROUTE}>Class Management</Link>
       </ul>
     </Container>
   );
