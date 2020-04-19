@@ -7,6 +7,10 @@ const Container = styled.div`
   display: flex;
 `;
 
+const StyledCard = styled(Card)`
+  min-height: calc(100vh - ${p => p.theme.headerHeight});
+`;
+
 type Props = {
   children: ReactNode;
 };
@@ -40,9 +44,9 @@ function ProfilePageLayout({ children }: Props) {
   return (
     <Container>
       <SideNav sections={sections} />
-      <Card w="1200px" m="0 0 150px 100px" p="2rem 4rem" flexDirection="column">
+      <StyledCard w="1200px" m="0 0 150px 100px" p="2rem 4rem" flexDirection="column">
         {children}
-      </Card>
+      </StyledCard>
     </Container>
   );
 }

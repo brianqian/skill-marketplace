@@ -63,7 +63,7 @@ type Props = {
 };
 
 const TextInput = React.forwardRef((props: Props, ref: any) => {
-  const { row, col, name, label } = props;
+  const { row, col, name, label, value } = props;
   return (
     <Container row={row} col={col}>
       <StyledLabel htmlFor={name}>{label}</StyledLabel>

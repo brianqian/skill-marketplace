@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Layout from '../components/Layout/ProfilePageLayout';
 import Row from '../components/EditCourse/Row';
+import Button from '../components/Button';
 
 type Flex = {
   flex?: number;
@@ -26,7 +27,7 @@ const ColumnTitle = styled.p`
   font-size: 0.8em;
 `;
 
-const ClassTable = styled.div`
+const CourseTable = styled.div`
   width: 100%;
   background-color: white;
   padding: 1rem 0;
@@ -36,6 +37,12 @@ const Header = styled.div`
   padding: 1rem;
   width: 100%;
   display: flex;
+`;
+
+const StyledButton = styled(Button)`
+  align-self: flex-end;
+  width: 130px;
+  margin: 0.5rem 0;
 `;
 
 // Grid columns:
@@ -55,6 +62,7 @@ const courses = [
 function EditCourses() {
   return (
     <Layout>
+      <StyledButton primary>Add Course</StyledButton>
       <Table>
         <Header>
           <Column flex={2}>
@@ -67,11 +75,11 @@ function EditCourses() {
             <ColumnTitle>Rate</ColumnTitle>
           </Column>
         </Header>
-        <ClassTable>
+        <CourseTable>
           {courses.map(course => (
             <Row classInfo={course} />
           ))}
-        </ClassTable>
+        </CourseTable>
       </Table>
     </Layout>
   );

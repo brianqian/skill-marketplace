@@ -5,7 +5,7 @@ import Avatar from './Avatar';
 import { EDIT_PROFILE_ROUTE } from '../Routes';
 
 const Container = styled.header`
-  height: 6rem;
+  height: ${p => p.theme.headerHeight};
   box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.1);
   display: flex;
   width: 100%;
@@ -21,7 +21,7 @@ const Nav = styled.nav`
     text-transform: uppercase;
     text-decoration: none;
     color: ${p => p.theme.strokeColor};
-    font-family: 'Roboto';
+    font-family: ${p => p.theme.textFont};
   }
 `;
 
