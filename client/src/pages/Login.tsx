@@ -1,8 +1,8 @@
 import React from 'react';
-import LoginForm from "../components/LoginForm";
+import LoginForm from '../components/LoginForm';
 
-function Login(props) {
-    return (<LoginForm history={props.history} />);
+function Login() {
+  return <LoginForm />;
 }
 
 export default Login;

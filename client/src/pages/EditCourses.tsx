@@ -3,6 +3,10 @@ import styled from 'styled-components';
 import Layout from '../components/Layout/ProfilePageLayout';
 import Row from '../components/EditCourse/Row';
 
+type Flex = {
+  flex?: number;
+};
+
 const Table = styled.div`
   display: flex;
   flex-direction: column;
@@ -12,7 +16,7 @@ const Table = styled.div`
   overflow: hidden;
 `;
 
-const Column = styled.div`
+const Column = styled.div<Flex>`
   flex: ${p => p.flex};
 `;
 

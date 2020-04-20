@@ -1,7 +1,7 @@
 import React, { useState, SyntheticEvent } from 'react';
 import styled from 'styled-components';
 import useFetch from '../hooks/useFetch/useFetch';
-import { REGISTER_ROUTE } from '../Routes';
+import { USERS_ROUTE } from '../Routes';
 import { useHistory } from 'react-router-dom';
 
 const Container = styled.div`
@@ -34,8 +34,8 @@ function RegisterForm() {
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    await fetch.post(REGISTER_ROUTE, { body: formValue });
-    localStorage.setItem('token', data);
+    const { email, password, first_name, last_name } = formValue;
+    await fetch.post(USERS_ROUTE, { body: { email, password, first_name, last_name} });
     history.push('/');
   };
 

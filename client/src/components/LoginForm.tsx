@@ -1,7 +1,7 @@
 import React, { useState, SyntheticEvent } from 'react';
 import styled from 'styled-components';
 import useFetch from '../hooks/useFetch/useFetch';
-import { LOGIN_ROUTE } from '../Routes';
+import { BACKEND_LOGIN_ROUTE } from '../Routes';
 import { useHistory } from 'react-router-dom';
 
 const Container = styled.div`
@@ -28,8 +28,7 @@ function LoginForm() {
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     const { email, password } = formValue;
-    await fetch.post(LOGIN_ROUTE, { body: { email, password } });
-    localStorage.setToken('token', data);
+    await fetch.post(BACKEND_LOGIN_ROUTE, { body: { email, password } });
     history.push('/');
   };
 

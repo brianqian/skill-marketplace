@@ -1,12 +1,13 @@
 export type ActionType = {
-  type:
-    | 'GET_ENDPOINT'
-    | 'POST_ENDPOINT'
-    | 'PUT_ENDPOINT'
-    | 'DELETE_ENDPOINT'
-    | 'SET_DATA'
-    | 'FETCHING'
-    | 'ERROR';
+  // type:
+  //   | 'GET_ENDPOINT'
+  //   | 'POST_ENDPOINT'
+  //   | 'PUT_ENDPOINT'
+  //   | 'DELETE_ENDPOINT'
+  //   | 'SET_DATA'
+  //   | 'FETCHING'
+  //   | 'ERROR';
+  type: string;
   payload?: any;
   body?: any;
   endpoint?: string;

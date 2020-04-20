@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components/macro';
-import { Formik, Form } from 'formik';
+import {Formik, FormikHelpers, FormikProps, Form, Field, FieldProps, FormikValues, FormikConfig} from 'formik';
+
+type Props = {
+  children: ReactNode;
+  formikInfo: FormikConfig<FormikValues>;
+  title: string;
+};
 
 const StyledForm = styled(Form)`
   display: grid;
@@ -17,9 +23,9 @@ const SubsectionTitle = styled.h2`
   grid-column: 1/3;
 `;
 
-function ProfileSubsection({ children, title, ...props }) {
+function ProfileSubsection({ children, formikInfo, title, ...props }: Props) {
   return (
-    <Formik {...props}>
+    <Formik {...formikInfo}>
       <StyledForm>
         <SubsectionTitle>{title}</SubsectionTitle>
         {children}
