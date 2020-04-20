@@ -17,6 +17,7 @@ import org.jetbrains.exposed.sql.transactions.*
 import org.jetbrains.exposed.exceptions.*
 import org.mindrot.jbcrypt.BCrypt
 import org.covid19support.authentication.Token
+import org.covid19support.constants.Message
 
 
 fun Application.users_module() {
@@ -31,7 +32,7 @@ fun Application.users_module() {
             }
             if (users.isEmpty())
             {
-                call.respond(HttpStatusCode.NoContent, "No users found!")
+                call.respond(HttpStatusCode.NoContent, Message("No users found!"))
             }
             else
             {
@@ -51,7 +52,7 @@ fun Application.users_module() {
 
             }
             if (user == null) {
-                call.respond(HttpStatusCode.NoContent, "User not found!")
+                call.respond(HttpStatusCode.NoContent, Message("User not found!"))
             }
             else {
                 call.respond(user as User)
@@ -73,19 +74,19 @@ fun Application.users_module() {
                         }.value
                     }
                     call.sessions.set(SessionAuth(Token.create(id, newUser.email)))
-                    call.respond(HttpStatusCode.Created, "Successfully registered " + newUser.email)
+                    call.respond(HttpStatusCode.Created, Message("Successfully registered " + newUser.email))
                 }
                 catch (ex:ExposedSQLException) {
                     log.error(ex.message)
                     when (ex.sqlState) {
                         SQLState.UNIQUE_CONSTRAINT_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, "Email already taken!")
                         SQLState.FOREIGN_KEY_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, ex.localizedMessage)
-                        else -> call.respond(HttpStatusCode.InternalServerError, INTERNAL_ERROR)
+                        else -> call.respond(HttpStatusCode.InternalServerError, Message(INTERNAL_ERROR))
                     }
                 }
             }
             else {
-                call.respond(HttpStatusCode.BadRequest, INVALID_BODY)
+                call.respond(HttpStatusCode.BadRequest, Message(INVALID_BODY))
             }
 
         }
@@ -113,15 +114,15 @@ fun Application.users_module() {
                 if (success) {
                     log.info("validated")
                     call.sessions.set(SessionAuth(Token.create(result!![Users.id].value, loginInfo.email)))
-                    call.respond(HttpStatusCode.OK, "Successfully logged in!")
+                    call.respond(HttpStatusCode.OK, Message("Successfully logged in!"))
                 }
                 else {
                     log.info("nope")
-                    call.respond(HttpStatusCode.BadRequest, "Invalid email or password")
+                    call.respond(HttpStatusCode.BadRequest, Message("Invalid email or password"))
                 }
             }
             else {
-                call.respond(HttpStatusCode.BadRequest, INVALID_BODY)
+                call.respond(HttpStatusCode.BadRequest, Message(INVALID_BODY))
             }
         }
     }
