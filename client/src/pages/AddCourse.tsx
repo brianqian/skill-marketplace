@@ -18,15 +18,16 @@ const CategoryGrid = styled.div`
 const CategoryPlaceholder = styled.div`
   width: 150px;
   height: 150px;
-  background-color: green;
-  opacity: 0.3;
+  background-color: hsla(120, 100%, 25%, 0.3);
+
+  /* opacity: 0.3; */
 `;
 
 const AddCourse = () => {
   const dispatch = useDispatch();
   const categories = useSelector((state: RootState) => state.app.categories);
   const { handleSubmit, register } = useForm();
-  const [selected, setSelected] = useState<null | number>(null);
+  const [selected, setSelected] = useState('');
 
   const onSubmit = (data: any) => {
     console.log('selected Category', selected);
@@ -38,11 +39,11 @@ const AddCourse = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Subsection title="Category">
           <CategoryGrid>
-            {Array(9)
-              .fill(null)
-              .map((x, i) => (
-                <CategoryPlaceholder onClick={() => setSelected(i)} />
-              ))}
+            {categories.map(category => (
+              <CategoryPlaceholder onClick={() => setSelected(category)}>
+                {category}
+              </CategoryPlaceholder>
+            ))}
           </CategoryGrid>
         </Subsection>
         <Subsection title="Title">

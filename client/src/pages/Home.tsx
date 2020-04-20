@@ -61,9 +61,9 @@ function Home() {
         <input type="text" placeholder="What do you want to learn?" />
         <select name="" id="">
           <option value="">All Skills</option>
-          <option value="">Category 1</option>
-          <option value="">Category 2</option>
-          <option value="">Category 3</option>
+          {categories.map(category => (
+            <option>{category}</option>
+          ))}
         </select>
       </SearchField>
       <Results>

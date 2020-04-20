@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Avatar from './Avatar';
-import { EDIT_PROFILE_ROUTE } from '../Routes';
+import { EDIT_PROFILE_ROUTE, HOME_ROUTE } from '../Routes';
 
 const Container = styled.header`
   height: ${p => p.theme.headerHeight};
@@ -42,7 +42,7 @@ function Header() {
         <Link to="/">LOGO</Link>
       </Logo>
       <Nav>
-        <a href="#">Browse</a>
+        <Link to="/">Browse</Link>
         <a href="#">Inbox</a>
         <Avatar />
         <Link to={EDIT_PROFILE_ROUTE}>Profile</Link>

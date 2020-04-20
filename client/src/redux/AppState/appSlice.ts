@@ -18,7 +18,8 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setCategories: (state, action) => {
-      state.categories = action.payload;
+      const categories = action.payload.map((category: { name: string }) => category.name);
+      state.categories = categories;
     },
     setError: (state, action) => {
       state.error = action.payload;

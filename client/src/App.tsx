@@ -9,11 +9,19 @@ import EditCourses from './pages/EditCourses';
 import Login from './pages/Login';
 import AddCourse from './pages/AddCourse';
 import Register from './pages/Register';
+import { useDispatch } from 'react-redux';
+import { getCategories } from './redux/AppState/appSlice';
 import * as r from './Routes';
 
 const Container = styled.div``;
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, []);
+
   return (
     <Container>
       <Header />
