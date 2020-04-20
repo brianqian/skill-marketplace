@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { useField, FieldInputProps } from 'formik';
 import styled from 'styled-components/macro';
 
 type ContainerProps = {
@@ -57,19 +56,19 @@ type Props = {
   label: string;
   row: number | string;
   col: number | string;
-  id?: any;
-} & FieldInputProps<''>;
+  name: string;
+  value?: string;
+  type: string;
+};
 
-function TextInput({ label, row, col, ...props }: Props) {
-  const [field, meta] = useField(props);
-
+const TextInput = React.forwardRef((props: Props, ref: any) => {
+  const { row, col, name, label, value } = props;
   return (
     <Container row={row} col={col}>
-      <StyledLabel htmlFor={props.id || props.name}>{label}</StyledLabel>
-      <StyledInput {...field} {...props} />
-      {meta.value && meta.error ? <div className="error">{meta.error}</div> : null}
+      <StyledLabel htmlFor={name}>{label}</StyledLabel>
+      <StyledInput type="text" ref={ref} name={name} />
     </Container>
   );
-}
+});
 
 export default TextInput;

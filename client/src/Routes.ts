@@ -2,11 +2,12 @@
 export const LOGIN_ROUTE = '/login';
 export const TEMP_COURSE_ROUTE = '/addcourse';
 export const REGISTER_ROUTE = '/register';
-export const PROFILE_ROUTE = 'profile';
+export const PROFILE_ROUTE = '/profile';
 export const HOME_ROUTE = '/home';
 export const CLASSES_ROUTE = '/classes';
 export const EDIT_CLASSES_ROUTE = PROFILE_ROUTE + CLASSES_ROUTE;
 export const EDIT_PROFILE_ROUTE = PROFILE_ROUTE + HOME_ROUTE;
+export const ADD_CLASS_ROUTE = CLASSES_ROUTE + '/new';
 
 // Back End Routes
 export const BACKEND_LOGIN_ROUTE = '/session/login';

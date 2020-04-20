@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import Layout from '../components/Layout/ProfilePageLayout';
 import Row from '../components/EditCourse/Row';
+import { Link } from 'react-router-dom';
+import Button from '../components/Button';
+import { ADD_CLASS_ROUTE } from '../Routes';
 
 type Flex = {
   flex?: number;
@@ -26,7 +29,7 @@ const ColumnTitle = styled.p`
   font-size: 0.8em;
 `;
 
-const ClassTable = styled.div`
+const CourseTable = styled.div`
   width: 100%;
   background-color: white;
   padding: 1rem 0;
@@ -36,6 +39,17 @@ const Header = styled.div`
   padding: 1rem;
   width: 100%;
   display: flex;
+`;
+
+const StyledButton = styled(Button)`
+  width: 130px;
+  margin: 0.5rem 0;
+`;
+
+const AddClassLink = styled(Link)`
+  display: flex;
+  justify-content: flex-end;
+  text-decoration: none;
 `;
 
 // Grid columns:
@@ -55,6 +69,9 @@ const courses = [
 function EditCourses() {
   return (
     <Layout>
+      <AddClassLink to={ADD_CLASS_ROUTE}>
+        <StyledButton primary>Add Course</StyledButton>
+      </AddClassLink>
       <Table>
         <Header>
           <Column flex={2}>
@@ -67,11 +84,11 @@ function EditCourses() {
             <ColumnTitle>Rate</ColumnTitle>
           </Column>
         </Header>
-        <ClassTable>
+        <CourseTable>
           {courses.map(course => (
             <Row classInfo={course} />
           ))}
-        </ClassTable>
+        </CourseTable>
       </Table>
     </Layout>
   );

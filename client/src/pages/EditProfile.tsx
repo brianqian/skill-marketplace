@@ -1,12 +1,11 @@
 import React, { useReducer, useEffect } from 'react';
 import styled from 'styled-components/macro';
-import * as Yup from 'yup';
-import BasicInformation from '../components/Profile/BasicInformation';
-import AboutMe from '../components/Profile/AboutMe';
-import Contact from '../components/Profile/Contact';
-import Settings from '../components/Profile/Settings';
-import Client from '../utils/HTTPClient';
+import * as yup from 'yup';
 import Layout from '../components/Layout/ProfilePageLayout';
+import ProfileSubsection from '../components/Layout/ProfileSubsection';
+import TextInput from '../components/TextInput';
+
+import { useForm } from 'react-hook-form';
 
 const reducer = (state: any, action: any) => {
   switch (action.type) {
@@ -38,20 +37,67 @@ const initialState = {
 
 function EditProfile() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { handleSubmit, register } = useForm({
+    defaultValues: {
+      firstName: 'brian',
+    },
+  });
+  const submitForm = (form: {}) => {
+    console.log(form);
+  };
 
   return (
     <Layout>
+      <form onSubmit={handleSubmit(submitForm)}>
+        <ProfileSubsection title="Basic Information">
+          <TextInput
+            row={2}
+            col={1}
+            label="First Name*"
+            name="firstName"
+            type="text"
+            ref={register}
+          />
+          <TextInput row={2} col={2} label="Last Name" name="lastName" type="text" ref={register} />
+          <TextInput
+            row={3}
+            col={2}
+            label="Specialty"
+            name="specialty"
+            type="text"
+            ref={register}
+          />
+          <TextInput row={3} col={1} label="Rate*" name="rate" type="number" ref={register} />
+        </ProfileSubsection>
+        <ProfileSubsection title="About Me">
+          <TextInput
+            row="2/5"
+            col="1/3"
+            label="Description"
+            name="description"
+            type="text"
+            ref={register}
+          />
+        </ProfileSubsection>
+        <ProfileSubsection title="Contact">
+          <TextInput row={2} col={1} label="Phone" name="phone" type="text" ref={register} />
+          <TextInput row={3} col={1} label="Email" name="email" type="text" ref={register} />
+        </ProfileSubsection>
+        <ProfileSubsection title="Settings">
+          <TextInput row={2} col={1} label="Password" name="password" type="text" ref={register} />
+        </ProfileSubsection>
+        <input type="submit" />
+      </form>
       {/* <BasicInformation
-          formikInfo={{initialValues: state.basic, onSubmit: handleSubmit}}
-        validationSchema={Yup.object({
-          firstName: Yup.string().required('*Required'),
-          lastName: Yup.string(),
-          specialization: Yup.string().required('*Required'),
-          rate: Yup.number().required('*Required'),
-        })}
-        title="Basic Information"
-      />
-      <AboutMe
+          validationSchema={Yup.object({
+            firstName: Yup.string().required('*Required'),
+            lastName: Yup.string(),
+            specialization: Yup.string().required('*Required'),
+            rate: Yup.number().required('*Required'),
+          })}
+          title="Basic Information"
+        /> */}
+      {/* <AboutMe
           formikInfo={{initialValues: state.aboutMe, onSubmit: handleSubmit}}
         validationSchema={Yup.object({
           description: Yup.string(),

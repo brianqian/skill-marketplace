@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, SyntheticEvent } from 'react';
 import styled from 'styled-components';
 import Card from '../components/Card';
 import HomeCard from '../components/HomeCard';
-import useFetch from '../hooks/useFetch/useFetch';
-import { CATEGORIES_ROUTE } from '../Routes';
-import Client from '../utils/HTTPClient';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux/reducer';
 
 const Container = styled.main`
   display: flex;
@@ -44,21 +43,12 @@ const Results = styled.section`
 `;
 
 function Home() {
-  const handleSubmit = e => {
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
   };
 
-  const [categories, setCategories] = useState([]);
-  const { fetch, data, error } = useFetch();
-  useEffect(() => {
-    fetch.get(CATEGORIES_ROUTE);
-    async function fetchCategories() {
-      await fetch.get(CATEGORIES_ROUTE);
-      if (!error) setCategories(data);
-    }
-
-    fetchCategories();
-  }, []);
+  const dispatch = useDispatch();
+  const categories = useSelector((state: RootState) => state.app.categories);
 
   return (
     <Container>
@@ -67,9 +57,9 @@ function Home() {
         <input type="text" placeholder="What do you want to learn?" />
         <select name="" id="">
           <option value="">All Skills</option>
-          <option value="">Category 1</option>
-          <option value="">Category 2</option>
-          <option value="">Category 3</option>
+          {categories.map(category => (
+            <option>{category}</option>
+          ))}
         </select>
       </SearchField>
       <Results>

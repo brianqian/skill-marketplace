@@ -35,8 +35,8 @@ function RegisterForm() {
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     const { email, password, first_name, last_name } = formValue;
-    await fetch.post(USERS_ROUTE, { body: { email, password, first_name, last_name} });
-    history.push('/');
+    await fetch.post(USERS_ROUTE, { body: { email, password, first_name, last_name } });
+    // history.push('/');
   };
 
   const handleChange = (e: SyntheticEvent) => {

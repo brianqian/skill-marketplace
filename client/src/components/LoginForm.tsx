@@ -21,7 +21,7 @@ type FormT = {
 
 function LoginForm() {
   const [formValue, setFormValue] = useState<FormT>({ email: '', password: '' });
-  const { data, error, fetch, isLoading } = useFetch();
+  const { data, error: fetchError, fetch, isLoading } = useFetch();
   const history = useHistory();
   // TODO Display error messages to the user
 
@@ -29,7 +29,8 @@ function LoginForm() {
     e.preventDefault();
     const { email, password } = formValue;
     await fetch.post(BACKEND_LOGIN_ROUTE, { body: { email, password } });
-    history.push('/');
+    if (!fetchError) history.push('/');
+    else console.error(fetchError);
   };
 
   const handleChange = (e: SyntheticEvent) => {

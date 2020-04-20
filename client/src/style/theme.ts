@@ -5,9 +5,9 @@ interface HexCodes {
 }
 
 const theme: DefaultTheme = {
+  headerHeight: '5rem',
   backgroundColor: 'white',
   strokeColor: 'black',
-  // ORIGINAL VALUE bs: "0 12px 24px 0 rgba(0, 0, 0, 0.09)",
   bs: '0 10px 23px -5px rgba(0,0,0,.2)',
   textFont: 'Source Sans Pro',
   accent: 'darkorange',
@@ -130,6 +130,7 @@ const theme: DefaultTheme = {
     yellow8: '#975A16',
     yellow9: '#744210',
   },
+  // ORIGINAL VALUE bs: "0 12px 24px 0 rgba(0, 0, 0, 0.09)",
 };
 
 export default theme;

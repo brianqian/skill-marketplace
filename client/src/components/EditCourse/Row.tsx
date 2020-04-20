@@ -1,6 +1,10 @@
 import React, { useState, SyntheticEvent } from 'react';
 import styled from 'styled-components';
 import MediaContainer from './MediaContainer';
+import Button from '../Button';
+import FlexDiv from '../FlexDiv';
+import SaveCourseButton from './SaveCourseButton';
+import DeleteCourseButton from './DeleteCourseButton';
 
 const Container = styled.div`
   display: flex;
@@ -37,24 +41,9 @@ const DescriptionContainer = styled.div`
   margin-left: 2rem;
 `;
 
-const SaveButton = styled.input`
-  height: 40px;
-  background-color: ${p => p.theme.color.primary};
-  border-style: none;
-  align-self: flex-end;
-  border-radius: 10px;
-  text-transform: uppercase;
-  font-size: 0.75em;
-  color: white;
-  outline: none;
-  padding: 0.5rem 1rem;
-  :active {
-    transform: translateY(1px);
-  }
+const StyledFlexDiv = styled(FlexDiv)`
+  justify-content: flex-end;
 `;
-
-const filler =
-  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque repellendus in amet ipsam, rem ducimus beatae, recusandae temporibus ea aliquam, quia eos quo voluptatum. Ipsum, officia. Totam iste qui ducimus!Officiis sed officia, eligendi sint eos tempora nam vel facilis numquam autem repudiandae nobis laudantium unde velit! Quasi, minus explicabo, doloribus accusantium alias non, voluptas excepturi obcaecati error sint molestiae.';
 
 type Props = {
   classInfo?: any; // TODO: make mandatory
@@ -62,6 +51,9 @@ type Props = {
 };
 
 function Row({ classInfo, isActive }: Props) {
+  const [expandCourse, setExpandCourse] = useState(false);
+  const [changesMade, setChangesMade] = useState(false);
+
   const handleSubmit = (e: SyntheticEvent) => {
     const { value } = e.target as typeof e.target & {
       value: string;
@@ -71,7 +63,7 @@ function Row({ classInfo, isActive }: Props) {
 
   return (
     <>
-      <Container>
+      <Container onClick={() => setExpandCourse(!expandCourse)}>
         <Cell flex={2}>
           <p>{classInfo.title}</p>
         </Cell>
@@ -82,13 +74,18 @@ function Row({ classInfo, isActive }: Props) {
           <p>${classInfo.rate}</p>
         </Cell>
       </Container>
-      <ExpandableDrawer>
-        <MediaContainer />
-        <DescriptionContainer onSubmit={handleSubmit}>
-          <Description placeholder="Add a description" />
-          <SaveButton type="submit" value="Save changes" />
-        </DescriptionContainer>
-      </ExpandableDrawer>
+      {expandCourse && (
+        <ExpandableDrawer>
+          <MediaContainer />
+          <DescriptionContainer onSubmit={handleSubmit}>
+            <Description placeholder="Add a description" />
+            <StyledFlexDiv>
+              <DeleteCourseButton handleClick={() => {}} />
+              <SaveCourseButton handleClick={() => {}} />
+            </StyledFlexDiv>
+          </DescriptionContainer>
+        </ExpandableDrawer>
+      )}
     </>
   );
 }

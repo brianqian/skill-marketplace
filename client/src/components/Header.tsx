@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Avatar from './Avatar';
+import { EDIT_PROFILE_ROUTE, HOME_ROUTE } from '../Routes';
 
 const Container = styled.header`
-  height: 6rem;
+  height: ${p => p.theme.headerHeight};
   box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.1);
   display: flex;
   width: 100%;
@@ -20,7 +21,7 @@ const Nav = styled.nav`
     text-transform: uppercase;
     text-decoration: none;
     color: ${p => p.theme.strokeColor};
-    font-family: 'Roboto';
+    font-family: ${p => p.theme.textFont};
   }
 `;
 
@@ -41,10 +42,10 @@ function Header() {
         <Link to="/">LOGO</Link>
       </Logo>
       <Nav>
-        <a href="#">Browse</a>
+        <Link to="/">Browse</Link>
         <a href="#">Inbox</a>
         <Avatar />
-        <Link to="/profile/home">Profile</Link>
+        <Link to={EDIT_PROFILE_ROUTE}>Profile</Link>
       </Nav>
     </Container>
   );
