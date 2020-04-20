@@ -6,34 +6,87 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/reducer';
 import { useForm } from 'react-hook-form';
 import { postCourse } from '../redux/UserState/userSlice';
+import { CATEGORIES } from '../Constants';
+import { pseudoRandomBytes } from 'crypto';
 
 // const Container = styled.div``;
 
 const CategoryGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  /* grid-template-rows: repeat(3, 1fr); */
   grid-gap: 1rem;
 `;
 
-const CategoryPlaceholder = styled.div`
-  width: 150px;
-  height: 150px;
-  background-color: hsla(120, 100%, 25%, 0.3);
+const CategoryContainer = styled.div<{ selected: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 250px;
+  height: 250px;
+  z-index: 1;
+  font-size: ${p => (p.selected ? '1.07' : '1')}em;
+  :before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    ${p => (p.selected ? `border: 3.5px solid ${p.theme.color.primary}` : '')};
+  }
+  :after {
+    content: '';
+    position: absolute;
+    background-color: black;
+    top: 3.5px;
+    left: 3.5px;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    opacity: ${p => (p.selected ? 0.25 : 0.4)};
+    transition: opacity 0.25s ease-in;
+  }
+  :hover {
+    :after {
+      opacity: 0.25;
+    }
+    font-size: 1.07em;
+  }
+`;
 
-  /* opacity: 0.3; */
+const CategoryLabel = styled.h2`
+  z-index: 3;
+  font-weight: 600;
+  font-size: 2.4em;
+  width: 100%;
+  text-align: center;
+  color: white;
+  user-select: none;
+  transition: 0.25s ease-out;
+`;
+
+const CategoryImg = styled.img`
+  position: absolute;
+  top: 3.5px;
+  left: 3.5px;
 `;
 
 const AddCourse = () => {
   const dispatch = useDispatch();
   const categories = useSelector((state: RootState) => state.app.categories);
   const { handleSubmit, register } = useForm();
-  const [selected, setSelected] = useState('');
+  const [selectedCategory, setCategory] = useState('');
 
   const onSubmit = (data: any) => {
-    console.log('selected Category', selected);
+    console.log('selected Category', selectedCategory);
     console.log(data);
-    dispatch(postCourse(data));
+    const formData = { ...data, category: selectedCategory };
+    dispatch(postCourse(formData));
   };
 
   return (
@@ -41,10 +94,14 @@ const AddCourse = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Subsection title="Category">
           <CategoryGrid>
-            {categories.map(category => (
-              <CategoryPlaceholder onClick={() => setSelected(category)}>
-                {category}
-              </CategoryPlaceholder>
+            {CATEGORIES.map(category => (
+              <CategoryContainer
+                selected={category.name === selectedCategory}
+                onClick={() => setCategory(category.name)}
+              >
+                <CategoryImg src={category.img} />
+                <CategoryLabel>{category.name}</CategoryLabel>
+              </CategoryContainer>
             ))}
           </CategoryGrid>
         </Subsection>

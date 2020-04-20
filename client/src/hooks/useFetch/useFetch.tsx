@@ -1,5 +1,4 @@
-//@ts-nocheck
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, Reducer } from 'react';
 import Client from '../../utils/HTTPClient';
 import { ActionType, StateType, AjaxParam } from './types';
 
@@ -7,7 +6,7 @@ const initialState: StateType = {
   data: '',
   error: undefined,
   endpoint: '',
-  method: '',
+  method: undefined,
   body: '',
   isLoading: false,
 };
@@ -30,13 +29,18 @@ const reducer = (state: StateType, action: ActionType) => {
     case 'ERROR':
       return { ...state, error: payload, isLoading: false, endpoint: '' };
     default:
-      console.error('USE FETCH ERROR');
       return { ...state };
   }
 };
 
+// const reducer2 = (state: any, action: any) => {
+//   return {state};
+// }
+
+// const initialState2: {} = {};
+
 const useFetch = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer<Reducer<any, any>>(reducer, initialState);
   const { data, isLoading, error, endpoint, method, body } = state;
 
   useEffect(() => {
@@ -62,25 +66,21 @@ const useFetch = () => {
     };
   }, [endpoint, method, body]);
 
-  const get = async (endpoint: string, options?: AjaxParam) => {
-    const token = options?.token;
-    dispatch({ type: 'GET_ENDPOINT', endpoint, token });
+  const get = async (endpoint: string) => {
+    dispatch({ type: 'GET_ENDPOINT', endpoint });
   };
   const post = async (endpoint: string, options?: AjaxParam) => {
-    const token = options?.token;
     const body = options?.body;
-    dispatch({ type: 'POST_ENDPOINT', endpoint, body, token });
+    dispatch({ type: 'POST_ENDPOINT', endpoint, body });
   };
   const put = async (endpoint: string, options: AjaxParam) => {
-    const token = options?.token;
     const body = options?.body;
-    dispatch({ type: 'PUT_ENDPOINT', endpoint, body, token });
+    dispatch({ type: 'PUT_ENDPOINT', endpoint, body });
   };
 
   const del = async (endpoint: string, options: AjaxParam) => {
-    const token = options?.token;
     const body = options?.body;
-    dispatch({ type: 'DELETE_ENDPOINT', endpoint, body, token });
+    dispatch({ type: 'DELETE_ENDPOINT', endpoint, body });
   };
 
   const fetch = {

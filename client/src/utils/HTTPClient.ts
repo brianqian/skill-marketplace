@@ -1,20 +1,12 @@
-type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
+import { FetchMethod } from '../hooks/useFetch/types';
 
-type FetchOption = {
-  method: Method;
-  body?: {
-    [key: string]: any;
-  };
-  headers?: Headers;
-};
-
-const attachToken = (options: FetchOption, token: string) => {
+const attachToken = (options: RequestInit, token: string) => {
   const headers = new Headers(options.headers);
   headers.append('authorization', `Bearer ${token}`);
   return { ...options, headers };
 };
 
-const attachBody = (options: FetchOption, body: any) => {
+const attachBody = (options: RequestInit, body: any) => {
   const headers = new Headers(options.headers);
   headers.append('Content-Type', 'application/json');
   return {
@@ -25,10 +17,10 @@ const attachBody = (options: FetchOption, body: any) => {
 };
 
 const Client = {
-  request: async (endpoint: string, method: Method = 'GET', body?: any, token?: string) => {
+  request: async (endpoint: string, method: FetchMethod = 'GET', body?: any, token?: string) => {
     // call for POST/PUT/PATCH
 
-    let options = { method };
+    let options: RequestInit = { method };
     try {
       if (token) {
         options = attachToken(options, token);
