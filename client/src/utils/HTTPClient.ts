@@ -36,21 +36,20 @@ const Client = {
       if (body) {
         options = attachBody(options, body);
       }
-      console.log(options);
+      console.log(`Making ${method} request to route`, endpoint);
       const resp = await fetch(endpoint, options);
-      console.log('resp1', resp);
+      console.log('Response from HTTP Client: ', resp);
       if (!resp.ok) {
-        const error = { status: resp.status, message: resp.statusText };
-        throw Error(JSON.stringify(error));
+        throw Error(JSON.stringify(resp));
       }
       const data = await resp.json();
+      console.log('JSON data from HTTP Client: ', data);
       return data;
     } catch (err) {
+      console.error('client.request err', err);
       err = JSON.parse(err.message);
-      console.error(err);
-      err.status = err.status || 500;
-      err.message = err.message || 'Server error';
-      return err;
+
+      return { status: err.status, message: err.statusText };
     }
   },
 

@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import styled from 'styled-components/macro';
-import { useForm, Controller } from 'react-hook-form';
 
 type ContainerProps = {
   col: number | string;

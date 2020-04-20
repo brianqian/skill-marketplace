@@ -1,4 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AppDispatch } from '../store';
+import Client from '../../utils/HTTPClient';
+import { COURSES_ROUTE } from '../../Routes';
+import { ICategory } from '../../global';
 
 const initialState = {
   token: '',
@@ -12,7 +16,7 @@ const initialState = {
     isInstructor: false,
     description: '',
   },
-  userCourses: {},
+  userCourses: [],
 };
 
 const userSlice = createSlice({
@@ -23,11 +27,19 @@ const userSlice = createSlice({
       const { token } = action.payload;
       state.token = token;
     },
-    setUserData: (state, action) => {
+    setData: (state, action) => {
       state.userData = action.payload;
     },
-    setUserCourses: (state, action) => {},
+    setCourses: (state, action) => {},
+    addCourse: (state, action) => {},
   },
 });
+
+export const { setToken, setData, setCourses, addCourse } = userSlice.actions;
+
+export const postCourse = (body: ICategory) => async (dispatch: AppDispatch) => {
+  const resp = await Client.request(COURSES_ROUTE, 'POST', body);
+  console.log('REDUX', resp);
+};
 
 export default userSlice.reducer;

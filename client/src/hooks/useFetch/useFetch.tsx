@@ -46,7 +46,7 @@ const useFetch = () => {
       console.log('fetching...');
       dispatch({ type: 'FETCHING' });
       const resp = await Client.request(endpoint, method, body);
-      console.log('resp2', resp);
+      console.log('Data received in useFetch: ', resp);
       if (resp?.error?.status && isMounted) {
         dispatch({ type: 'ERROR', payload: resp });
       } else if (isMounted) {

@@ -1,9 +1,8 @@
-import React, { useState, useEffect, SyntheticEvent } from 'react';
+import React, { useState, SyntheticEvent } from 'react';
 import styled from 'styled-components';
 import Card from '../components/Card';
 import HomeCard from '../components/HomeCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCategories } from '../redux/AppState/appSlice';
 import { RootState } from '../redux/reducer';
 
 const Container = styled.main`
@@ -50,9 +49,6 @@ function Home() {
 
   const dispatch = useDispatch();
   const categories = useSelector((state: RootState) => state.app.categories);
-  useEffect(() => {
-    dispatch(getCategories());
-  }, []);
 
   return (
     <Container>

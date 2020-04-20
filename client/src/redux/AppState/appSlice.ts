@@ -31,7 +31,6 @@ export const { setCategories, setError } = userSlice.actions;
 
 export const getCategories = () => async (dispatch: AppDispatch) => {
   const categories = await Client.request(CATEGORIES_ROUTE);
-  console.log('CATEGORIES', categories);
   if (categories.status) {
     dispatch(setError(categories.status));
   } else {

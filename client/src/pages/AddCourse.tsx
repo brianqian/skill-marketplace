@@ -5,8 +5,9 @@ import Subsection from '../components/Layout/AddCourseSubsection';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/reducer';
 import { useForm } from 'react-hook-form';
+import { postCourse } from '../redux/UserState/userSlice';
 
-const Container = styled.div``;
+// const Container = styled.div``;
 
 const CategoryGrid = styled.div`
   display: grid;
@@ -32,6 +33,7 @@ const AddCourse = () => {
   const onSubmit = (data: any) => {
     console.log('selected Category', selected);
     console.log(data);
+    dispatch(postCourse(data));
   };
 
   return (
