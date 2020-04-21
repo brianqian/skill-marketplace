@@ -1,11 +1,5 @@
 import { FetchMethod } from '../hooks/useFetch/types';
 
-const attachToken = (options: RequestInit, token: string) => {
-  const headers = new Headers(options.headers);
-  headers.append('authorization', `Bearer ${token}`);
-  return { ...options, headers };
-};
-
 const attachBody = (options: RequestInit, body: any) => {
   const headers = new Headers(options.headers);
   headers.append('Content-Type', 'application/json');
@@ -17,14 +11,11 @@ const attachBody = (options: RequestInit, body: any) => {
 };
 
 const Client = {
-  request: async (endpoint: string, method: FetchMethod = 'GET', body?: any, token?: string) => {
+  request: async (endpoint: string, method: FetchMethod = 'GET', body?: any) => {
     // call for POST/PUT/PATCH
 
     let options: RequestInit = { method };
     try {
-      if (token) {
-        options = attachToken(options, token);
-      }
       if (body) {
         options = attachBody(options, body);
       }

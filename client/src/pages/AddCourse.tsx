@@ -7,14 +7,13 @@ import { RootState } from '../redux/reducer';
 import { useForm } from 'react-hook-form';
 import { postCourse } from '../redux/UserState/userSlice';
 import { CATEGORIES } from '../Constants';
-import { pseudoRandomBytes } from 'crypto';
+import { ICourse } from '../global';
 
 // const Container = styled.div``;
 
 const CategoryGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  /* grid-template-rows: repeat(3, 1fr); */
   grid-gap: 1rem;
 `;
 
@@ -31,8 +30,6 @@ const CategoryContainer = styled.div<{ selected: boolean }>`
     content: '';
     position: absolute;
     top: 0;
-    right: 0;
-    bottom: 0;
     left: 0;
     height: 100%;
     width: 100%;
@@ -40,6 +37,7 @@ const CategoryContainer = styled.div<{ selected: boolean }>`
     ${p => (p.selected ? `border: 3.5px solid ${p.theme.color.primary}` : '')};
   }
   :after {
+    transition: 0.25s ease-in;
     content: '';
     position: absolute;
     background-color: black;
@@ -49,7 +47,6 @@ const CategoryContainer = styled.div<{ selected: boolean }>`
     width: 100%;
     z-index: 2;
     opacity: ${p => (p.selected ? 0.25 : 0.4)};
-    transition: opacity 0.25s ease-in;
   }
   :hover {
     :after {
@@ -85,7 +82,7 @@ const AddCourse = () => {
   const onSubmit = (data: any) => {
     console.log('selected Category', selectedCategory);
     console.log(data);
-    const formData = { ...data, category: selectedCategory };
+    const formData: ICourse = { ...data, category: selectedCategory };
     dispatch(postCourse(formData));
   };
 

@@ -11,7 +11,7 @@ const initialState: StateType = {
   isLoading: false,
 };
 
-const reducer = (state: StateType, action: ActionType) => {
+const reducer = (state: StateType, action: ActionType): StateType => {
   const { type, payload, body, endpoint } = action;
   switch (type) {
     case 'GET_ENDPOINT':
@@ -40,7 +40,7 @@ const reducer = (state: StateType, action: ActionType) => {
 // const initialState2: {} = {};
 
 const useFetch = () => {
-  const [state, dispatch] = useReducer<Reducer<any, any>>(reducer, initialState);
+  const [state, dispatch] = useReducer<Reducer<StateType, ActionType>>(reducer, initialState);
   const { data, isLoading, error, endpoint, method, body } = state;
 
   useEffect(() => {

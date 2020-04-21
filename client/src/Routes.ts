@@ -19,6 +19,7 @@ export const COURSES_ROUTE = '/courses';
 // get /<courseId> get course info
 // post - new course
 export const USERS_ROUTE = '/users';
+// get - current user?
 // post - new user
 export const CATEGORIES_ROUTE = '/categories';
 // get - get all categories

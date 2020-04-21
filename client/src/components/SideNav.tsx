@@ -3,14 +3,17 @@ import styled from 'styled-components/macro';
 import { Link } from 'react-router-dom';
 import { EDIT_CLASSES_ROUTE } from '../Routes';
 
-type Props = {};
+type ContainerProps = {
+  isLocked: boolean;
+};
 
-const Container = styled.nav`
+const Container = styled.nav<ContainerProps>`
   color: ${p => p.theme.color.gray};
   font-size: 1.15em;
   line-height: 1.5em;
   user-select: none;
-  width: 300px;
+  min-width: 200px;
+  margin: 0 2rem;
   display: flex;
   justify-content: center;
   font-family: 'Sen';
@@ -18,12 +21,12 @@ const Container = styled.nav`
 
   ul {
     list-style: none;
-    // @ts-ignore
     position: ${p => (p.isLocked ? 'fixed' : 'relative')};
     top: 5rem;
   }
   li {
     padding: 0.5rem 0;
+    min-width: 155px;
   }
   li:hover {
     color: ${p => p.theme.color.primary};

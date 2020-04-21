@@ -11,4 +11,11 @@ export interface ICategory {
 
 export interface IUser {
   id: string;
+  firstName: string;
+  lastName?: string;
+  specialty: string;
+  email: string;
+  avatar: string;
+  isInstructor: boolean;
+  description: string;
 }
