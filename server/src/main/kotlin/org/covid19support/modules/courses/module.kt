@@ -1,6 +1,5 @@
 package org.covid19support.modules.courses
 
-import com.auth0.jwt.interfaces.Claim
 import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.application.*
 import io.ktor.http.HttpStatusCode
@@ -12,6 +11,7 @@ import org.covid19support.SQLState
 import org.covid19support.constants.INTERNAL_ERROR
 import org.covid19support.constants.INVALID_BODY
 import org.covid19support.authentication.authenticate
+import org.covid19support.constants.Message
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -27,7 +27,7 @@ fun Application.courses_module() {
                 }
             }
             if (courses.isEmpty()) {
-                call.respond(HttpStatusCode.NoContent, "No courses found!")
+                call.respond(HttpStatusCode.NoContent, Message("No courses found!"))
             }
             else {
                 call.respond(HttpStatusCode.OK, courses)
@@ -46,7 +46,7 @@ fun Application.courses_module() {
 
             }
             if (course == null) {
-                call.respond(HttpStatusCode.NoContent,"Course not found!")
+                call.respond(HttpStatusCode.NoContent,Message("Course not found!"))
             }
             else {
                 call.respond(course as Course)
@@ -68,17 +68,18 @@ fun Application.courses_module() {
                                 it[rate] = course.rate
                             }
                         }
-                        call.respond(HttpStatusCode.Created, "Successfully created course!")          
+                        call.respond(HttpStatusCode.Created, Message("Successfully created course!"))
                     }
                     catch (ex:ExposedSQLException) {
+                        log.error(ex.message)
                         when(ex.sqlState) {
-                            SQLState.FOREIGN_KEY_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, ex.localizedMessage)
-                            else -> call.respond(HttpStatusCode.InternalServerError, INTERNAL_ERROR)
+                            SQLState.FOREIGN_KEY_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, Message(ex.localizedMessage))
+                            else -> call.respond(HttpStatusCode.InternalServerError, Message(INTERNAL_ERROR))
                         }
                     }
                 }
                 else {
-                    call.respond(HttpStatusCode.BadRequest, INVALID_BODY)
+                    call.respond(HttpStatusCode.BadRequest, Message(INVALID_BODY))
                 }
             }
         }

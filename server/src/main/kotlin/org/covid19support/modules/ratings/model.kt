@@ -7,18 +7,18 @@ import org.jetbrains.exposed.sql.*
 data class Rating(val id: Int?,
                   val user_id: Int,
                   val course_id: Int,
-                  val rating: Short,
+                  val rating_value: Short,
                   val comment: String)
 
 object Ratings : Table("ratings") {
     val id: Column<Int> = integer("id").autoIncrement()
     val user_id: Column<Int> = integer("user_id").references(Users.id)
     val course_id: Column<Int> = integer("course_id").references(Courses.id)
-    val rating: Column<Short> = short("rating")
+    val rating_value: Column<Short> = short("rating")
     val comment: Column<String> = varchar("comment", 512)
     override val primaryKey = PrimaryKey(id, name = "PK_Ratings_Id")
 
     fun toRating(resultRow: ResultRow): Rating {
-        return Rating(resultRow[id], resultRow[user_id], resultRow[course_id], resultRow[rating], resultRow[comment])
+        return Rating(resultRow[id], resultRow[user_id], resultRow[course_id], resultRow[rating_value], resultRow[comment])
     }
 }

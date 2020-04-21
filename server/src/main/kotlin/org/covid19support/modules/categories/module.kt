@@ -5,6 +5,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.routing.*
 import io.ktor.response.*
 import org.covid19support.DbSettings
+import org.covid19support.constants.Message
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -19,7 +20,7 @@ fun Application.categories_module() {
                 }
             }
             if (categories.isEmpty()) {
-                call.respond(HttpStatusCode.NoContent, "No categories found!")
+                call.respond(HttpStatusCode.NoContent, Message("No categories found!"))
             }
             else {
                 call.respond(categories)
