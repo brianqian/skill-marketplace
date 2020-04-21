@@ -1,6 +1,5 @@
 package org.covid19support.modules.courses
 
-import com.auth0.jwt.interfaces.Claim
 import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.application.*
 import io.ktor.http.HttpStatusCode
@@ -72,6 +71,7 @@ fun Application.courses_module() {
                         call.respond(HttpStatusCode.Created, Message("Successfully created course!"))
                     }
                     catch (ex:ExposedSQLException) {
+                        log.error(ex.message)
                         when(ex.sqlState) {
                             SQLState.FOREIGN_KEY_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, Message(ex.localizedMessage))
                             else -> call.respond(HttpStatusCode.InternalServerError, Message(INTERNAL_ERROR))

@@ -5,8 +5,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.routing.*
 import io.ktor.response.*
-import io.ktor.sessions.sessions
-import io.ktor.sessions.set
+import io.ktor.sessions.*
 import org.covid19support.DbSettings
 import org.covid19support.SQLState
 import org.covid19support.SessionAuth
@@ -30,12 +29,10 @@ fun Application.users_module() {
                     users.add(Users.toUser(it))
                 }
             }
-            if (users.isEmpty())
-            {
+            if (users.isEmpty()) {
                 call.respond(HttpStatusCode.NoContent, Message("No users found!"))
             }
-            else
-            {
+            else {
                 call.respond(users)
             }
 
@@ -58,6 +55,7 @@ fun Application.users_module() {
                 call.respond(user as User)
             }
         }
+
         post("/users") {
             val newUser: User? = call.receive<User>()
             var id:Int = -1
