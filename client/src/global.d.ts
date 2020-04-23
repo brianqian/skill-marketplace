@@ -3,10 +3,12 @@ export interface ICourse {
   description: string;
   rate: number;
   category: string;
+  rating: number;
 }
 
 export interface ICategory {
   name: string;
+  url?: string;
 }
 
 export interface IUser {
@@ -19,3 +21,38 @@ export interface IUser {
   isInstructor: boolean;
   description: string;
 }
+
+export interface IError {
+  error?: {
+    status: number;
+    message?: string;
+  };
+}
+
+// frontend course
+
+// instructor avatar
+// instructor name
+// course name
+// course rating
+// course rate
+// course id
+// instructor id
+
+// user profile - self
+
+// firstname
+// lastname
+// specialty
+// email
+// avatar
+// description
+// isInstructor
+
+// class management
+
+// course name
+// course rate
+// course category
+// course description
+// course id
