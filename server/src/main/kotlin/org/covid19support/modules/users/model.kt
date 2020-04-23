@@ -34,11 +34,6 @@ class UserSerializer : JsonSerializer<User> {
 
 }
 
-data class Login(
-        val email: String,
-        val password: String
-)
-
 object Users : IntIdTable("users") {
     val email: Column<String> = varchar("email", 256).uniqueIndex()
     val password: Column<String> = varchar("password", 64)

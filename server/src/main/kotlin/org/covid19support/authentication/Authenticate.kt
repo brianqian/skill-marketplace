@@ -7,6 +7,7 @@ import io.ktor.response.respond
 import io.ktor.sessions.clear
 import io.ktor.sessions.*
 import org.covid19support.SessionAuth
+import org.covid19support.constants.Message
 import org.covid19support.constants.SHAME
 import org.covid19support.constants.UNAUTHORIZED
 
@@ -18,12 +19,12 @@ suspend fun authenticate(call: ApplicationCall): DecodedJWT? {
     if (token != null) {
         decodedToken = Token.verify(token)
         if (decodedToken == null) {
-            call.respond(HttpStatusCode.Unauthorized, SHAME)
+            call.respond(HttpStatusCode.Unauthorized, Message(SHAME))
             call.sessions.clear<SessionAuth>()
         }
     }
     else {
-        call.respond(HttpStatusCode.Unauthorized, UNAUTHORIZED)
+        call.respond(HttpStatusCode.Unauthorized, Message(UNAUTHORIZED))
     }
     return decodedToken
 }
