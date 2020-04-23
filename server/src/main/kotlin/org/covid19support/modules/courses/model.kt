@@ -11,6 +11,16 @@ data class Course(val id: Int?,
                   val category: String,
                   val rate: Float)
 
+data class CourseComponent(
+        val instructor_id: Int,
+        val instructor_name: String,
+        val course_id: Int,
+        val course_name: String,
+        val course_rating: Short?,
+        val course_category: String,
+        val course_rate: Float
+)
+
 object Courses : Table("courses") {
     val id: Column<Int> = integer("id").autoIncrement()
     val name: Column<String> = varchar("name", 64)

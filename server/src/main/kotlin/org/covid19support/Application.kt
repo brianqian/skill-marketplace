@@ -23,5 +23,4 @@ fun Application.main() {
             cookie.httpOnly = true
         }
     }
-
 }

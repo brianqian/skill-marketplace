@@ -89,6 +89,10 @@ fun Application.users_module() {
 
         }
 
+        get("/authenticate") {
+
+        }
+
         post( "/session/login") {
             val loginInfo: Login? = call.receive<Login>()
             var result:ResultRow? = null
