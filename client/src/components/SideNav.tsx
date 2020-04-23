@@ -33,14 +33,15 @@ const Container = styled.nav<ContainerProps>`
   }
 `;
 
-// @ts-ignore
-function SideNav({ sections }) {
+type Props = { sections?: any[] };
+
+function SideNav({ sections }: Props) {
   const [locked, setLocked] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      // @ts-ignore
+      if (!ref || !ref.current) return;
       const distanceFromTop = ref.current.getBoundingClientRect().y;
       if (locked && distanceFromTop < 0) return;
       if (!locked && distanceFromTop > 0) return;
@@ -53,7 +54,6 @@ function SideNav({ sections }) {
   }, [locked]);
 
   return (
-    // @ts-ignore
     <Container ref={ref} isLocked={locked}>
       <ul>
         <li>Basic Information</li>

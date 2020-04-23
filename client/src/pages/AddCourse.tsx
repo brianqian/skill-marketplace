@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import Layout from '../components/Layout/ProfilePageLayout';
 import Subsection from '../components/Layout/AddCourseSubsection';
 import { useSelector, useDispatch } from 'react-redux';
@@ -82,7 +82,7 @@ const AddCourse = () => {
   const onSubmit = (data: any) => {
     console.log('selected Category', selectedCategory);
     console.log(data);
-    const formData: ICourse = { ...data, category: selectedCategory };
+    const formData: Omit<ICourse, 'rating'> = { ...data, category: selectedCategory };
     dispatch(postCourse(formData));
   };
 

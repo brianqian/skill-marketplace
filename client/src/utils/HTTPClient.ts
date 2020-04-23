@@ -23,16 +23,17 @@ const Client = {
       const resp = await fetch(endpoint, options);
       console.log('Response from HTTP Client: ', resp);
       if (!resp.ok) {
-        throw Error(JSON.stringify(resp));
+        const err = await JSON.stringify(resp);
+        throw Error(err);
       }
       const data = await resp.json();
       console.log('JSON data from HTTP Client: ', data);
       return data;
     } catch (err) {
+      err = await JSON.parse(err);
       console.error('client.request err', err);
-      err = JSON.parse(err.message);
-
-      return { status: err.status, message: err.statusText };
+      const { status, statusText } = err.message;
+      return { error: { status: status || '500', message: statusText || 'Server error' } };
     }
   },
 

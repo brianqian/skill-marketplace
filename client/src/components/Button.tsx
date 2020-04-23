@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { DefaultTheme } from 'styled-components/macro';
 
-const Container = styled.button.attrs((props: Props) => {
+const Container = styled.button.attrs((props: Props & { theme: DefaultTheme }) => {
   if (props.primary) {
     return {
       bgc: props.color || props.theme.color.primary,
@@ -58,11 +58,11 @@ type Props = {
   color?: string;
   children: React.ReactNode;
   className?: string;
-  theme: any;
+  type?: 'submit';
   onClick?: (x?: any) => void;
 };
 
-function Button({ className, children, primary, disabled, color, onClick }: Props) {
+function Button({ className, children, primary, disabled, color, onClick, type }: Props) {
   return (
     <Container
       className={className}
@@ -70,6 +70,7 @@ function Button({ className, children, primary, disabled, color, onClick }: Prop
       primary={primary}
       disabled={disabled}
       onClick={onClick}
+      type={type}
     >
       {children}
     </Container>
