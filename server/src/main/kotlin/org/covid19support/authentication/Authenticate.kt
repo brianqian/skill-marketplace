@@ -4,7 +4,6 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.application.ApplicationCall
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
-import io.ktor.sessions.clear
 import io.ktor.sessions.*
 import org.covid19support.SessionAuth
 import org.covid19support.constants.Message

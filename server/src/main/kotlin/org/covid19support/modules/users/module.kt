@@ -87,7 +87,7 @@ fun Application.users_module() {
                         call.respond(HttpStatusCode.NoContent, Message("User not found!"))
                     }
                     else {
-                        call.respond(user as User)
+                        call.respond(user!!)
                     }
                 }
             }
