@@ -13,19 +13,21 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 fun Application.contactMethods_module() {
     routing {
-        get("/contact/methods") {
-            val contactMethods: MutableList<ContactMethod> = mutableListOf<ContactMethod>()
-            transaction(DbSettings.db) {
-                val results:List<ResultRow> = ContactMethods.selectAll().toList()
-                results.forEach {
-                    contactMethods.add(ContactMethods.toContactMethod(it))
+        route("/contact_methods") {
+            get {
+                val contactMethods: MutableList<ContactMethod> = mutableListOf<ContactMethod>()
+                transaction(DbSettings.db) {
+                    val results:List<ResultRow> = ContactMethods.selectAll().toList()
+                    results.forEach {
+                        contactMethods.add(ContactMethods.toContactMethod(it))
+                    }
                 }
-            }
-            if (contactMethods.isEmpty()) {
-                call.respond(HttpStatusCode.NoContent, Message("No contact methods found!"))
-            }
-            else {
-                call.respond(contactMethods)
+                if (contactMethods.isEmpty()) {
+                    call.respond(HttpStatusCode.NoContent, Message("No contact methods found!"))
+                }
+                else {
+                    call.respond(contactMethods)
+                }
             }
         }
     }

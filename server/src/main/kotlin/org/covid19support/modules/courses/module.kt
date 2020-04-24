@@ -108,7 +108,8 @@ fun Application.courses_module() {
                                 }
                             }
                             call.respond(HttpStatusCode.Created, Message("Successfully created course!"))
-                        } catch (ex: ExposedSQLException) {
+                        }
+                        catch (ex: ExposedSQLException) {
                             log.error(ex.message)
                             when (ex.sqlState) {
                                 SQLState.FOREIGN_KEY_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, Message(ex.localizedMessage))
@@ -135,8 +136,30 @@ fun Application.courses_module() {
                     }
                     if (course == null) {
                         call.respond(HttpStatusCode.NoContent, Message("Course not found!"))
-                    } else {
+                    }
+                    else {
                         call.respond(course!!)
+                    }
+                }
+            }
+
+            route("/instructor") {
+                get {
+                    val decodedToken: DecodedJWT? = authenticate(call)
+                    if (decodedToken != null) {
+                        val courses: MutableList<Course> = mutableListOf()
+                        transaction(DbSettings.db) {
+                            val results: List<ResultRow> = Courses.select { Courses.instructor_id eq decodedToken.claims["id"]!!.asInt() }.toList()
+                            results.forEach {
+                                courses.add(Courses.toCourse(it))
+                            }
+                        }
+                        if (courses.isEmpty()) {
+                            call.respond(HttpStatusCode.NoContent, Message("This user has not created any courses!"))
+                        }
+                        else {
+                            call.respond(courses)
+                        }
                     }
                 }
             }
