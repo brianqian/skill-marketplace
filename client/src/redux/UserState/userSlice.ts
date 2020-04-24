@@ -26,7 +26,7 @@ const initialState: StateShape = {
   userCourses: [],
 };
 
-export const tokenLogin = createAsyncThunk('/users/tokenLogin', async () => {
+export const authenticateToken = createAsyncThunk('/users/authenticate', async () => {
   const resp = await Client.request(TOKEN_AUTH_ROUTE);
   return resp;
 });
@@ -46,10 +46,11 @@ const userSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(tokenLogin.fulfilled, (state, action) => {
+    builder.addCase(authenticateToken.fulfilled, (state, action) => {
+      console.log('user retrieved', action.payload);
       state.userData = action.payload;
     });
-    builder.addCase(tokenLogin.pending, (state, action) => {
+    builder.addCase(authenticateToken.pending, (state, action) => {
       if (state.loading === 'idle') {
         state.loading = 'pending';
       }

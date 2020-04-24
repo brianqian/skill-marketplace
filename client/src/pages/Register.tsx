@@ -1,4 +1,4 @@
-import React, { useState, SyntheticEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import useFetch from '../hooks/useFetch/useFetch';
 import { USERS_ROUTE } from '../Routes';
@@ -13,6 +13,10 @@ const Container = styled(FlexDiv)`
   height: 100%;
   justify-content: flex-start;
   align-items: center;
+`;
+
+const Error = styled.p`
+  color: red;
 `;
 
 const StyledForm = styled.form`
@@ -45,10 +49,20 @@ function Register() {
   const history = useHistory();
   const { handleSubmit, register } = useForm();
 
-  const onSubmit = handleSubmit(async form => {
+  const onSubmit = handleSubmit(form => {
     const { email, password, firstName, lastName } = form;
-    await fetch.post(USERS_ROUTE, { body: { email, password, firstName, lastName } });
+    fetch.post(USERS_ROUTE, {
+      body: { email, password, first_name: firstName, last_name: lastName },
+    });
   });
+
+  useEffect(() => {
+    // some kind of snackbar
+    if (error) console.log(error);
+    if (data) {
+      history.push('/');
+    }
+  }, [data, error]);
 
   return (
     <Layout>
@@ -85,6 +99,7 @@ function Register() {
           <StyledButton primary type="submit">
             Sign up
           </StyledButton>
+          {!!error && <Error>{error.message}</Error>}
           <p style={{ gridColumn: '1/3' }}>Already have an account? Log in here.</p>
         </StyledForm>
       </Container>

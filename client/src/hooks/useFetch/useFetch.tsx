@@ -9,6 +9,7 @@ const initialState: StateType = {
   method: undefined,
   body: '',
   isLoading: false,
+  status: undefined,
 };
 
 const reducer = (state: StateType, action: ActionType): StateType => {
@@ -25,19 +26,15 @@ const reducer = (state: StateType, action: ActionType): StateType => {
     case 'SET_DATA':
       return { ...state, data: payload, isLoading: false, endpoint: '' };
     case 'FETCHING':
-      return { ...state, isLoading: true };
-    case 'ERROR':
-      return { ...state, error: payload, isLoading: false, endpoint: '' };
+      return { ...state, isLoading: true, error: undefined };
+    case 'ERROR': {
+      const { error } = payload;
+      return { ...state, error, isLoading: false, endpoint: '' };
+    }
     default:
       return { ...state };
   }
 };
-
-// const reducer2 = (state: any, action: any) => {
-//   return {state};
-// }
-
-// const initialState2: {} = {};
 
 const useFetch = () => {
   const [state, dispatch] = useReducer<Reducer<StateType, ActionType>>(reducer, initialState);
@@ -46,16 +43,17 @@ const useFetch = () => {
   useEffect(() => {
     let isMounted = true;
     const fetchData = async () => {
-      if (!endpoint) return;
       console.log('fetching...');
+      if (!endpoint || isLoading) return;
       dispatch({ type: 'FETCHING' });
       const resp = await Client.request(endpoint, method, body);
-      console.log('Data received in useFetch: ', resp);
-      if (resp?.error?.status && isMounted) {
+      console.log('Data received in useFetch: ', resp, isMounted);
+      if (resp.error && isMounted) {
+        console.log('Setting error');
         dispatch({ type: 'ERROR', payload: resp });
       } else if (isMounted) {
-        console.log('resp3data', resp);
-        dispatch({ type: 'SET_DATA', payload: resp.data });
+        console.log('Setting data in useFetch...', resp);
+        dispatch({ type: 'SET_DATA', payload: resp });
       }
     };
 
@@ -66,19 +64,19 @@ const useFetch = () => {
     };
   }, [endpoint, method, body]);
 
-  const get = async (endpoint: string) => {
+  const get = (endpoint: string) => {
     dispatch({ type: 'GET_ENDPOINT', endpoint });
   };
-  const post = async (endpoint: string, options?: AjaxParam) => {
+  const post = (endpoint: string, options?: AjaxParam) => {
     const body = options?.body;
     dispatch({ type: 'POST_ENDPOINT', endpoint, body });
   };
-  const put = async (endpoint: string, options: AjaxParam) => {
+  const put = (endpoint: string, options: AjaxParam) => {
     const body = options?.body;
     dispatch({ type: 'PUT_ENDPOINT', endpoint, body });
   };
 
-  const del = async (endpoint: string, options: AjaxParam) => {
+  const del = (endpoint: string, options: AjaxParam) => {
     const body = options?.body;
     dispatch({ type: 'DELETE_ENDPOINT', endpoint, body });
   };
