@@ -1,15 +1,18 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch } from '../store';
 import Client from '../../utils/HTTPClient';
-import { COURSES_ROUTE, USERS_ROUTE } from '../../Routes';
-import { ICategory, IUser, ICourse } from '../../global';
+import { COURSES_ROUTE, USERS_ROUTE, TOKEN_AUTH_ROUTE } from '../../Routes';
+import { ICategory, IUser, ICourse, IError } from '../../global';
 
 type StateShape = {
   userData: IUser;
   userCourses: ICourse[];
+  error?: number;
+  loading: 'idle' | 'pending';
 };
 
 const initialState: StateShape = {
+  loading: 'idle',
   userData: {
     id: '',
     firstName: '',
@@ -22,6 +25,11 @@ const initialState: StateShape = {
   },
   userCourses: [],
 };
+
+export const tokenLogin = createAsyncThunk('/users/tokenLogin', async () => {
+  const resp = await Client.request(TOKEN_AUTH_ROUTE);
+  return resp;
+});
 
 const userSlice = createSlice({
   name: 'user',
@@ -36,6 +44,16 @@ const userSlice = createSlice({
     addCourse: (state, action) => {
       state.userCourses.push(action.payload);
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(tokenLogin.fulfilled, (state, action) => {
+      state.userData = action.payload;
+    });
+    builder.addCase(tokenLogin.pending, (state, action) => {
+      if (state.loading === 'idle') {
+        state.loading = 'pending';
+      }
+    });
   },
 });
 

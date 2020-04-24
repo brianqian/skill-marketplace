@@ -11,7 +11,6 @@ import Layout from '../components/Layout/AuthLayout';
 
 const Container = styled(FlexDiv)`
   height: 100%;
-  padding-top: 3rem;
   justify-content: flex-start;
   align-items: center;
 `;
@@ -19,9 +18,10 @@ const Container = styled(FlexDiv)`
 const StyledForm = styled.form`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  height: 300px;
+  /* height: 50%; */
   max-width: 500px;
-  padding: 2rem;
+  margin: auto 0;
+  padding: 4rem 2rem;
 `;
 
 const TagLine = styled.h1`
@@ -45,16 +45,15 @@ function Register() {
   const history = useHistory();
   const { handleSubmit, register } = useForm();
 
-  const onSubmit = async (data: {}) => {
-    // await fetch.post(USERS_ROUTE, { body: { email, password, first_name, last_name } });
-    //
-    console.log(data);
-  };
+  const onSubmit = handleSubmit(async form => {
+    const { email, password, firstName, lastName } = form;
+    await fetch.post(USERS_ROUTE, { body: { email, password, firstName, lastName } });
+  });
 
   return (
     <Layout>
       <Container column>
-        <StyledForm onSubmit={handleSubmit(onSubmit)}>
+        <StyledForm onSubmit={onSubmit}>
           <TagLine>
             Looking to start learning or making extra money at home? Let's get started here.
           </TagLine>

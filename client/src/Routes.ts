@@ -10,6 +10,7 @@ export const EDIT_PROFILE_ROUTE = PROFILE_ROUTE + HOME_ROUTE;
 export const ADD_CLASS_ROUTE = CLASSES_ROUTE + '/new';
 
 // Back End Routes
+export const TOKEN_AUTH_ROUTE = '/session/authenticate';
 export const BACKEND_LOGIN_ROUTE = '/session/login';
 // post -- login
 export const ADD_COURSE_ROUTE = '/courses';
