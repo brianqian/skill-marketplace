@@ -23,10 +23,8 @@ export interface IUser {
 }
 
 export interface IError {
-  error?: {
-    status: number;
-    message?: string;
-  };
+  status: number;
+  message?: string;
 }
 
 // frontend course

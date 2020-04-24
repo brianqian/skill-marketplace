@@ -1,3 +1,5 @@
+import { IError } from '../../global';
+
 export type FetchMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | undefined;
 
 export type ActionType = {
@@ -9,11 +11,12 @@ export type ActionType = {
 
 export type StateType = {
   data?: any;
-  error?: string;
+  error?: IError;
   endpoint?: string;
   method?: FetchMethod;
   body?: any;
   isLoading: boolean;
+  status?: number;
 };
 
 export type AjaxParam = {

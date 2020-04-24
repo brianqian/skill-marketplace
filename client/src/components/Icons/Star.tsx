@@ -1,6 +1,11 @@
 import React from 'react';
 
-function Star({ isActive, size }) {
+type Props = {
+  isActive: boolean;
+  size: number;
+};
+
+function Star({ isActive, size }: Props) {
   return (
     <svg
       height={size}

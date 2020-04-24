@@ -56,22 +56,17 @@ type Props = {
   primary?: boolean;
   disabled?: boolean;
   color?: string;
-  children: React.ReactNode;
-  className?: string;
   type?: 'submit';
   onClick?: (x?: any) => void;
+  className?: string;
+  children: React.ReactNode;
+  loadingState?: React.ReactNode;
 };
 
-function Button({ className, children, primary, disabled, color, onClick, type }: Props) {
+function Button({ children, loadingState, ...props }: Props) {
   return (
-    <Container
-      className={className}
-      color={color}
-      primary={primary}
-      disabled={disabled}
-      onClick={onClick}
-      type={type}
-    >
+    <Container {...props}>
+      {!!loadingState && loadingState}
       {children}
     </Container>
   );
