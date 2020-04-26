@@ -43,7 +43,7 @@ type Props = {
   rate: number;
 };
 
-function Card({ instructor, classTitle, rating = 3, rate }: Props) {
+function Card({ instructor, classTitle, rating = 0, rate }: Props) {
   const starCount = Math.round(rating);
 
   return (

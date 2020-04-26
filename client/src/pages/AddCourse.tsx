@@ -82,7 +82,7 @@ const AddCourse = () => {
   const onSubmit = (data: any) => {
     console.log('selected Category', selectedCategory);
     console.log(data);
-    const formData: Omit<ICourse, 'rating'> = { ...data, category: selectedCategory };
+    const formData: ICourse = { ...data, category: selectedCategory };
     dispatch(postCourse(formData));
   };
 

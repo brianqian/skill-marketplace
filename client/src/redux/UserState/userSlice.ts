@@ -6,7 +6,7 @@ import { ICategory, IUser, ICourse, IError } from '../../global';
 
 type StateShape = {
   userData: IUser;
-  userCourses: ICourse[];
+  userCourses: Array<ICourse & { rating: number }>;
   error?: number;
   loading: 'idle' | 'pending';
 };
@@ -17,7 +17,6 @@ const initialState: StateShape = {
     id: '',
     firstName: '',
     lastName: '',
-    specialty: '',
     email: '',
     avatar: '',
     isInstructor: false,

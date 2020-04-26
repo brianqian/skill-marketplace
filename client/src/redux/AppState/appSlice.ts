@@ -2,15 +2,16 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import Client from '../../utils/HTTPClient';
 import { CATEGORIES_ROUTE } from '../../Routes';
 import { AppDispatch } from '../store';
+import { IError } from '../../global';
 
 type StateShape = {
   categories: string[];
-  error: number | null;
+  error?: IError;
 };
 
 const initialState: StateShape = {
   categories: [],
-  error: null,
+  error: undefined,
 };
 
 export const getAllCategories = createAsyncThunk('/courses', async (param, thunkApi) => {
@@ -29,6 +30,10 @@ const userSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(getAllCategories.fulfilled, (state, action) => {
       console.log('extra reducers, categories', action);
+      if (action.payload.error) {
+        state.error = action.payload.error;
+        return;
+      }
       const categories = action.payload.map((category: { name: string }) => category.name);
       state.categories = categories;
     });

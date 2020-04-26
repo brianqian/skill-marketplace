@@ -10,7 +10,6 @@ const Container = styled.button.attrs((props: Props & { theme: DefaultTheme }) =
     };
   }
   if (!props.primary && !props.disabled) {
-    console.log(props);
     return {
       bgc: 'white',
       textColor: props.color || props.theme.color.primary,

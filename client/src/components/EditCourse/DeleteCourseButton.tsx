@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import Button from '../Button';
-import useFetch from '../../hooks/useFetch/useFetch';
-import { COURSES_ROUTE } from '../../Routes';
 
 const Container = styled(Button)`
   align-self: flex-end;
@@ -16,7 +14,6 @@ type Props = {
 
 const DeleteCourseButton = ({ handleClick }: Props) => {
   const [confirm, setConfirm] = useState(false);
-  const { data, error, isLoading, fetch } = useFetch();
 
   const onClick = () => {
     if (confirm) handleClick();

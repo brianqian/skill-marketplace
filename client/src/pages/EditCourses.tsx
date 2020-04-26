@@ -60,10 +60,10 @@ const AddClassLink = styled(Link)`
 // Media -- images/videos -- hidden in collapsable menu
 
 const courses = [
-  { title: 'Pottery', category: 'Arts & Crafts', rate: 22 },
-  { title: 'HTML & CSS', category: 'Web Development', rate: 40 },
-  { title: 'Basic Sous Vide', category: 'Cooking', rate: 15 },
-  { title: 'How to play Poker', category: 'Games', rate: 20 },
+  { id: '1', name: 'Pottery', category: 'Arts & Crafts', rate: 22, description: '' },
+  { id: '2', name: 'HTML & CSS', category: 'Web Development', rate: 40, description: '' },
+  { id: '3', name: 'Basic Sous Vide', category: 'Cooking', rate: 15, description: '' },
+  { id: '4', name: 'How to play Poker', category: 'Games', rate: 20, description: '' },
 ];
 
 function EditCourses() {

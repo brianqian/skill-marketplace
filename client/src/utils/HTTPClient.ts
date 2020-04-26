@@ -31,9 +31,8 @@ const Client = {
       console.log('JSON data from HTTP Client: ', data);
       return data;
     } catch (err) {
-      console.error('client.request err1', err);
+      console.error('HTTP Client error:', err);
       err = await JSON.parse(err.message);
-      console.error('client.request err', err);
       const { status, statusText } = err;
       return { error: { status: status || '500', message: statusText || 'Server error' } };
     }

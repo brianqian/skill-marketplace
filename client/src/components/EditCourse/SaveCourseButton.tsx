@@ -8,21 +8,16 @@ const Container = styled(Button)`
   margin: 0.5rem;
 `;
 
-type Props = {
-  handleClick: () => void;
-};
-
-const SaveCourseButton = ({ handleClick }: Props) => {
-  const [isActive, setIsActive] = useState(true);
-
-  const onClick = () => {
-    if (isActive) handleClick();
-    setIsActive(false);
-  };
+const SaveCourseButton = () => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   return (
-    <Container onClick={onClick} primary={isActive}>
-      {isActive ? <p>Save Changes</p> : <p>Changes Saved!</p>}
+    <Container
+      type={isSubmitted ? 'submit' : undefined}
+      onClick={() => setIsSubmitted(true)}
+      primary={!isSubmitted}
+    >
+      {isSubmitted ? <p>Changes Saved!</p> : <p>Save Changes</p>}
     </Container>
   );
 };
