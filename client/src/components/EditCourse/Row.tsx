@@ -1,10 +1,13 @@
-import React, { useState, SyntheticEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import MediaContainer from './MediaContainer';
 import Button from '../Button';
 import FlexDiv from '../FlexDiv';
 import SaveCourseButton from './SaveCourseButton';
 import DeleteCourseButton from './DeleteCourseButton';
+import { useForm } from 'react-hook-form';
+import EditableCell from './EditableCell';
+import { ICourse } from '../../global';
 
 const Container = styled.div`
   display: flex;
@@ -46,47 +49,96 @@ const StyledFlexDiv = styled(FlexDiv)`
 `;
 
 type Props = {
-  classInfo?: any; // TODO: make mandatory
-  isActive?: boolean;
+  courseInfo: ICourse;
 };
 
-function Row({ classInfo, isActive }: Props) {
+// State of rows:
+//  - Row is selected (clicked):
+//    - Allows hover and editing of row values
+//    - Submit button defaults to gray (disabled state)
+//  - Row is changed (values edited):
+//    - Submit button turns into primary color
+//  - Changes submitted:
+//    - Submit button turns into secondary state
+//  - Row is changed again
+
+function Row({ courseInfo }: Props) {
   const [expandCourse, setExpandCourse] = useState(false);
   const [changesMade, setChangesMade] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const { category, name: courseName, rate, description } = courseInfo;
+  const { register, handleSubmit, watch } = useForm({
+    defaultValues: {
+      category,
+      name: courseName,
+      rate,
+      description,
+    },
+  });
 
-  const handleSubmit = (e: SyntheticEvent) => {
-    const { value } = e.target as typeof e.target & {
-      value: string;
-    };
-    console.log('submitted', value);
+  const onSubmit = handleSubmit((data, e) => {
+    console.log(e?.target.name);
+    console.log('ROW', data);
+    setSubmitted(true);
+  });
+
+  const handleDelete = () => {
+    console.log(`Deleting course ${courseInfo.id}`);
   };
 
+  const handleChange = () => {
+    if (submitted) {
+      setSubmitted(false);
+    }
+    if (changesMade) return;
+    setChangesMade(true);
+  };
+  // useEffect(() => {
+  //   console.log('WATCH', watch());
+  // }, [watch]);
+
   return (
-    <>
+    <form onSubmit={onSubmit} onChange={handleChange}>
       <Container onClick={() => setExpandCourse(!expandCourse)}>
         <Cell flex={2}>
-          <p>{classInfo.title}</p>
+          <EditableCell
+            name="name"
+            ref={register}
+            enabled={expandCourse}
+            defaultValue={courseName}
+          />
         </Cell>
         <Cell flex={2}>
-          <p>{classInfo.category}</p>
+          <EditableCell
+            ref={register}
+            enabled={expandCourse}
+            isCategory
+            defaultValue={category}
+            name="category"
+          />
         </Cell>
         <Cell flex={1}>
-          <p>${classInfo.rate}</p>
+          <EditableCell ref={register} enabled={expandCourse} defaultValue={rate} name="rate" />
         </Cell>
       </Container>
       {expandCourse && (
         <ExpandableDrawer>
           <MediaContainer />
-          <DescriptionContainer onSubmit={handleSubmit}>
-            <Description placeholder="Add a description" />
+          <DescriptionContainer>
+            <Description
+              placeholder="Add a description"
+              ref={register}
+              name="description"
+              defaultValue={description}
+            />
             <StyledFlexDiv>
-              <DeleteCourseButton handleClick={() => {}} />
-              <SaveCourseButton handleClick={() => {}} />
+              <DeleteCourseButton handleClick={handleDelete} />
+              <SaveCourseButton disabled={!changesMade} submitted={submitted} />
             </StyledFlexDiv>
           </DescriptionContainer>
         </ExpandableDrawer>
       )}
-    </>
+    </form>
   );
 }
 

@@ -1,9 +1,11 @@
 import { FetchMethod } from '../hooks/useFetch/types';
 
+const LOG_RESULTS = false;
+
 const attachBody = (options: RequestInit, body: any) => {
   const headers = new Headers(options.headers);
   headers.append('Content-Type', 'application/json');
-  console.log('Attaching Body:', body);
+  if (LOG_RESULTS) console.log('Attaching Body:', body);
   return {
     ...options,
     headers,
@@ -20,15 +22,15 @@ const Client = {
       if (body) {
         options = attachBody(options, body);
       }
-      console.log(`Making ${method} request to route`, endpoint);
+      if (LOG_RESULTS) console.log(`Making ${method} request to route`, endpoint);
       const resp = await fetch(endpoint, options);
-      console.log('Response from HTTP Client: ', resp);
+      if (LOG_RESULTS) console.log('Response from HTTP Client: ', resp);
       if (!resp.ok) {
         const err = await JSON.stringify({ status: resp.status, message: resp.statusText });
         throw Error(err);
       }
       const data = await resp.json();
-      console.log('JSON data from HTTP Client: ', data);
+      if (LOG_RESULTS) console.log('JSON data from HTTP Client: ', data);
       return data;
     } catch (err) {
       console.error('HTTP Client error:', err);

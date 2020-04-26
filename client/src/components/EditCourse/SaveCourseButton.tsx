@@ -1,25 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import Button from '../Button';
 
-const Container = styled(Button)`
+const StyledButton = styled(Button)`
   align-self: flex-end;
   width: 130px;
   margin: 0.5rem;
 `;
 
-const SaveCourseButton = () => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
+type Props = {
+  disabled: boolean;
+  submitted: boolean;
+};
 
+const SaveCourseButton = ({ disabled, submitted }: Props) => {
+  // const [isSubmitted, setIsSubmitted] = useState(false);
+  // useEffect(() => {
+  //   if (isSubmitted) return;
+  //   if (disabled) {
+  //     setIsSubmitted(false);
+  //   }
+  //   return () => {
+  //     setIsSubmitted(false);
+  //   };
+  // }, [disabled]);
   return (
-    <Container
-      type={isSubmitted ? 'submit' : undefined}
-      onClick={() => setIsSubmitted(true)}
-      primary={!isSubmitted}
-    >
-      {isSubmitted ? <p>Changes Saved!</p> : <p>Save Changes</p>}
-    </Container>
+    <StyledButton type={!submitted ? 'submit' : undefined} primary={!submitted} disabled={disabled}>
+      {submitted ? <p>Changes Saved!</p> : <p>Save Changes</p>}
+    </StyledButton>
   );
 };
 
-export default SaveCourseButton;
+export default React.memo(SaveCourseButton);

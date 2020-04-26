@@ -86,7 +86,7 @@ function EditCourses() {
         </Header>
         <CourseTable>
           {courses.map(course => (
-            <Row classInfo={course} />
+            <Row courseInfo={course} />
           ))}
         </CourseTable>
       </Table>
