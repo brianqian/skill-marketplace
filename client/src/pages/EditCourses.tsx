@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/reducer';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../redux/store';
-import { fetchCourses } from '../redux/UserState/userSlice';
+import { fetchOwnCourses } from '../redux/UserState/userSlice';
 
 type Flex = {
   flex?: number;
@@ -76,11 +76,11 @@ function EditCourses() {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchCourses());
+    dispatch(fetchOwnCourses());
   }, []);
 
   const courses = useSelector((state: RootState) => state.user.userCourses);
-
+  console.log(courses);
   return (
     <Layout>
       <AddClassLink to={ADD_CLASS_ROUTE}>

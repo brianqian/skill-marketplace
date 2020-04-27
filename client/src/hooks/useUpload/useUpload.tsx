@@ -5,7 +5,7 @@ const LIMIT = 4;
 // This hook should take in a FileList and stores an array of images in the format of of base64 encoded string
 //
 
-const useUpload = (initialMedia: string[]) => {
+const useUpload = (initialMedia: string[] = []) => {
   const [files, setFiles] = useState(initialMedia);
   const [loaded, setLoaded] = useState(false);
 

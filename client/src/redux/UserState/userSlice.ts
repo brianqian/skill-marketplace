@@ -7,7 +7,7 @@ import f from '../../utils/format';
 
 type StateShape = {
   userData: IUser;
-  userCourses: Array<ICourse & { rating: number }>;
+  userCourses: Array<ICourse>;
   error?: number;
   loading: 'idle' | 'pending';
 };
@@ -15,13 +15,14 @@ type StateShape = {
 const initialState: StateShape = {
   loading: 'idle',
   userData: {
-    id: '',
+    id: null,
     firstName: '',
     lastName: '',
     email: '',
     avatar: '',
     isInstructor: false,
     description: '',
+    role: 'Normal',
   },
   userCourses: [],
 };
@@ -32,9 +33,9 @@ export const authenticateToken = createAsyncThunk('/users/authenticate', async (
   return resp;
 });
 
-export const fetchCourses = createAsyncThunk('/courses/getCourses', async () => {
+export const fetchOwnCourses = createAsyncThunk('/courses/getCourses', async () => {
   const resp = await Client.request(COURSES_ROUTE);
-  console.log('USERS COURSES', resp);
+
   return resp;
 });
 
@@ -53,11 +54,8 @@ const userSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(fetchCourses.fulfilled, (state, action) => {
-      const courses = action.payload.map((course: any) => {
-        return f.userCourses(course);
-      });
-      console.log('COURSES', courses);
+    builder.addCase(fetchOwnCourses.fulfilled, (state, action) => {
+      const courses = action.payload.map((course: any) => course.course);
       state.userCourses = courses;
     });
     builder.addCase(authenticateToken.fulfilled, (state, action) => {

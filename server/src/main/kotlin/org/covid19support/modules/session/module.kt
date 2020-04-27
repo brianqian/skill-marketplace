@@ -17,7 +17,6 @@ import org.covid19support.modules.users.Users
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.covid19support.modules.users.User
 import org.mindrot.jbcrypt.BCrypt
 
 fun Application.session_module() {

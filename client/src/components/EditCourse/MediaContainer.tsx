@@ -43,12 +43,13 @@ const MediaPlaceholder = styled.div`
  */
 
 type Props = {
-  media: string[];
+  media?: string[];
   name: 'media';
   setValue: any;
 };
 
 const MediaContainer = React.forwardRef((props: Props, ref: React.Ref<HTMLInputElement>) => {
+  const { media = [] } = props;
   const [thumbnails, setThumbnails] = useState([]);
   const { convert, files, loaded, resetState } = useUpload(props.media);
 

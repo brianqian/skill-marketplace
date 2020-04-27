@@ -52,8 +52,8 @@ function EditProfile() {
           />
         </ProfileSubsection>
         <ProfileSubsection title="Contact">
-          <TextInput row={2} col={1} label="Phone" name="phone" type="text" ref={register} />
-          <TextInput row={3} col={1} label="Email" name="email" type="email" ref={register} />
+          <TextInput label="Phone" name="phone" type="text" ref={register} />
+          <TextInput label="Email" name="email" type="email" ref={register} />
         </ProfileSubsection>
         <ProfileSubsection title="Settings">
           <TextInput row={2} col={1} label="Password" name="password" type="text" ref={register} />

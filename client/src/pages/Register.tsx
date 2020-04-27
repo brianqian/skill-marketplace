@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
-import useFetch from '../hooks/useFetch/useFetch';
-import { USERS_ROUTE } from '../Routes';
-import { useHistory } from 'react-router-dom';
-import TextInput from '../components/TextInput';
 import { useForm } from 'react-hook-form';
+import { useHistory, Link } from 'react-router-dom';
+import { USERS_ROUTE, LOGIN_ROUTE } from '../Routes';
+import TextInput from '../components/TextInput';
+import useFetch from '../hooks/useFetch/useFetch';
 import Button from '../components/Button';
 import FlexDiv from '../components/FlexDiv';
 import Layout from '../components/Layout/AuthLayout';
@@ -100,7 +100,9 @@ function Register() {
             Sign up
           </StyledButton>
           {!!error && <Error>{error.message}</Error>}
-          <p style={{ gridColumn: '1/3' }}>Already have an account? Log in here.</p>
+          <p style={{ gridColumn: '1/3' }}>
+            Already have an account? Log in {<Link to={LOGIN_ROUTE}>here</Link>}.
+          </p>
         </StyledForm>
       </Container>
     </Layout>

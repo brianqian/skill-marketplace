@@ -3,10 +3,11 @@ import { string } from 'prop-types';
 export interface ICourse {
   id?: string;
   name: string;
-  description: string;
+  description?: string;
   rate: number;
   category: string;
-  media: string[];
+  media?: string[];
+  rating?: number;
   [key: string]: any;
 }
 
@@ -17,13 +18,14 @@ export interface IMedia {
 }
 
 export interface IUser {
-  id: string;
+  id: number | null;
   firstName: string;
   lastName?: string;
   email: string;
-  avatar: string;
+  avatar?: string;
   isInstructor: boolean;
-  description: string;
+  description?: string;
+  role: string;
 }
 
 export interface IError {
