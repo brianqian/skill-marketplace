@@ -12,6 +12,7 @@ import org.covid19support.authentication.*
 import org.covid19support.constants.AUTHORIZED
 import org.covid19support.constants.INVALID_BODY
 import org.covid19support.constants.Message
+import org.covid19support.modules.users.User
 import org.covid19support.modules.users.Users
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
@@ -25,7 +26,17 @@ fun Application.session_module() {
                 get {
                     val decodedToken: DecodedJWT? = authenticate(call)
                     if (decodedToken != null) {
-                        call.respond(HttpStatusCode.OK, Message(AUTHORIZED))
+                        var result: ResultRow? = null
+                        transaction(DbSettings.db) {
+                            result = Users.select { Users.id eq decodedToken.claims["id"]!!.asInt() }.firstOrNull()
+                        }
+                        if (result != null) {
+                            val user: User = Users.toUser(result!!)
+                            call.respond(HttpStatusCode.OK, user)
+                        }
+                        else {
+                            call.respond(HttpStatusCode.InternalServerError, Message("Logged in user not found!"))
+                        }
                     }
                 }
             }
