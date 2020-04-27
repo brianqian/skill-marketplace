@@ -1,7 +1,0 @@
-curl -XPOST -H "Content-type: application/json" -d '{test: "this is not valid"}' 'localhost:8080/users' //invalid users post
-
-curl -XPOST -H "Content-type: application/json" -d '{email: "gaurdianaq@protonmail.com", password: "gaurdianAQ#123", first_name: "Evan", last_name: "Tatay-Hinds"}' 'localhost:8080/users'
-
-curl -XPOST -H "Content-type: application/json" -d '{email: "gaurdianaq@protonmail.com", password: "gaurdianAQ#123"}' 'http://localhost:8080/session/login'
-
-curl -XPOST -H "Content-type: application/json" -d '{email: "evan.tatayhinds@protonmail.com", password: "gaurdianAQ#123", first_name: "Evan", last_name: "Tatay-Hinds"}' 'localhost:8080/users'
