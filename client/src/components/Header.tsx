@@ -3,6 +3,8 @@ import styled from 'styled-components/macro';
 import { Link } from 'react-router-dom';
 import Avatar from './Avatar';
 import { EDIT_PROFILE_ROUTE, HOME_ROUTE } from '../Routes';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/reducer';
 
 const Container = styled.header`
   height: ${p => p.theme.headerHeight};
@@ -36,6 +38,8 @@ const Logo = styled.div`
 `;
 
 function Header() {
+  const loggedIn = !!useSelector((state: RootState) => state.user.userData.firstName);
+
   return (
     <Container>
       <Logo>
@@ -44,8 +48,10 @@ function Header() {
       <Nav>
         <Link to="/">Browse</Link>
         <a href="#">Inbox</a>
-        <Avatar size={30} />
-        <Link to={EDIT_PROFILE_ROUTE}>Profile</Link>
+        {/* {loggedIn && <a href="#">Inbox</a>} */}
+        <Link to={EDIT_PROFILE_ROUTE}>
+          <Avatar size={30} />
+        </Link>
       </Nav>
     </Container>
   );

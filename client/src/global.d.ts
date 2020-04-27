@@ -1,21 +1,25 @@
+import { string } from 'prop-types';
+
 export interface ICourse {
+  id?: string;
   name: string;
   description: string;
   rate: number;
   category: string;
-  rating: number;
+  media: string[];
+  [key: string]: any;
 }
 
-export interface ICategory {
-  name: string;
-  url?: string;
+export type ICategory = string;
+
+export interface IMedia {
+  src: string;
 }
 
 export interface IUser {
   id: string;
   firstName: string;
   lastName?: string;
-  specialty: string;
   email: string;
   avatar: string;
   isInstructor: boolean;

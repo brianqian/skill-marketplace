@@ -8,6 +8,8 @@ import { useForm } from 'react-hook-form';
 import { postCourse } from '../redux/UserState/userSlice';
 import { CATEGORIES } from '../Constants';
 import { ICourse } from '../global';
+import { useHistory } from 'react-router-dom';
+import { EDIT_CLASSES_ROUTE } from '../Routes';
 
 // const Container = styled.div``;
 
@@ -76,14 +78,14 @@ const CategoryImg = styled.img`
 const AddCourse = () => {
   const dispatch = useDispatch();
   const categories = useSelector((state: RootState) => state.app.categories);
+  const history = useHistory();
   const { handleSubmit, register } = useForm();
   const [selectedCategory, setCategory] = useState('');
 
-  const onSubmit = (data: any) => {
-    console.log('selected Category', selectedCategory);
-    console.log(data);
-    const formData: Omit<ICourse, 'rating'> = { ...data, category: selectedCategory };
-    dispatch(postCourse(formData));
+  const onSubmit = (data: Omit<ICourse, 'media'>) => {
+    const formData: Partial<ICourse> = { ...data, category: selectedCategory, media: [] };
+    dispatch(postCourse(formData as ICourse));
+    history.push(EDIT_CLASSES_ROUTE);
   };
 
   return (
@@ -103,17 +105,17 @@ const AddCourse = () => {
           </CategoryGrid>
         </Subsection>
         <Subsection title="Title">
-          <input type="text" name="title" ref={register} />
+          <input type="text" name="name" ref={register} />
         </Subsection>
         <Subsection title="Description">
           <input type="text" name="description" ref={register} />
         </Subsection>
-        <Subsection title="Rate">
+        <Subsection title="Hourly Rate (USD)">
           <input type="number" name="rate" ref={register} />
         </Subsection>
-        <Subsection title="Media">
-          <input type="button" name="" value="Upload Media" />
-        </Subsection>
+        {/* <Subsection title="Media">
+          <input type="file" name="media" multiple ref={register} />
+        </Subsection> */}
         <input type="submit" />
       </form>
     </Layout>
