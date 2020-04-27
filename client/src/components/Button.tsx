@@ -1,7 +1,25 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { DefaultTheme } from 'styled-components/macro';
 
-const Container = styled.button.attrs((props: Props) => {
+type Props = {
+  primary?: boolean;
+  disabled?: boolean;
+  color?: string;
+  type?: 'submit';
+  onClick?: (x?: any) => void;
+  className?: string;
+  children: React.ReactNode;
+  loadingState?: React.ReactNode;
+};
+
+const Container = styled.button.attrs((props: Props & { theme: DefaultTheme }) => {
+  if (props.disabled) {
+    return {
+      bgc: 'white',
+      textColor: 'lightgray',
+      borderColor: 'lightgray',
+    };
+  }
   if (props.primary) {
     return {
       bgc: props.color || props.theme.color.primary,
@@ -9,19 +27,11 @@ const Container = styled.button.attrs((props: Props) => {
       borderColor: props.color || props.theme.color.primary,
     };
   }
-  if (!props.primary && !props.disabled) {
-    console.log(props);
+  if (!props.primary) {
     return {
       bgc: 'white',
       textColor: props.color || props.theme.color.primary,
       borderColor: props.color || props.theme.color.primary,
-    };
-  }
-  if (props.disabled) {
-    return {
-      bgc: 'white',
-      textColor: 'lightgray',
-      borderColor: 'lightgray',
     };
   }
 })<Props>`
@@ -52,25 +62,10 @@ const Container = styled.button.attrs((props: Props) => {
 // color - define color
 // disabled - gray outline, white background, gray text
 
-type Props = {
-  primary?: boolean;
-  disabled?: boolean;
-  color?: string;
-  children: React.ReactNode;
-  className?: string;
-  theme: any;
-  onClick?: (x?: any) => void;
-};
-
-function Button({ className, children, primary, disabled, color, onClick }: Props) {
+function Button({ children, loadingState, ...props }: Props) {
   return (
-    <Container
-      className={className}
-      color={color}
-      primary={primary}
-      disabled={disabled}
-      onClick={onClick}
-    >
+    <Container {...props}>
+      {!!loadingState && loadingState}
       {children}
     </Container>
   );

@@ -1,10 +1,15 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useEffect } from 'react';
+import styled from 'styled-components/macro';
 import Layout from '../components/Layout/ProfilePageLayout';
 import Row from '../components/EditCourse/Row';
 import { Link } from 'react-router-dom';
 import Button from '../components/Button';
 import { ADD_CLASS_ROUTE } from '../Routes';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/reducer';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../redux/store';
+import { fetchCourses } from '../redux/UserState/userSlice';
 
 type Flex = {
   flex?: number;
@@ -59,14 +64,23 @@ const AddClassLink = styled(Link)`
 // Description -- hidden in collpasable menu
 // Media -- images/videos -- hidden in collapsable menu
 
-const courses = [
-  { title: 'Pottery', category: 'Arts & Crafts', rate: 22 },
-  { title: 'HTML & CSS', category: 'Web Development', rate: 40 },
-  { title: 'Basic Sous Vide', category: 'Cooking', rate: 15 },
-  { title: 'How to play Poker', category: 'Games', rate: 20 },
+// prettier-ignore
+const tempCourses = [
+  { id: '1', name: 'Pottery', category: 'Arts & Crafts', rate: 22, description: '' ,media: ['test'] },
+  { id: '2', name: 'HTML & CSS', category: 'Web Development', rate: 40, description: '' ,media: [] },
+  { id: '3', name: 'Basic Sous Vide', category: 'Cooking', rate: 15, description: '' ,media: [] },
+  { id: '4', name: 'How to play Poker', category: 'Games', rate: 20, description: '' ,media: [] },
 ];
 
 function EditCourses() {
+  const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCourses());
+  }, []);
+
+  const courses = useSelector((state: RootState) => state.user.userCourses);
+
   return (
     <Layout>
       <AddClassLink to={ADD_CLASS_ROUTE}>
@@ -86,7 +100,7 @@ function EditCourses() {
         </Header>
         <CourseTable>
           {courses.map(course => (
-            <Row classInfo={course} />
+            <Row courseInfo={course} />
           ))}
         </CourseTable>
       </Table>

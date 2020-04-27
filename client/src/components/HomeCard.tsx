@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import Star from './Icons/Star';
 import Avatar from './Avatar';
 
@@ -43,7 +43,7 @@ type Props = {
   rate: number;
 };
 
-function Card({ instructor, classTitle, rating = 3, rate }: Props) {
+function Card({ instructor, classTitle, rating = 0, rate }: Props) {
   const starCount = Math.round(rating);
 
   return (

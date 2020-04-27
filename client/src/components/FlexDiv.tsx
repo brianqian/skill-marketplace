@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 const Container = styled.div<Props>`
   display: flex;
@@ -17,7 +17,11 @@ type Props = {
 };
 
 const FlexDiv = (props: Props) => {
-  return <Container className={props.className}>{props.children}</Container>;
+  return (
+    <Container column={props.column} className={props.className}>
+      {props.children}
+    </Container>
+  );
 };
 
 export default FlexDiv;

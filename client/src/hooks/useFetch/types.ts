@@ -1,29 +1,24 @@
+import { IError } from '../../global';
+
+export type FetchMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | undefined;
+
 export type ActionType = {
-  // type:
-  //   | 'GET_ENDPOINT'
-  //   | 'POST_ENDPOINT'
-  //   | 'PUT_ENDPOINT'
-  //   | 'DELETE_ENDPOINT'
-  //   | 'SET_DATA'
-  //   | 'FETCHING'
-  //   | 'ERROR';
   type: string;
   payload?: any;
   body?: any;
   endpoint?: string;
-  token?: string;
 };
 
 export type StateType = {
   data?: any;
-  error?: string;
+  error?: IError;
   endpoint?: string;
-  method?: string;
+  method?: FetchMethod;
   body?: any;
   isLoading: boolean;
+  status?: number;
 };
 
 export type AjaxParam = {
-  token?: string;
   body?: any;
 };

@@ -10,16 +10,19 @@ import Login from './pages/Login';
 import AddCourse from './pages/AddCourse';
 import Register from './pages/Register';
 import { useDispatch } from 'react-redux';
-import { getCategories } from './redux/AppState/appSlice';
+import { getAllCategories } from './redux/AppState/appSlice';
+import { authenticateToken } from './redux/UserState/userSlice';
 import * as r from './Routes';
+import { AppDispatch } from './redux/store';
 
 const Container = styled.div``;
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCategories());
+    dispatch(getAllCategories());
+    dispatch(authenticateToken());
   }, []);
 
   return (

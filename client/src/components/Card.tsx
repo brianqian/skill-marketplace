@@ -1,6 +1,6 @@
 /* eslint-disable react/require-default-props */
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 type Props = {
   h?: string | number; // height

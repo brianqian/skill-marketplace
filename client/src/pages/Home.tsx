@@ -1,9 +1,12 @@
-import React, { useState, SyntheticEvent } from 'react';
-import styled from 'styled-components';
+import React, { SyntheticEvent } from 'react';
+import styled from 'styled-components/macro';
 import Card from '../components/Card';
 import HomeCard from '../components/HomeCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/reducer';
+import CategoryDropdown from '../components/CategoryDropdown';
+import { useForm } from 'react-hook-form';
+// import SelectDropdown from '../components/SelectDropdown';
 
 const Container = styled.main`
   display: flex;
@@ -43,9 +46,11 @@ const Results = styled.section`
 `;
 
 function Home() {
-  const handleSubmit = (e: SyntheticEvent) => {
-    e.preventDefault();
-  };
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = handleSubmit(form => {
+    console.log('onsubmit', form);
+  });
 
   const dispatch = useDispatch();
   const categories = useSelector((state: RootState) => state.app.categories);
@@ -53,14 +58,9 @@ function Home() {
   return (
     <Container>
       <h1>Learning for anyone, anywhere</h1>
-      <SearchField onSubmit={handleSubmit}>
-        <input type="text" placeholder="What do you want to learn?" />
-        <select name="" id="">
-          <option value="">All Skills</option>
-          {categories.map(category => (
-            <option>{category}</option>
-          ))}
-        </select>
+      <SearchField onSubmit={onSubmit}>
+        <input type="text" placeholder="What do you want to learn?" ref={register} name="search" />
+        <CategoryDropdown title="All Skills" ref={register} name="category" />
       </SearchField>
       <Results>
         {Array(10)
