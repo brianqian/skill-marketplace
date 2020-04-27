@@ -62,11 +62,11 @@ create table contact_info(
 );
 
 create table ratings(
-    id serial primary key,
     user_id integer references users(id) not null,
     course_id integer references courses(id) not null,
     rating smallint not null,
-    comment varchar(512)
+    comment varchar(512),
+    primary key (user_id, course_id)
 );
 
 create table user_courses(

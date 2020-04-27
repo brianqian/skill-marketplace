@@ -23,11 +23,12 @@ data class User(
 class UserSerializer : JsonSerializer<User> {
     override fun serialize(src: User?, srcType: Type?, context: JsonSerializationContext?): JsonElement {
         val output: JsonObject = JsonObject()
+        output.addProperty("id", src?.id)
         output.addProperty("email", src?.email)
-        output.addProperty("first_name", src?.first_name)
-        output.addProperty("last_name", src?.last_name)
+        output.addProperty("firstName", src?.first_name)
+        output.addProperty("lastName", src?.last_name)
         output.addProperty("description", src?.description)
-        output.addProperty("is_instructor", src?.is_instructor)
+        output.addProperty("isInstructor", src?.is_instructor)
         output.addProperty("role", src?.role)
         return output
     }

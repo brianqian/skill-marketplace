@@ -12,6 +12,7 @@ import org.covid19support.authentication.*
 import org.covid19support.constants.AUTHORIZED
 import org.covid19support.constants.INVALID_BODY
 import org.covid19support.constants.Message
+import org.covid19support.modules.users.User
 import org.covid19support.modules.users.Users
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select

@@ -12,8 +12,10 @@ export const ADD_CLASS_ROUTE = CLASSES_ROUTE + '/new';
 // Back End Routes
 export const TOKEN_AUTH_ROUTE = '/session/authenticate';
 export const BACKEND_LOGIN_ROUTE = '/session/login';
-// post -- login
+export const BACKEND_LOGOUT_ROUTE = '/session/logout';
+export const AUTHENTICATION_ROUTE = '/session/authentication';
 export const ADD_COURSE_ROUTE = '/courses';
+export const INSTRUCTOR_COURSES_ROUTE = '/courses/instructor'
 export const COURSES_ROUTE = '/courses';
 // ! should get avg ratings
 // get - gets all courses
@@ -23,9 +25,7 @@ export const USERS_ROUTE = '/users';
 // get - current user?
 // post - new user
 export const CATEGORIES_ROUTE = '/categories';
-// get - get all categories
+export const CONTACT_METHOD_ROUTE = '/contact_methods';
+export const CONTACT_INFO_ROUTE = '/contact_info';
+export const USER_COURSES_ROUTE =  '/user_courses';
 export const RATINGS_ROUTE = '/ratings';
-// get - get all reviews
-export const CONTACT_METHOD_ROUTE = '/contact/method';
-export const CONTACT_INFO_ROUTE = '/contact/info';
-export const USER_COURSES_ROUTE = USERS_ROUTE + COURSES_ROUTE;

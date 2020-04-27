@@ -11,19 +11,21 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 fun Application.categories_module() {
     routing {
-        get("/categories") {
-            val categories: MutableList<Category> = mutableListOf<Category>()
-            transaction(DbSettings.db) {
-                val results:List<ResultRow> = Categories.selectAll().toList()
-                results.forEach {
-                    categories.add(Categories.toCategory(it))
+        route("/categories") {
+            get {
+                val categories: MutableList<Category> = mutableListOf<Category>()
+                transaction(DbSettings.db) {
+                    val results:List<ResultRow> = Categories.selectAll().toList()
+                    results.forEach {
+                        categories.add(Categories.toCategory(it))
+                    }
                 }
-            }
-            if (categories.isEmpty()) {
-                call.respond(HttpStatusCode.NoContent, Message("No categories found!"))
-            }
-            else {
-                call.respond(categories)
+                if (categories.isEmpty()) {
+                    call.respond(HttpStatusCode.NoContent, Message("No categories found!"))
+                }
+                else {
+                    call.respond(categories)
+                }
             }
         }
     }
