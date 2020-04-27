@@ -8,6 +8,7 @@ import DeleteCourseButton from './DeleteCourseButton';
 import { useForm } from 'react-hook-form';
 import EditableCell from './EditableCell';
 import { ICourse } from '../../global';
+import useUpload from '../../hooks/useUpload/useUpload';
 
 const Container = styled.div`
   display: flex;
@@ -66,8 +67,9 @@ function Row({ courseInfo }: Props) {
   const [expandCourse, setExpandCourse] = useState(false);
   const [changesMade, setChangesMade] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const { category, name: courseName, rate, description } = courseInfo;
-  const { register, handleSubmit, watch } = useForm({
+  const { convert, files } = useUpload(courseInfo.media);
+  const { category, name: courseName, rate, description, media } = courseInfo;
+  const { register, handleSubmit, setValue } = useForm({
     defaultValues: {
       category,
       name: courseName,
@@ -76,9 +78,12 @@ function Row({ courseInfo }: Props) {
     },
   });
 
-  const onSubmit = handleSubmit((data, e) => {
-    console.log(e?.target.name);
+  useEffect(() => {}, [files]);
+
+  const onSubmit = handleSubmit(async (data: Record<string, any>) => {
     console.log('ROW', data);
+    await convert(data.media);
+    console.log('files', files);
     setSubmitted(true);
   });
 
@@ -93,9 +98,6 @@ function Row({ courseInfo }: Props) {
     if (changesMade) return;
     setChangesMade(true);
   };
-  // useEffect(() => {
-  //   console.log('WATCH', watch());
-  // }, [watch]);
 
   return (
     <form onSubmit={onSubmit} onChange={handleChange}>
@@ -123,7 +125,7 @@ function Row({ courseInfo }: Props) {
       </Container>
       {expandCourse && (
         <ExpandableDrawer>
-          <MediaContainer />
+          <MediaContainer ref={register} name="media" media={media} setValue={setValue} />
           <DescriptionContainer>
             <Description
               placeholder="Add a description"

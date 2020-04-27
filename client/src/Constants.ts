@@ -17,7 +17,7 @@ export const CATEGORIES = [
   { name: 'Cooking', img: COOKING_IMG },
   { name: 'Music', img: MUSIC_IMG },
   { name: 'Coding', img: CODING_IMG },
-  { name: 'Business & Marketing', img: MARKETING_IMG },
+  { name: 'Business', img: MARKETING_IMG },
   { name: 'UI/UX Design', img: DESIGN_IMG },
   { name: 'Arts & Crafts', img: ARTS_IMG },
   { name: 'Photography', img: PHOTOGRAPHY_IMG },

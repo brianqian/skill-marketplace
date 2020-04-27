@@ -11,6 +11,7 @@ import AddCourse from './pages/AddCourse';
 import Register from './pages/Register';
 import { useDispatch } from 'react-redux';
 import { getAllCategories } from './redux/AppState/appSlice';
+import { authenticateToken } from './redux/UserState/userSlice';
 import * as r from './Routes';
 import { AppDispatch } from './redux/store';
 
@@ -21,6 +22,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getAllCategories());
+    dispatch(authenticateToken());
   }, []);
 
   return (
