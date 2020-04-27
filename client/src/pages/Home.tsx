@@ -1,5 +1,5 @@
 import React, { useState, SyntheticEvent } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import Card from '../components/Card';
 import HomeCard from '../components/HomeCard';
 import { useDispatch, useSelector } from 'react-redux';

@@ -5,7 +5,7 @@ interface HexCodes {
 }
 
 const theme: DefaultTheme = {
-  headerHeight: '5rem',
+  headerHeight: '3rem',
   backgroundColor: 'white',
   strokeColor: 'black',
   bs: '0 10px 23px -5px rgba(0,0,0,.2)',

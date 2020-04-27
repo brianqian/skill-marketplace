@@ -1,7 +1,7 @@
 //@ts-nocheck
 
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import TextInput from '../TextInput';
 
 const Container = styled.div``;

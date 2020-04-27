@@ -1,22 +1,9 @@
-type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
+import { FetchMethod } from '../hooks/useFetch/types';
 
-type FetchOption = {
-  method: Method;
-  body?: {
-    [key: string]: any;
-  };
-  headers?: Headers;
-};
-
-const attachToken = (options: FetchOption, token: string) => {
-  const headers = new Headers(options.headers);
-  headers.append('authorization', `Bearer ${token}`);
-  return { ...options, headers };
-};
-
-const attachBody = (options: FetchOption, body: any) => {
+const attachBody = (options: RequestInit, body: any) => {
   const headers = new Headers(options.headers);
   headers.append('Content-Type', 'application/json');
+  console.log('Attaching Body:', body);
   return {
     ...options,
     headers,
@@ -25,14 +12,11 @@ const attachBody = (options: FetchOption, body: any) => {
 };
 
 const Client = {
-  request: async (endpoint: string, method: Method = 'GET', body?: any, token?: string) => {
+  request: async (endpoint: string, method: FetchMethod = 'GET', body?: any) => {
     // call for POST/PUT/PATCH
 
-    let options = { method };
+    let options: RequestInit = { method };
     try {
-      if (token) {
-        options = attachToken(options, token);
-      }
       if (body) {
         options = attachBody(options, body);
       }
@@ -40,16 +24,18 @@ const Client = {
       const resp = await fetch(endpoint, options);
       console.log('Response from HTTP Client: ', resp);
       if (!resp.ok) {
-        throw Error(JSON.stringify(resp));
+        const err = await JSON.stringify({ status: resp.status, message: resp.statusText });
+        throw Error(err);
       }
       const data = await resp.json();
       console.log('JSON data from HTTP Client: ', data);
       return data;
     } catch (err) {
+      console.error('client.request err1', err);
+      err = await JSON.parse(err.message);
       console.error('client.request err', err);
-      err = JSON.parse(err.message);
-
-      return { status: err.status, message: err.statusText };
+      const { status, statusText } = err;
+      return { error: { status: status || '500', message: statusText || 'Server error' } };
     }
   },
 

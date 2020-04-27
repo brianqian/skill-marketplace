@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import useFetch from '../hooks/useFetch/useFetch';
 import Avatar from '../components/Avatar';
 import Card from '../components/Card';

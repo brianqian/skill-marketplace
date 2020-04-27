@@ -1,5 +1,5 @@
 import React, { useState, SyntheticEvent } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import useFetch from '../hooks/useFetch/useFetch';
 import { BACKEND_LOGIN_ROUTE } from '../Routes';
 import { useHistory } from 'react-router-dom';

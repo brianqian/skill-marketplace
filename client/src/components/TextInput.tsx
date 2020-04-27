@@ -12,7 +12,7 @@ const Container = styled.div<ContainerProps>`
   grid-row: ${p => p.row};
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 0.5rem;
   & .error {
     font-size: 0.85em;
     color: red;
@@ -24,7 +24,7 @@ const StyledLabel = styled.label`
   color: #aaa;
   font-weight: 400;
   font-size: 0.85em;
-  padding: 0.5rem 0;
+  padding-bottom: 0.5rem;
 `;
 
 const StyledInput = styled.input`
@@ -62,11 +62,11 @@ type Props = {
 };
 
 const TextInput = React.forwardRef((props: Props, ref: any) => {
-  const { row, col, name, label, value } = props;
+  const { row, col, name, label, value, type } = props;
   return (
     <Container row={row} col={col}>
       <StyledLabel htmlFor={name}>{label}</StyledLabel>
-      <StyledInput type="text" ref={ref} name={name} />
+      <StyledInput type={type} ref={ref} name={name} defaultValue={value} />
     </Container>
   );
 });

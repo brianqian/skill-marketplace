@@ -1,5 +1,5 @@
 import React, { useState, SyntheticEvent } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import MediaContainer from './MediaContainer';
 import Button from '../Button';
 import FlexDiv from '../FlexDiv';

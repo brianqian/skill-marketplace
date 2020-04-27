@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import Layout from '../components/Layout/ProfilePageLayout';
 import Row from '../components/EditCourse/Row';
 import { Link } from 'react-router-dom';

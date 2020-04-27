@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Link } from 'react-router-dom';
 import Avatar from './Avatar';
 import { EDIT_PROFILE_ROUTE, HOME_ROUTE } from '../Routes';
@@ -44,7 +44,7 @@ function Header() {
       <Nav>
         <Link to="/">Browse</Link>
         <a href="#">Inbox</a>
-        <Avatar />
+        <Avatar size={30} />
         <Link to={EDIT_PROFILE_ROUTE}>Profile</Link>
       </Nav>
     </Container>
