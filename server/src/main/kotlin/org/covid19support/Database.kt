@@ -10,8 +10,25 @@ enum class SQLState(val code: String) {
 }
 
 object DbSettings {
-   val db by lazy {
-       Database.connect("jdbc:postgresql://"+ dotenv["DB_HOST"]+"/"+ dotenv["DB_NAME"], driver = "org.postgresql.Driver",
-               user = dotenv["DB_USER"]!!, password = dotenv["DB_PASSWORD"]!!)
-   }
+    private lateinit var db_url: String
+    private lateinit var db_user: String
+    private lateinit var db_password: String
+
+    fun init(isTesting: Boolean) {
+        if (isTesting) {
+            db_url = "jdbc:postgresql://"+ dotenv["TEST_DB_HOST"]+"/"+ dotenv["TEST_DB_NAME"]
+            db_user = dotenv["TEST_DB_USER"]!!
+            db_password = dotenv["TEST_DB_PASSWORD"]!!
+        }
+        else {
+            db_url = "jdbc:postgresql://"+ dotenv["DB_HOST"]+"/"+ dotenv["DB_NAME"]
+            db_user = dotenv["DB_USER"]!!
+            db_password = dotenv["DB_PASSWORD"]!!
+        }
+    }
+
+    val db by lazy {
+       Database.connect(db_url, driver = "org.postgresql.Driver",
+               user = db_user, password = db_password)
+    }
 }

@@ -22,6 +22,7 @@ data class CourseComponent(
         val instructor_name: String,
         val course_id: Int,
         val course_name: String,
+        val course_description: String,
         val course_rating: Short?,
         val course_category: String,
         val course_rate: Float
@@ -36,6 +37,7 @@ class CourseComponentSerializer : JsonSerializer<CourseComponent> {
         instructor.addProperty("name", src?.instructor_name)
         course.addProperty("id", src?.course_id)
         course.addProperty("name", src?.course_name)
+        course.addProperty("description", src?.course_description)
         if (src?.course_rating != null) {
             course.addProperty("rating", src.course_rating)
         }

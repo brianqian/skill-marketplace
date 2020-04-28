@@ -83,6 +83,7 @@ fun Application.courses_module() {
                                     instructors[instructor_id]?.first_name + ' ' + instructors[instructor_id]?.last_name,
                                     it.id!!,
                                     it.name,
+                                    it.description,
                                     rating,
                                     it.category,
                                     it.rate

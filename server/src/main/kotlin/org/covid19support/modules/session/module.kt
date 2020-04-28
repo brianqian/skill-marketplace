@@ -9,7 +9,6 @@ import io.ktor.routing.*
 import io.ktor.sessions.*
 import org.covid19support.*
 import org.covid19support.authentication.*
-import org.covid19support.constants.AUTHORIZED
 import org.covid19support.constants.INVALID_BODY
 import org.covid19support.constants.Message
 import org.covid19support.modules.users.User
@@ -17,7 +16,6 @@ import org.covid19support.modules.users.Users
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.covid19support.modules.users.User
 import org.mindrot.jbcrypt.BCrypt
 
 fun Application.session_module() {
