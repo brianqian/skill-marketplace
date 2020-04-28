@@ -24,7 +24,7 @@ fun Application.categories_module() {
                     call.respond(HttpStatusCode.NoContent, Message("No categories found!"))
                 }
                 else {
-                    call.respond(categories)
+                    call.respond(HttpStatusCode.OK, categories)
                 }
             }
         }
