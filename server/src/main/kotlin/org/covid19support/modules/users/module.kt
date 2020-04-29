@@ -35,7 +35,7 @@ fun Application.users_module() {
                     call.respond(HttpStatusCode.NoContent, Message("No users found!"))
                 }
                 else {
-                    call.respond(HttpStatusCode.OK, "Cheese")
+                    call.respond(HttpStatusCode.OK, users)
                 }
             }
 
@@ -59,7 +59,7 @@ fun Application.users_module() {
                         call.respond(HttpStatusCode.Created, newUser)
                     }
                     catch (ex:ExposedSQLException) {
-                        //log.error(ex.message)
+                        log.error(ex.message)
                         when (ex.sqlState) {
                             SQLState.UNIQUE_CONSTRAINT_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, "Email already taken!")
                             SQLState.FOREIGN_KEY_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, ex.localizedMessage)

@@ -64,5 +64,19 @@ class TestUsers {
             assertTrue { users.size == 5 }
         }
 
+        for (user in testUsers) {
+            with (handleRequest(HttpMethod.Get, "/users/${user.id}")) {
+                assertDoesNotThrow { gson.fromJson(response.content, User::class.java) }
+                val responseUser: User = gson.fromJson(response.content, User::class.java)
+                assertEquals(user.description, responseUser.description)
+                assertEquals(user.email, responseUser.email)
+                assertEquals(user.firstName, responseUser.firstName)
+                assertEquals(user.lastName, responseUser.lastName)
+                assertEquals(user.isInstructor, responseUser.isInstructor)
+                assertEquals(user.role, responseUser.role)
+                assertNull(responseUser.password)
+            }
+        }
+
     }
 }
