@@ -18,6 +18,9 @@ fun main(args: Array<String>) = io.ktor.server.netty.EngineMain.main(args)
 fun Application.main(isTesting: Boolean = false) {
     dotenv = Dotenv.load()
     DbSettings.init(isTesting)
+    if (isTesting) {
+        clearDataBase()
+    }
     install(DefaultHeaders)
     install(ContentNegotiation) {
         gson {

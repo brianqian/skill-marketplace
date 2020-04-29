@@ -1,6 +1,14 @@
 package org.covid19support
 
+import org.covid19support.modules.contact_info.ContactInfoTable
+import org.covid19support.modules.courses.Courses
+import org.covid19support.modules.ratings.Ratings
+import org.covid19support.modules.user_courses.UserCourses
+import org.covid19support.modules.users.Users
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.deleteAll
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.transactions.transactionManager
 
 //will add more to this as I run across more
 enum class SQLState(val code: String) {
@@ -30,5 +38,15 @@ object DbSettings {
     val db by lazy {
        Database.connect(db_url, driver = "org.postgresql.Driver",
                user = db_user, password = db_password)
+    }
+}
+
+fun clearDataBase() {
+    transaction(DbSettings.db) {
+        Users.deleteAll()
+        ContactInfoTable.deleteAll()
+        Courses.deleteAll()
+        Ratings.deleteAll()
+        UserCourses.deleteAll()
     }
 }
