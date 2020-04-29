@@ -10,33 +10,22 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import kotlin.test.*
 
 class TestUsers {
+
+    //TODO Add User Unique Violation
+    //TODO Add User Missing Required Info
+    //TODO Get User Does Not Exist
+    //TODO Invalid Email & Password (once validation is added)
+    //TODO Edit User
+    //TODO Edit User Unauthenticated
+    //TODO Edit User Unauthorized
+    //TODO Delete User
+    //TODO Delete User Unauthenticated
+    //TODO Delete User Unauthorized
+
     private val gson: Gson = Gson()
 
     @Test
-    fun testAddUser() = withTestApplication({
-        main(true)
-        users_module()
-    }) {
-        val testUser: User = User(null, "test@test.org", "test123", "Test", "McTesterson", null)
-        with(handleRequest(HttpMethod.Post, "/users") {
-            addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-            setBody(gson.toJson(testUser))
-        }) {
-            assertEquals(HttpStatusCode.Created, response.status())
-            val responseUser: User? = gson.fromJson(response.content, User::class.java)
-            assertNotEquals(null, responseUser)
-            assertTrue { testUser.isInstructor == responseUser!!.isInstructor }
-            assertTrue { testUser.description == responseUser!!.description }
-            assertTrue { testUser.firstName == responseUser!!.firstName }
-            assertTrue { testUser.lastName == responseUser!!.lastName }
-            assertTrue { testUser.email == responseUser!!.email }
-            assertTrue { testUser.role == responseUser!!.role }
-        }
-
-    }
-
-    @Test
-    fun testMultipleUsers() = withTestApplication({
+    fun testUsers() = withTestApplication({
         main(true)
         users_module()
     }) {

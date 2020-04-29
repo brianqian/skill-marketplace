@@ -87,7 +87,7 @@ fun Application.ratings_module() {
                     if (rating == null) {
                         call.respond(HttpStatusCode.NoContent, Message("Rating not found!"))
                     } else {
-                        call.respond(rating as Rating)
+                        call.respond(rating!!)
                     }
                 }
             }
