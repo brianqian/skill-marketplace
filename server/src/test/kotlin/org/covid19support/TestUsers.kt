@@ -5,8 +5,8 @@ import io.ktor.http.*
 import io.ktor.server.testing.*
 import org.covid19support.modules.users.User
 import org.covid19support.modules.users.users_module
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
 import kotlin.test.*
 
 class TestUsers {
@@ -25,7 +25,7 @@ class TestUsers {
     private val gson: Gson = Gson()
 
     @Test
-    fun testUsers() = withTestApplication({
+    fun addUsers() = withTestApplication({
         main(true)
         users_module()
     }) {

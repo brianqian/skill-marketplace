@@ -1,4 +1,4 @@
-drop table if exists categories, users, contact_methods, contact_info, courses, ratings, user_courses;
+drop table if exists roles, categories, users, contact_methods, contact_info, courses, ratings, user_courses;
 
 create table categories(
     name varchar(128) primary key
@@ -42,28 +42,28 @@ create table users(
     last_name varchar(32) not null,
     description varchar(1024),
     is_instructor boolean default false,
-    role varchar(128) references roles(name) not null default 'Normal'
+    role varchar(128) references roles(name) on delete cascade not null default 'Normal' 
 );
 
 create table courses(
     id serial primary key,
     name varchar(64) not null,
     description varchar(1024) not null,
-    instructor_id integer references users(id) not null,
-    category varchar(128) references categories(name) not null,
+    instructor_id integer references users(id) on delete cascade not null,
+    category varchar(128) references categories(name) on delete cascade not null,
     rate real not null
 );
 
 create table contact_info(
     id serial primary key,
-    user_id integer references users(id) not null,
-    contact_method varchar(128) references contact_methods(name) not null,
+    user_id integer references users(id)  on delete cascade not null,
+    contact_method varchar(128) references contact_methods(name) on delete cascade not null,
     contact_info varchar(256) not null
 );
 
 create table ratings(
-    user_id integer references users(id) not null,
-    course_id integer references courses(id) not null,
+    user_id integer references users(id) on delete cascade not null,
+    course_id integer references courses(id) on delete cascade not null,
     rating smallint not null,
     comment varchar(512),
     primary key (user_id, course_id)
@@ -71,8 +71,8 @@ create table ratings(
 
 create table user_courses(
     id serial primary key,
-    user_id integer references courses(id) not null,
-    course_id integer references courses(id) not null,
+    user_id integer references courses(id) on delete cascade not null,
+    course_id integer references courses(id) on delete cascade not null,
     course_date date not null,
     course_time time not null,
     course_length smallint not null  
