@@ -3,7 +3,7 @@ package org.covid19support.modules.courses
 import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.application.*
 import io.ktor.http.HttpStatusCode
-import io.ktor.request.receive
+import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.response.*
 import org.covid19support.DbSettings
@@ -18,6 +18,7 @@ import org.covid19support.modules.users.*
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.lang.IllegalStateException
 
 fun Application.courses_module() {
     routing {
@@ -25,10 +26,10 @@ fun Application.courses_module() {
             get {
                 val instructor_id: Int? = call.parameters["instructor_id"]?.toIntOrNull()
                 val categories: List<String>? = call.parameters["categories"]?.split(',')
-                val courses: HashMap<Int, MutableList<Course>> = HashMap()
+                val courses: HashMap<Int, ArrayList<Course>> = HashMap()
                 val instructors: HashMap<Int, User> = HashMap()
-                val ratings: HashMap<Int, MutableList<Rating>> = HashMap()
-                val courseComponents: MutableList<CourseComponent> = mutableListOf()
+                val ratings: HashMap<Int, ArrayList<Rating>> = HashMap()
+                val courseComponents: ArrayList<CourseComponent> = arrayListOf()
                 lateinit var coursesQuery: Query
                 if (categories == null && instructor_id == null) {
                     coursesQuery = Courses.selectAll()
@@ -45,14 +46,14 @@ fun Application.courses_module() {
                         val courseId: Int = it[Courses.id]
                         val instructorId: Int = it[Courses.instructor_id]
                         if (courses[instructorId] == null) {
-                            courses[instructorId] = mutableListOf()
+                            courses[instructorId] = arrayListOf()
                             courses[instructorId]?.add(Courses.toCourse(it))
                         } else {
                             courses[instructorId]?.add(Courses.toCourse(it))
                         }
                         Ratings.select { Ratings.course_id eq courseId }.forEach {
                             if (ratings[courseId] == null) {
-                                ratings[courseId] = mutableListOf()
+                                ratings[courseId] = arrayListOf()
                                 ratings[courseId]?.add(Ratings.toRating(it))
                             } else {
                                 ratings[courseId]?.add(Ratings.toRating(it))
@@ -96,8 +97,8 @@ fun Application.courses_module() {
             post {
                 val decodedToken: DecodedJWT? = authenticate(call)
                 if (decodedToken != null) {
-                    val course: Course? = call.receive<Course>()
-                    if (course != null) {
+                    try {
+                        val course: Course = call.receive<Course>()
                         try {
                             transaction(DbSettings.db) {
                                 Courses.insert {
@@ -117,7 +118,8 @@ fun Application.courses_module() {
                                 else -> call.respond(HttpStatusCode.InternalServerError, Message(INTERNAL_ERROR))
                             }
                         }
-                    } else {
+                    }
+                    catch (ex:IllegalStateException) {
                         call.respond(HttpStatusCode.BadRequest, Message(INVALID_BODY))
                     }
                 }
@@ -148,7 +150,7 @@ fun Application.courses_module() {
                 get {
                     val decodedToken: DecodedJWT? = authenticate(call)
                     if (decodedToken != null) {
-                        val courses: MutableList<Course> = mutableListOf()
+                        val courses: ArrayList<Course> = arrayListOf()
                         transaction(DbSettings.db) {
                             val results: List<ResultRow> = Courses.select { Courses.instructor_id eq decodedToken.claims["id"]!!.asInt() }.toList()
                             results.forEach {

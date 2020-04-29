@@ -13,7 +13,7 @@ fun Application.categories_module() {
     routing {
         route("/categories") {
             get {
-                val categories: MutableList<Category> = mutableListOf<Category>()
+                val categories: ArrayList<Category> = arrayListOf()
                 transaction(DbSettings.db) {
                     val results:List<ResultRow> = Categories.selectAll().toList()
                     results.forEach {

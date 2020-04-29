@@ -18,13 +18,14 @@ import org.jetbrains.exposed.exceptions.*
 import org.mindrot.jbcrypt.BCrypt
 import org.covid19support.authentication.Token
 import org.covid19support.constants.Message
+import java.lang.IllegalStateException
 
 
 fun Application.users_module() {
     routing {
         route("/users") {
             get {
-                val users: MutableList<User> = mutableListOf<User>()
+                val users: ArrayList<User> = arrayListOf()
                 transaction(DbSettings.db) {
                     val results:List<ResultRow> = Users.selectAll().toList()
                     results.forEach {
@@ -40,9 +41,9 @@ fun Application.users_module() {
             }
 
             post {
-                val newUser: User? = call.receive<User>()
-                var id:Int = -1
-                if (newUser != null) {
+                try {
+                    val newUser: User = call.receive()
+                    var id:Int = -1
                     try {
                         val passhash = BCrypt.hashpw(newUser.password, BCrypt.gensalt())
                         transaction (DbSettings.db) {
@@ -67,7 +68,7 @@ fun Application.users_module() {
                         }
                     }
                 }
-                else {
+                catch(ex:IllegalStateException) {
                     call.respond(HttpStatusCode.BadRequest, Message(INVALID_BODY))
                 }
             }

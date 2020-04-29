@@ -14,7 +14,6 @@ import org.junit.jupiter.api.*
 import kotlin.test.assertEquals
 
 class TestCourses {
-    //TODO Add Courses
     //TODO Add Courses Missing Data
     //TODO Add Courses Foreign Key Violation
     //TODO Add Courses Unauthenticated
@@ -80,6 +79,54 @@ class TestCourses {
                     assertEquals(HttpStatusCode.Created, response.status())
                 }
             }
+        }
+        cookiesSession {
+            val login: Login = Login(testUsers[1].email, testUsers[1].password)
+            with(handleRequest(HttpMethod.Post, Routes.LOGIN) {
+                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                setBody(gson.toJson(login))
+            }) {
+                assertEquals(HttpStatusCode.OK, response.status())
+            }
+
+            val testCourses: Array<Course> = arrayOf(
+                    Course(null, "Unit Testing 101", "The art of proper unit testing! Let no bugs escape!", -1, "Coding", 17.7f),
+                    Course(null, "1337 Coding", "You think you can code, but is your code 1337? After taking my course you'll be the envy of all the other coders!!!", -1, "Coding", 13.37f)
+            )
+
+            for (course in testCourses) {
+                with(handleRequest(HttpMethod.Post, Routes.COURSES) {
+                    addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    setBody(gson.toJson(course))
+                }) {
+                    assertEquals(HttpStatusCode.Created, response.status())
+                }
+            }
+        }
+
+        cookiesSession {
+            val login: Login = Login(testUsers[2].email, testUsers[2].password)
+            with(handleRequest(HttpMethod.Post, Routes.LOGIN) {
+                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                setBody(gson.toJson(login))
+            }) {
+                assertEquals(HttpStatusCode.OK, response.status())
+            }
+
+            val testCourse = Course(null, "Unit Testing 101", "The art of proper unit testing! Let no bugs escape!", -1, "Coding", 17.7f)
+
+            with(handleRequest(HttpMethod.Post, Routes.COURSES) {
+                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                setBody(gson.toJson(testCourse))
+            }) {
+                assertEquals(HttpStatusCode.Created, response.status())
+            }
+        }
+
+        with(handleRequest(HttpMethod.Get, Routes.COURSES)) {
+            assertDoesNotThrow { gson.fromJson(response.content, Array<Course>::class.java) }
+            val courses: Array<Course> = gson.fromJson(response.content, Array<Course>::class.java)
+            assertEquals(courses.size, 6)
         }
     }
 }

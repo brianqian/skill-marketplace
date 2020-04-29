@@ -17,6 +17,7 @@ import org.covid19support.modules.users.Users
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.lang.IllegalStateException
 
 fun Application.ratings_module() {
     routing {
@@ -24,8 +25,8 @@ fun Application.ratings_module() {
             post {
                 val decodedToken: DecodedJWT? = authenticate(call)
                 if (decodedToken != null) {
-                    val rating: Rating? = call.receive<Rating>()
-                    if (rating != null) {
+                    try {
+                        val rating: Rating = call.receive<Rating>()
                         try {
                             transaction(DbSettings.db) {
                                 Ratings.insert {
@@ -43,7 +44,8 @@ fun Application.ratings_module() {
                                 else -> call.respond(HttpStatusCode.InternalServerError, Message(INTERNAL_ERROR))
                             }
                         }
-                    } else {
+                    }
+                    catch (ex: IllegalStateException) {
                         call.respond(HttpStatusCode.BadRequest, Message(INVALID_BODY))
                     }
                 }
@@ -51,9 +53,9 @@ fun Application.ratings_module() {
             route("/course/{course_id}") {
                 get {
                     val id: Int = call.parameters["course_id"]!!.toInt()
-                    val ratings: MutableList<Rating> = mutableListOf()
-                    val users: MutableList<User> = mutableListOf()
-                    val ratingsComponents: MutableList<RatingComponent> = mutableListOf()
+                    val ratings: ArrayList<Rating> = arrayListOf()
+                    val users: ArrayList<User> = arrayListOf()
+                    val ratingsComponents: ArrayList<RatingComponent> = arrayListOf()
                     transaction {
                         val results: List<ResultRow> = Ratings.select { Ratings.course_id eq id }.toList()
                         results.forEach {

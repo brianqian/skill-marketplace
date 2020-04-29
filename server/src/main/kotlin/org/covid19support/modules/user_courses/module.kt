@@ -15,12 +15,13 @@ import org.covid19support.constants.Message
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.lang.IllegalStateException
 
 fun Application.userCourses_module() {
     routing {
         route("/user_courses") {
             get {
-                val userCourses: MutableList<UserCourse> = mutableListOf<UserCourse>()
+                val userCourses: ArrayList<UserCourse> = arrayListOf()
                 transaction(DbSettings.db) {
                     val results:List<ResultRow> = UserCourses.selectAll().toList()
                     results.forEach {
@@ -37,8 +38,8 @@ fun Application.userCourses_module() {
             post {
                 val decodedToken: DecodedJWT? = authenticate(call)
                 if (decodedToken != null) {
-                    val userCourse: UserCourse? = call.receive<UserCourse>()
-                    if (userCourse != null) {
+                    try {
+                        val userCourse: UserCourse = call.receive<UserCourse>()
                         try {
                             transaction(DbSettings.db) {
                                 UserCourses.insert {
@@ -59,7 +60,7 @@ fun Application.userCourses_module() {
                             }
                         }
                     }
-                    else {
+                    catch (ex: IllegalStateException) {
                         call.respond(HttpStatusCode.BadRequest, Message(INVALID_BODY))
                     }
                 }

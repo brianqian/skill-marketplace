@@ -15,12 +15,13 @@ import org.covid19support.constants.Message
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.lang.IllegalStateException
 
 fun Application.contactInfo_module() {
     routing {
         route("/contact_info") {
             get {
-                val contactInfo: MutableList<ContactInfo> = mutableListOf<ContactInfo>()
+                val contactInfo: ArrayList<ContactInfo> = arrayListOf()
                 transaction(DbSettings.db) {
                     val results:List<ResultRow> = ContactInfoTable.selectAll().toList()
                     results.forEach {
@@ -37,9 +38,9 @@ fun Application.contactInfo_module() {
             post {
                 val decodedToken: DecodedJWT? = authenticate(call)
                 if (decodedToken != null) {
-                    val newContactInfo: ContactInfo? = call.receive<ContactInfo>()
-                    var id:Int = -1
-                    if (newContactInfo != null) {
+                    try {
+                        val newContactInfo: ContactInfo = call.receive<ContactInfo>()
+                        var id:Int = -1
                         try {
                             transaction(DbSettings.db) {
                                 ContactInfoTable.insert {
@@ -58,7 +59,7 @@ fun Application.contactInfo_module() {
                             }
                         }
                     }
-                    else {
+                    catch (ex:IllegalStateException) {
                         call.respond(HttpStatusCode.BadRequest, Message(INVALID_BODY))
                     }
                 }
