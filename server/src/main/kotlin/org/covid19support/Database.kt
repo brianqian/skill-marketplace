@@ -5,6 +5,7 @@ import org.covid19support.modules.courses.Courses
 import org.covid19support.modules.ratings.Ratings
 import org.covid19support.modules.user_courses.UserCourses
 import org.covid19support.modules.users.Users
+import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.transactions.transaction

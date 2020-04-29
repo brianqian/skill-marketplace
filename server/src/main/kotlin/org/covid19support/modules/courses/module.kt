@@ -75,12 +75,12 @@ fun Application.courses_module() {
                             if (ratings[it.id] != null) {
                                 rating = 0
                                 ratings[it.id]?.forEach {
-                                    rating = (rating!! + it.rating_value).toShort()
+                                    rating = (rating!! + it.ratingValue).toShort()
                                 }
                                 rating = (rating!! / ratings[it.id]?.size!!).toShort()
                             }
                             courseComponents.add(CourseComponent(instructor_id,
-                                    instructors[instructor_id]?.first_name + ' ' + instructors[instructor_id]?.last_name,
+                                    instructors[instructor_id]?.firstName + ' ' + instructors[instructor_id]?.lastName,
                                     it.id!!,
                                     it.name,
                                     it.description,

@@ -35,12 +35,12 @@ fun Application.users_module() {
                     call.respond(HttpStatusCode.NoContent, Message("No users found!"))
                 }
                 else {
-                    call.respond(users)
+                    call.respond(HttpStatusCode.OK, "Cheese")
                 }
             }
 
             post {
-                var newUser: User? = call.receive<User>()
+                val newUser: User? = call.receive<User>()
                 var id:Int = -1
                 if (newUser != null) {
                     try {
@@ -49,8 +49,8 @@ fun Application.users_module() {
                             id = Users.insertAndGetId {
                                 it[email] = newUser.email
                                 it[password] = passhash
-                                it[first_name] = newUser.first_name
-                                it[last_name] = newUser.last_name
+                                it[first_name] = newUser.firstName
+                                it[last_name] = newUser.lastName
                                 it[description] = newUser.description
                             }.value
                         }
@@ -59,7 +59,7 @@ fun Application.users_module() {
                         call.respond(HttpStatusCode.Created, newUser)
                     }
                     catch (ex:ExposedSQLException) {
-                        log.error(ex.message)
+                        //log.error(ex.message)
                         when (ex.sqlState) {
                             SQLState.UNIQUE_CONSTRAINT_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, "Email already taken!")
                             SQLState.FOREIGN_KEY_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, ex.localizedMessage)

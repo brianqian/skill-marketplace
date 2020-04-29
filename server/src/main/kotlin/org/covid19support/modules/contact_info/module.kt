@@ -44,8 +44,8 @@ fun Application.contactInfo_module() {
                             transaction(DbSettings.db) {
                                 ContactInfoTable.insert {
                                     it[user_id] = decodedToken.claims["id"]!!.asInt()
-                                    it[contact_method] = newContactInfo.contact_method
-                                    it[contact_info] = newContactInfo.contact_info
+                                    it[contact_method] = newContactInfo.contactMethod
+                                    it[contact_info] = newContactInfo.contactInfo
                                 }
                             }
                             call.respond(HttpStatusCode.Created)

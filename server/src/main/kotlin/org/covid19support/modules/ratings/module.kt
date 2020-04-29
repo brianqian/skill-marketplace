@@ -30,8 +30,8 @@ fun Application.ratings_module() {
                             transaction(DbSettings.db) {
                                 Ratings.insert {
                                     it[user_id] = decodedToken.claims["id"]!!.asInt()
-                                    it[course_id] = rating.course_id
-                                    it[rating_value] = rating.rating_value
+                                    it[course_id] = rating.courseId
+                                    it[rating_value] = rating.ratingValue
                                     it[comment] = rating.comment
                                 }
                             }
@@ -58,12 +58,12 @@ fun Application.ratings_module() {
                         val results: List<ResultRow> = Ratings.select { Ratings.course_id eq id }.toList()
                         results.forEach {
                             ratings.add(Ratings.toRating(it))
-                            users.add(Users.toUser(Users.select { Users.id eq ratings.last().user_id }.first()))
+                            users.add(Users.toUser(Users.select { Users.id eq ratings.last().userId }.first()))
                         }
                     }
                     for (i in 0 until ratings.size) {
-                        ratingsComponents.add(RatingComponent(ratings[i].user_id, ratings[i].course_id, ratings[i].rating_value,
-                                                              ratings[i].comment, users[i].first_name, users[i].last_name))
+                        ratingsComponents.add(RatingComponent(ratings[i].userId, ratings[i].courseId, ratings[i].ratingValue,
+                                                              ratings[i].comment, users[i].firstName, users[i].lastName))
                     }
                     if (ratingsComponents.isEmpty()) {
                         call.respond(HttpStatusCode.NoContent, Message("No ratings found!"))

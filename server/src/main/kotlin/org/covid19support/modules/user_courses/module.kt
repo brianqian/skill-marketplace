@@ -42,11 +42,11 @@ fun Application.userCourses_module() {
                         try {
                             transaction(DbSettings.db) {
                                 UserCourses.insert {
-                                    it[user_id] = userCourse.user_id
-                                    it[course_id] = userCourse.course_id
-                                    it[course_date] = userCourse.course_date
-                                    it[course_time] = userCourse.course_time
-                                    it[course_length] = userCourse.course_length
+                                    it[user_id] = userCourse.userId
+                                    it[course_id] = userCourse.courseId
+                                    it[course_date] = userCourse.courseDate
+                                    it[course_time] = userCourse.courseTime
+                                    it[course_length] = userCourse.courseLength
                                 }
                             }
                             call.respond(HttpStatusCode.Created, Message("UserCourse successfully submitted!"))
