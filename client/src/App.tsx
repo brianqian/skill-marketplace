@@ -15,8 +15,6 @@ import { authenticateToken } from './redux/UserState/userSlice';
 import * as r from './Routes';
 import { AppDispatch } from './redux/store';
 
-const Container = styled.div``;
-
 function App() {
   const dispatch: AppDispatch = useDispatch();
 
@@ -26,7 +24,7 @@ function App() {
   }, []);
 
   return (
-    <Container>
+    <>
       <Header />
       <Switch>
         <Route exact path={r.LOGIN_ROUTE} component={Login} />
@@ -37,7 +35,7 @@ function App() {
         <Route path="/class" component={CourseProfile} />
         <Route exact path="/" component={Home} />
       </Switch>
-    </Container>
+    </>
   );
 }
 

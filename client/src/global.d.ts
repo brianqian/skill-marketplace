@@ -6,7 +6,7 @@ export interface ICourse {
   description?: string;
   rate: number;
   category: string;
-  media?: string[];
+  media?: string[] & File[];
   rating?: number;
   [key: string]: any;
 }

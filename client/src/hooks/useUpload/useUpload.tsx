@@ -7,21 +7,22 @@ const LIMIT = 4;
 
 const useUpload = (initialMedia: string[] = []) => {
   const [files, setFiles] = useState(initialMedia);
-  const [loaded, setLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const resetState = () => {
     setFiles(initialMedia);
-    setLoaded(false);
+    setLoading(false);
   };
 
-  const convert = (input: FileList) => {
+  const addThumbnail = (input: FileList) => {
     const imageArray = [] as string[];
+    setLoading(true);
     const loadImages = (event: any, name: string, i: number) => {
       imageArray.push(event.target.result);
       if (i === input.length - 1) {
         console.log('done', imageArray);
         setFiles([...files, ...imageArray]);
-        setLoaded(true);
+        setLoading(false);
       }
     };
 
@@ -34,7 +35,7 @@ const useUpload = (initialMedia: string[] = []) => {
     });
   };
 
-  return { convert, files, loaded, resetState };
+  return { addThumbnail, files, loading, resetState };
 };
 
 export default useUpload;
