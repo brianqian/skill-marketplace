@@ -5,9 +5,9 @@ import org.covid19support.modules.users.Users
 import org.jetbrains.exposed.sql.*
 
 data class ContactInfo(val id: Int?,
-                       val user_id: Int,
-                       val contact_method: String,
-                       val contact_info: String)
+                       val userId: Int,
+                       val contactMethod: String,
+                       val contactInfo: String)
 
 object ContactInfoTable : Table("contact_info") {
     val id: Column<Int> = integer("id").autoIncrement()

@@ -13,7 +13,7 @@ import java.lang.reflect.Type
 data class Course(val id: Int?,
                   val name: String,
                   val description: String,
-                  val instructor_id: Int,
+                  val instructorId: Int,
                   val category: String,
                   val rate: Float)
 

@@ -40,7 +40,7 @@ fun Application.users_module() {
             }
 
             post {
-                val newUser: User? = call.receive<User>()
+                var newUser: User? = call.receive<User>()
                 var id:Int = -1
                 if (newUser != null) {
                     try {
@@ -54,8 +54,9 @@ fun Application.users_module() {
                                 it[description] = newUser.description
                             }.value
                         }
+                        newUser.id = id
                         call.sessions.set(SessionAuth(Token.create(id, newUser.email)))
-                        call.respond(HttpStatusCode.Created, Message("Successfully registered " + newUser.email))
+                        call.respond(HttpStatusCode.Created, newUser)
                     }
                     catch (ex:ExposedSQLException) {
                         log.error(ex.message)

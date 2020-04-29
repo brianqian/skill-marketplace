@@ -1,20 +1,24 @@
 package org.covid19support.modules.ratings
 
+import com.google.gson.JsonElement
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
 import org.covid19support.modules.courses.Courses
 import org.covid19support.modules.users.Users
 import org.jetbrains.exposed.sql.*
+import java.lang.reflect.Type
 
-data class Rating(val user_id: Int,
-                  val course_id: Int,
-                  val rating_value: Short,
+data class Rating(val userId: Int,
+                  val courseId: Int,
+                  val ratingValue: Short,
                   val comment: String)
 
-data class RatingComponent(val user_id: Int,
-                           val course_id: Int,
-                           val rating_value: Short,
+data class RatingComponent(val userId: Int,
+                           val courseId: Int,
+                           val ratingValue: Short,
                            val comment: String,
-                           val first_name: String,
-                           val last_name: String)
+                           val firstName: String,
+                           val lastName: String)
 
 object Ratings : Table("ratings") {
     val user_id: Column<Int> = integer("user_id").references(Users.id)

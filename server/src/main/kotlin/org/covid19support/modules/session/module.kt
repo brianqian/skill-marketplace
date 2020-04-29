@@ -44,6 +44,7 @@ fun Application.session_module() {
 
                     val loginInfo: Login? = call.receive<Login>()
                     var result: ResultRow? = null
+                    var user: User
                     var success:Boolean = false
                     log.info(loginInfo?.email)
                     log.info(loginInfo?.password)
@@ -62,9 +63,9 @@ fun Application.session_module() {
                             }
                         }
                         if (success) {
-                            log.info("validated")
+                            user = Users.toUser(result!!)
                             call.sessions.set(SessionAuth(Token.create(result!![Users.id].value, loginInfo.email)))
-                            call.respond(HttpStatusCode.OK, Message("Successfully logged in!"))
+                            call.respond(HttpStatusCode.OK, user)
                         }
                         else {
                             log.info("nope")

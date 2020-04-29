@@ -7,11 +7,11 @@ import org.jetbrains.exposed.sql.jodatime.datetime
 import org.joda.time.DateTime
 
 data class UserCourse(val id: Int?,
-                      val user_id: Int,
-                      val course_id: Int,
-                      val course_date: DateTime,
-                      val course_time: DateTime,
-                      val course_length: Short)
+                      val userId: Int,
+                      val courseId: Int,
+                      val courseDate: DateTime,
+                      val courseTime: DateTime,
+                      val courseLength: Short)
 
 object UserCourses : Table("user_courses") {
     val id: Column<Int> = integer("id").autoIncrement()
