@@ -8,6 +8,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "cloudinary-react": "^1.5.0",
+    "concurrently": "^5.1.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -41,6 +42,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "all": "concurrently -k -p \"[{name}]\" -i -n \"NODE,FRONTEND\" -c \"cyan,red\"  \"npm:start:backend\" \"npm:start\"",
     "start:backend": "cd .. && cd server/target && java -jar skill_marketplace-1.0-SNAPSHOT-jar-with-dependencies.jar",
     "build": "react-scripts build",
     "test": "react-scripts test",
