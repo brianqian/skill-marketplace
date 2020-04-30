@@ -3,13 +3,13 @@ import React from 'react';
 import styled from 'styled-components/macro';
 
 type ContainerProps = {
-  col: number | string;
-  row: number | string;
+  col?: number | string;
+  row?: number | string;
 };
 
 const Container = styled.div<ContainerProps>`
-  grid-column: ${p => p.col};
-  grid-row: ${p => p.row};
+  grid-column: ${p => p.col || 'auto'};
+  grid-row: ${p => p.row || 'auto'};
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
@@ -54,8 +54,8 @@ const StyledInput = styled.input`
 
 type Props = {
   label: string;
-  row: number | string;
-  col: number | string;
+  row?: number | string;
+  col?: number | string;
   name: string;
   value?: string;
   type: string;

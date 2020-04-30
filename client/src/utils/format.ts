@@ -1,3 +1,5 @@
+import { IUser } from '../global';
+
 export const userCourses = (dbObject: any) => {
   const {
     course_category,
@@ -18,6 +20,18 @@ export const userCourses = (dbObject: any) => {
   };
 };
 
+export const userObject = (dbObject: Record<string, any>) => {
+  // const { email, first_name, last_name, is_instructor, role } = dbObject;
+  // return {
+  //   email,
+  //   firstName: first_name,
+  //   lastName: last_name,
+  //   isInstructor: is_instructor,
+  //   role,
+  // };
+};
+
 export default {
   userCourses,
+  userObject,
 };

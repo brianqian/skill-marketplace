@@ -18,15 +18,21 @@ const Text = styled.p<{ editable: boolean }>`
   }
 `;
 
+type InputSelectRef = React.Ref<HTMLSelectElement | HTMLInputElement>;
 type Props = {
   enabled: boolean;
-  defaultValue: string | number;
+  defaultValue: React.ReactText;
   isCategory?: boolean;
   name: string;
+  register: InputSelectRef;
 };
 
-type InputSelectRef = React.Ref<HTMLSelectElement | HTMLInputElement>;
-type InputSelectProps = { isDropdown: boolean; defaultValue: string | number; name: string };
+type InputSelectProps = {
+  isDropdown: boolean;
+  defaultValue: React.ReactText;
+  name: string;
+  register: InputSelectRef;
+};
 //  'enabled' props allows:
 // - highlight-on-hover effect
 // - change cell to input on click
@@ -36,23 +42,29 @@ type InputSelectProps = { isDropdown: boolean; defaultValue: string | number; na
 // Text is plain paragraph unless Cell is enabled
 // When cell is enabled, Text has hover effect and can turn into input
 
-const InputOrDropdown = React.forwardRef((props: InputSelectProps, ref: InputSelectRef) => {
-  const { isDropdown, defaultValue } = props;
+const InputOrDropdown = (props: InputSelectProps) => {
+  const { isDropdown, defaultValue, name, register } = props;
   if (isDropdown) {
-    return <CategoryDropdown ref={ref as React.Ref<HTMLSelectElement>} name={props.name} />;
+    return (
+      <CategoryDropdown
+        register={register as React.Ref<HTMLSelectElement>}
+        name={name}
+        defaultValue={defaultValue}
+      />
+    );
   }
   return (
     <input
       defaultValue={defaultValue}
       type="text"
-      ref={ref as React.Ref<HTMLInputElement>}
-      name={props.name}
+      ref={register as React.Ref<HTMLInputElement>}
+      name={name}
     />
   );
-});
+};
 
-const EditableCell = React.forwardRef((props: Props, ref: InputSelectRef) => {
-  const { enabled, defaultValue, isCategory } = props;
+const EditableCell = ({ enabled, defaultValue, isCategory, name, register }: Props) => {
+  // const { enabled, defaultValue, isCategory } = props;
   const [isInput, setIsInput] = useState(false);
 
   useEffect(() => {
@@ -72,15 +84,15 @@ const EditableCell = React.forwardRef((props: Props, ref: InputSelectRef) => {
       {isInput ? (
         <InputOrDropdown
           isDropdown={!!isCategory}
-          name={props.name}
+          name={name}
           defaultValue={defaultValue}
-          ref={ref}
+          register={register}
         />
       ) : (
         <Text editable={enabled}>{defaultValue}</Text>
       )}
     </Container>
   );
-});
+};
 
 export default EditableCell;

@@ -60,7 +60,7 @@ function Home() {
       <h1>Learning for anyone, anywhere</h1>
       <SearchField onSubmit={onSubmit}>
         <input type="text" placeholder="What do you want to learn?" ref={register} name="search" />
-        <CategoryDropdown title="All Skills" ref={register} name="category" />
+        <CategoryDropdown title="All Skills" register={register} name="category" />
       </SearchField>
       <Results>
         {Array(10)

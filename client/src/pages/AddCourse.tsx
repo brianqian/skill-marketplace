@@ -95,6 +95,7 @@ const AddCourse = () => {
           <CategoryGrid>
             {CATEGORIES.map(category => (
               <CategoryContainer
+                key={category.name}
                 selected={category.name === selectedCategory}
                 onClick={() => setCategory(category.name)}
               >

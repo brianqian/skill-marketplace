@@ -5,9 +5,9 @@ import Button from '../Button';
 import FlexDiv from '../FlexDiv';
 import SaveCourseButton from './SaveCourseButton';
 import DeleteCourseButton from './DeleteCourseButton';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import EditableCell from './EditableCell';
-import { ICourse } from '../../global';
+import { ICourseUpload, ICourse } from '../../global';
 import useUpload from '../../hooks/useUpload/useUpload';
 
 const Container = styled.div`
@@ -67,23 +67,31 @@ function Row({ courseInfo }: Props) {
   const [expandCourse, setExpandCourse] = useState(false);
   const [changesMade, setChangesMade] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const { convert, files } = useUpload(courseInfo.media);
+
+  // const { convert, files } = useUpload(courseInfo.media);
   const { category, name: courseName, rate, description, media } = courseInfo;
-  const { register, handleSubmit, setValue } = useForm({
-    defaultValues: {
-      category,
-      name: courseName,
-      rate,
-      description,
-    },
+  const { register, handleSubmit, setValue, getValues } = useForm<ICourseUpload>({
+    defaultValues: { media },
   });
 
-  useEffect(() => {}, [files]);
+  useEffect(() => {
+    register({ name: 'media' });
+  }, []);
 
-  const onSubmit = handleSubmit(async (data: Record<string, any>) => {
-    console.log('ROW', data);
-    await convert(data.media);
-    console.log('files', files);
+  const onSubmit = handleSubmit((data: ICourseUpload) => {
+    console.log('Submitted form:', data);
+    const formData = new FormData();
+    Object.keys(data).forEach(key => {
+      if (key === 'media') {
+        if (!data.media) return;
+        data.media.forEach((file: File | string) => {
+          formData.append('media', file);
+        });
+      } else {
+        formData.append(key, data[key]);
+      }
+    });
+    // submit formData with fetch to endpoint
     setSubmitted(true);
   });
 
@@ -105,14 +113,14 @@ function Row({ courseInfo }: Props) {
         <Cell flex={2}>
           <EditableCell
             name="name"
-            ref={register}
+            register={register}
             enabled={expandCourse}
             defaultValue={courseName}
           />
         </Cell>
         <Cell flex={2}>
           <EditableCell
-            ref={register}
+            register={register}
             enabled={expandCourse}
             isCategory
             defaultValue={category}
@@ -120,12 +128,23 @@ function Row({ courseInfo }: Props) {
           />
         </Cell>
         <Cell flex={1}>
-          <EditableCell ref={register} enabled={expandCourse} defaultValue={rate} name="rate" />
+          <EditableCell
+            register={register}
+            enabled={expandCourse}
+            defaultValue={rate}
+            name="rate"
+          />
         </Cell>
       </Container>
       {expandCourse && (
         <ExpandableDrawer>
-          <MediaContainer ref={register} name="media" media={media} setValue={setValue} />
+          <MediaContainer
+            register={register}
+            name="media"
+            media={media}
+            getValue={getValues}
+            setValue={setValue}
+          />
           <DescriptionContainer>
             <Description
               placeholder="Add a description"
