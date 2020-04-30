@@ -7,7 +7,7 @@ import SaveCourseButton from './SaveCourseButton';
 import DeleteCourseButton from './DeleteCourseButton';
 import { useForm, Controller } from 'react-hook-form';
 import EditableCell from './EditableCell';
-import { ICourse } from '../../global';
+import { ICourseUpload, ICourse } from '../../global';
 import useUpload from '../../hooks/useUpload/useUpload';
 
 const Container = styled.div`
@@ -70,7 +70,7 @@ function Row({ courseInfo }: Props) {
 
   // const { convert, files } = useUpload(courseInfo.media);
   const { category, name: courseName, rate, description, media } = courseInfo;
-  const { register, handleSubmit, setValue, getValues } = useForm<ICourse>({
+  const { register, handleSubmit, setValue, getValues } = useForm<ICourseUpload>({
     defaultValues: { media },
   });
 
@@ -78,13 +78,13 @@ function Row({ courseInfo }: Props) {
     register({ name: 'media' });
   }, []);
 
-  const onSubmit = handleSubmit((data: ICourse) => {
+  const onSubmit = handleSubmit((data: ICourseUpload) => {
     console.log('Submitted form:', data);
     const formData = new FormData();
     Object.keys(data).forEach(key => {
       if (key === 'media') {
         if (!data.media) return;
-        data.media.forEach((file: File) => {
+        data.media.forEach((file: File | string) => {
           formData.append('media', file);
         });
       } else {

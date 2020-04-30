@@ -60,8 +60,8 @@ const MediaContainer = (props: Props) => {
 
   const updateForm = (newImages: FileList) => {
     addThumbnail(newImages);
-    const newMedia = getValue().media;
-    setValue('media', [...newMedia, ...Array.from(newImages)]);
+    const media = getValue().media;
+    setValue('media', [...media, ...Array.from(newImages)]);
   };
 
   const stopDefault = (e: SyntheticEvent) => {

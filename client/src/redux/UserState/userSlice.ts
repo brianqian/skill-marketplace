@@ -6,7 +6,7 @@ import { ICategory, IUser, ICourse, IError } from '../../global';
 
 type StateShape = {
   userData: IUser;
-  userCourses: Array<ICourse>;
+  userCourses: ICourse[];
   error?: number;
   loading: 'idle' | 'pending';
 };

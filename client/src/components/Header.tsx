@@ -2,7 +2,13 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { Link } from 'react-router-dom';
 import Avatar from './Avatar';
-import { EDIT_PROFILE_ROUTE, HOME_ROUTE, REGISTER_ROUTE, LOGIN_ROUTE } from '../Routes';
+import {
+  EDIT_PROFILE_ROUTE,
+  HOME_ROUTE,
+  REGISTER_ROUTE,
+  LOGIN_ROUTE,
+  BACKEND_LOGOUT_ROUTE,
+} from '../Routes';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/reducer';
 
@@ -54,6 +60,7 @@ function Header() {
             <Link to={EDIT_PROFILE_ROUTE}>
               <Avatar size={30} />
             </Link>
+            <Link to={BACKEND_LOGOUT_ROUTE}>Logout</Link>
           </>
         ) : (
           <>
