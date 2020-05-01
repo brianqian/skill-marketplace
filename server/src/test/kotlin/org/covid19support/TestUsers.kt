@@ -11,8 +11,7 @@ import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Test
 import kotlin.test.*
 
-class TestUsers {
-    //TODO Get User Does Not Exist
+class TestUsers : BaseTest() {
     //TODO Invalid Email & Password (once validation is added)
     //TODO Edit User
     //TODO Edit User Unauthenticated
@@ -20,8 +19,6 @@ class TestUsers {
     //TODO Delete User
     //TODO Delete User Unauthenticated
     //TODO Delete User Unauthorized
-
-    private val gson: Gson = Gson()
 
     @Test
     fun addUsers() = withTestApplication({
@@ -97,7 +94,7 @@ class TestUsers {
     }
 
     @Test
-    fun addUserInvalidJson() = withTestApplication ({
+    fun addUserInvalidData() = withTestApplication ({
         main(true)
         users_module()
     }) {
@@ -108,6 +105,16 @@ class TestUsers {
             setBody(gson.toJson(badData))
         }) {
             assertEquals(HttpStatusCode.BadRequest, response.status())
+        }
+    }
+
+    @Test
+    fun getUserDoesNotExist() = withTestApplication({
+        main(true)
+        users_module()
+    }) {
+        with(handleRequest(HttpMethod.Get, "${Routes.USERS}/3")) {
+            assertEquals(HttpStatusCode.NoContent, response.status())
         }
     }
 }

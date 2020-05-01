@@ -115,6 +115,7 @@ fun Application.courses_module() {
                             log.error(ex.message)
                             when (ex.sqlState) {
                                 SQLState.FOREIGN_KEY_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, Message(ex.localizedMessage))
+                                SQLState.CHECK_VIOLATION.code -> call.respond(HttpStatusCode.BadRequest, Message(ex.localizedMessage))
                                 else -> call.respond(HttpStatusCode.InternalServerError, Message(INTERNAL_ERROR))
                             }
                         }

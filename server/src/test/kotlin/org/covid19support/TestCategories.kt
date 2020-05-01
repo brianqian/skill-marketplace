@@ -11,18 +11,16 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class TestCategories {
-    private val gson: Gson = Gson()
-
+class TestCategories : BaseTest() {
     @Test
     fun testCategories() = withTestApplication({
         main(true)
         categories_module()
     }) {
         with(handleRequest(HttpMethod.Get, "/categories")) {
-            lateinit var categories: Array<Category>
             assertEquals(HttpStatusCode.OK, response.status())
-            assertDoesNotThrow { categories = gson.fromJson(response.content, Array<Category>::class.java) }
+            assertDoesNotThrow { gson.fromJson(response.content, Array<Category>::class.java) }
+            val categories: Array<Category> = gson.fromJson(response.content, Array<Category>::class.java)
             assertTrue { categories.isNotEmpty() }
         }
     }

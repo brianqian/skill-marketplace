@@ -51,7 +51,7 @@ create table courses(
     description varchar(1024) not null,
     instructor_id integer references users(id) on delete cascade not null,
     category varchar(128) references categories(name) on delete cascade not null,
-    rate real not null
+    rate real not null check(rate > 0)
 );
 
 create table contact_info(

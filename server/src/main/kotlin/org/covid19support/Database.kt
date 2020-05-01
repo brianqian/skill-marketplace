@@ -15,7 +15,8 @@ import org.jetbrains.exposed.sql.transactions.transactionManager
 //will add more to this as I run across more
 enum class SQLState(val code: String) {
     UNIQUE_CONSTRAINT_VIOLATION("23505"),
-    FOREIGN_KEY_VIOLATION("23503")
+    FOREIGN_KEY_VIOLATION("23503"),
+    CHECK_VIOLATION("23514")
 
 }
 
