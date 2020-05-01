@@ -14,6 +14,7 @@ import org.junit.jupiter.api.*
 import kotlin.test.*
 
 class TestCourses : BaseTest() {
+    //TODO Add Course Text Fields too Long
     //TODO Edit Course
     //TODO Edit Course Unauthenticated
     //TODO Edit Course Unauthorized

@@ -1,8 +1,12 @@
 package org.covid19support
 
-class TestRatings {
+import io.ktor.server.testing.withTestApplication
+import org.junit.jupiter.api.Test
+
+class TestRatings : BaseTest() {
     //TODO Add Ratings Success
     //TODO Add Ratings Failure (Foreign Key Violation)
+    //TODO Add Ratings Failure (Text Too Long)
     //TODO Add Ratings Failure (Missing Data)
     //TODO Add Ratings Failure (Invalid Data)
     //TODO Add Ratings Failure (Unauthenticated)
@@ -18,4 +22,11 @@ class TestRatings {
     //TODO Delete Ratings Failure (Rating does not Exist)
     //TODO Delete Ratings Failure (Unauthenticated)
     //TODO Delete Ratings Failure (Unauthorized)
+
+    @Test
+    fun addRatings() = withTestApplication ({
+
+    }) {
+
+    }
 }
