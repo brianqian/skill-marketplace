@@ -14,12 +14,6 @@ import org.junit.jupiter.api.*
 import kotlin.test.*
 
 class TestCourses : BaseTest() {
-    //TODO Get Courses
-    //TODO No Courses
-    //TODO Get Courses By Category
-    //TODO Get Courses By Instructor
-    //TODO Get Courses by Category & Instructor
-    //TODO Get Courses does Not Exist
     //TODO Edit Course
     //TODO Edit Course Unauthenticated
     //TODO Edit Course Unauthorized
@@ -173,7 +167,7 @@ class TestCourses : BaseTest() {
                 assertTrue(course.isJsonObject)
                 assertTrue(validateCourseComponentFormat(course.asJsonObject))
             }
-            assertEquals(courses.size(), 6)
+            assertEquals(6, courses.size())
         }
     }
 
@@ -443,7 +437,7 @@ class TestCourses : BaseTest() {
         with(handleRequest(HttpMethod.Get, Routes.COURSES)) {
             assertDoesNotThrow { gson.fromJson(response.content, JsonArray::class.java) }
             val courses: JsonArray = gson.fromJson(response.content, JsonArray::class.java)
-            assertEquals(courses.size(), 16)
+            assertEquals(16, courses.size())
             for (course in courses) {
                 assertDoesNotThrow { gson.fromJson(course, JsonObject::class.java)}
                 assertTrue(validateCourseComponentFormat(course.asJsonObject))
@@ -453,14 +447,76 @@ class TestCourses : BaseTest() {
         with(handleRequest(HttpMethod.Get, "${Routes.COURSES}?categories=Coding,Business")) {
             assertDoesNotThrow { gson.fromJson(response.content, JsonArray::class.java) }
             val courseComponents: JsonArray = gson.fromJson(response.content, JsonArray::class.java)
-            println(response.content)
+            assertEquals(5, courseComponents.size())
             for (courseComponent in courseComponents) {
                 assertDoesNotThrow { gson.fromJson(courseComponent, JsonObject::class.java)}
                 assertTrue(validateCourseComponentFormat(courseComponent.asJsonObject))
                 val course: Course = gson.fromJson(courseComponent.asJsonObject.get("course"), Course::class.java)
                 assert(course.category == "Coding" || course.category == "Business")
             }
-            assertEquals(courseComponents.size(), 5)
+        }
+
+        with(handleRequest(HttpMethod.Get, "${Routes.COURSES}?categories=Arts%20%26%20Crafts,UI%2FUX%20Design,Photography%2FFilm")) {
+            assertDoesNotThrow { gson.fromJson(response.content, JsonArray::class.java) }
+            val courseComponents: JsonArray = gson.fromJson(response.content, JsonArray::class.java)
+            assertEquals(7, courseComponents.size())
+            for (courseComponent in courseComponents) {
+                assertDoesNotThrow { gson.fromJson(courseComponent, JsonObject::class.java)}
+                assertTrue(validateCourseComponentFormat(courseComponent.asJsonObject))
+                val course: Course = gson.fromJson(courseComponent.asJsonObject.get("course"), Course::class.java)
+                assert(course.category == "Arts & Crafts" || course.category == "Photography/Film" || course.category == "UI/UX Design")
+            }
+        }
+
+        with(handleRequest(HttpMethod.Get, "${Routes.COURSES}?categories=Coding,Business,Cooking,Arts%20%26%20Crafts,UI%2FUX%20Design,Photography%2FFilm")) {
+            assertDoesNotThrow { gson.fromJson(response.content, JsonArray::class.java) }
+            val courseComponents: JsonArray = gson.fromJson(response.content, JsonArray::class.java)
+            assertEquals(16, courseComponents.size())
+            for (courseComponent in courseComponents) {
+                assertDoesNotThrow { gson.fromJson(courseComponent, JsonObject::class.java)}
+                assertTrue(validateCourseComponentFormat(courseComponent.asJsonObject))
+            }
+        }
+
+        with(handleRequest(HttpMethod.Get, "${Routes.COURSES}?instructor_id=${testUsers[0].id}")) {
+            assertDoesNotThrow { gson.fromJson(response.content, JsonArray::class.java) }
+            val courseComponents: JsonArray = gson.fromJson(response.content, JsonArray::class.java)
+            assertEquals(10, courseComponents.size())
+            for (courseComponent in courseComponents) {
+                assertDoesNotThrow { gson.fromJson(courseComponent, JsonObject::class.java)}
+                assertTrue(validateCourseComponentFormat(courseComponent.asJsonObject))
+                val instructor:JsonObject = gson.fromJson(courseComponent.asJsonObject.getAsJsonObject("instructor"), JsonObject::class.java)
+                assertEquals(testUsers[0].id, instructor.get("id").asInt)
+            }
+        }
+
+        with(handleRequest(HttpMethod.Get, "${Routes.COURSES}?instructor_id=${testUsers[0].id}&categories=Cooking,Coding")) {
+            assertDoesNotThrow { gson.fromJson(response.content, JsonArray::class.java) }
+            val courseComponents: JsonArray = gson.fromJson(response.content, JsonArray::class.java)
+            assertEquals(5, courseComponents.size())
+            for (courseComponent in courseComponents) {
+                assertDoesNotThrow { gson.fromJson(courseComponent, JsonObject::class.java)}
+                assertTrue(validateCourseComponentFormat(courseComponent.asJsonObject))
+                val instructor:JsonObject = gson.fromJson(courseComponent.asJsonObject.getAsJsonObject("instructor"), JsonObject::class.java)
+                assertEquals(testUsers[0].id, instructor.get("id").asInt)
+                val course: Course = gson.fromJson(courseComponent.asJsonObject.get("course"), Course::class.java)
+                assert(course.category == "Cooking" || course.category == "Coding")
+            }
+        }
+    }
+
+    @Test
+    fun getCourseNotFound() = withTestApplication ({
+        main(true)
+        courses_module()
+    }) {
+        with(handleRequest(HttpMethod.Get, Routes.COURSES)) {
+            assertEquals(HttpStatusCode.NoContent, response.status())
+            assertTrue(validateMessageFormat(gson.fromJson(response.content, JsonObject::class.java)))
+        }
+        with(handleRequest(HttpMethod.Get, "${Routes.COURSES}/3")) {
+            assertEquals(HttpStatusCode.NoContent, response.status())
+            assertTrue(validateMessageFormat(gson.fromJson(response.content, JsonObject::class.java)))
         }
     }
 }

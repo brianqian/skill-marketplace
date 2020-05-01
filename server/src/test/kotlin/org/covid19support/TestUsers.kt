@@ -5,6 +5,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import io.ktor.http.*
 import io.ktor.server.testing.*
+import kotlinx.serialization.json.Json
 import org.covid19support.modules.users.User
 import org.covid19support.modules.users.users_module
 import org.junit.jupiter.api.*
@@ -109,12 +110,17 @@ class TestUsers : BaseTest() {
     }
 
     @Test
-    fun getUserDoesNotExist() = withTestApplication({
+    fun getUserNotFound() = withTestApplication({
         main(true)
         users_module()
     }) {
+        with(handleRequest(HttpMethod.Get, Routes.USERS)) {
+            assertEquals(HttpStatusCode.NoContent, response.status())
+            assertTrue(validateMessageFormat(gson.fromJson(response.content, JsonObject::class.java)))
+        }
         with(handleRequest(HttpMethod.Get, "${Routes.USERS}/3")) {
             assertEquals(HttpStatusCode.NoContent, response.status())
+            assertTrue(validateMessageFormat(gson.fromJson(response.content, JsonObject::class.java)))
         }
     }
 }
