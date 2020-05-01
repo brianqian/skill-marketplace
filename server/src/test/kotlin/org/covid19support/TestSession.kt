@@ -4,6 +4,7 @@ class TestSession {
     //TODO Login Success
     //TODO Login Fail (User Exists)
     //TODO Login Fail (User Does Not Exist)
+    //TODO Login Fail (Text too Long)
     //TODO Logout Success
     //TODO Logout Failed (Already Logged Out)
     //TODO Authenticate Success
