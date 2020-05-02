@@ -68,7 +68,6 @@ fun Application.session_module() {
                             call.respond(HttpStatusCode.OK, user)
                         }
                         else {
-                            log.info("nope")
                             call.respond(HttpStatusCode.BadRequest, Message("Invalid email or password"))
                         }
                     }

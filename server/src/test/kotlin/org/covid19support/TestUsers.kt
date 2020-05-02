@@ -1,11 +1,9 @@
 package org.covid19support
 
-import com.google.gson.Gson
-import com.google.gson.JsonElement
+
 import com.google.gson.JsonObject
 import io.ktor.http.*
 import io.ktor.server.testing.*
-import kotlinx.serialization.json.Json
 import org.covid19support.modules.users.User
 import org.covid19support.modules.users.users_module
 import org.junit.jupiter.api.*
@@ -13,6 +11,7 @@ import org.junit.jupiter.api.Test
 import kotlin.test.*
 
 class TestUsers : BaseTest() {
+    //TODO Register logs user in
     //TODO Add Users Text Too Long
     //TODO Invalid Email & Password (once validation is added)
     //TODO Edit User
