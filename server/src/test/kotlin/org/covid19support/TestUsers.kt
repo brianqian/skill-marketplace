@@ -4,6 +4,9 @@ package org.covid19support
 import com.google.gson.JsonObject
 import io.ktor.http.*
 import io.ktor.server.testing.*
+import io.ktor.sessions.get
+import io.ktor.sessions.sessions
+import org.covid19support.modules.session.session_module
 import org.covid19support.modules.users.User
 import org.covid19support.modules.users.users_module
 import org.junit.jupiter.api.*
@@ -39,6 +42,7 @@ class TestUsers : BaseTest() {
                 setBody(gson.toJson(user))
             }) {
                 assertEquals(HttpStatusCode.Created, response.status())
+                assertDoesNotThrow { gson.fromJson(response.content, User::class.java) }
                 user.id = gson.fromJson(response.content, User::class.java).id
             }
         }
@@ -61,6 +65,30 @@ class TestUsers : BaseTest() {
                 assertEquals(user.isInstructor, responseUser.isInstructor)
                 assertEquals(user.role, responseUser.role)
                 assertNull(responseUser.password)
+            }
+        }
+
+    }
+
+    @Test
+    fun addUserLogsIn() = withTestApplication({
+        main(true)
+        users_module()
+        session_module()
+    }) {
+        val testUser = User(null, "test@test.org", "test123", "Test1", "McTesterson", "The head of the McTesterson House, Mr. McTesterson rules with an iron fist!")
+        cookiesSession {
+            with(handleRequest(HttpMethod.Post, Routes.USERS){
+                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                setBody(gson.toJson(testUser))
+            }) {
+                assertEquals(HttpStatusCode.Created, response.status())
+                assertNotNull(sessions.get<SessionAuth>())
+            }
+
+            with(handleRequest(HttpMethod.Get, Routes.AUTHENTICATE)) {
+                assertEquals(HttpStatusCode.OK, response.status())
+                assertDoesNotThrow{gson.fromJson(response.content, User::class.java)}
             }
         }
 

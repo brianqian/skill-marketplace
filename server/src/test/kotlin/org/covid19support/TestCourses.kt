@@ -72,7 +72,6 @@ class TestCourses : BaseTest() {
         return true
     }
 
-
     @Test
     fun addCourses() = withTestApplication({
         main(true)

@@ -1,12 +1,8 @@
 package org.covid19support.modules.ratings
 
-import com.google.gson.JsonElement
-import com.google.gson.JsonSerializationContext
-import com.google.gson.JsonSerializer
 import org.covid19support.modules.courses.Courses
 import org.covid19support.modules.users.Users
 import org.jetbrains.exposed.sql.*
-import java.lang.reflect.Type
 
 data class Rating(val userId: Int,
                   val courseId: Int,
