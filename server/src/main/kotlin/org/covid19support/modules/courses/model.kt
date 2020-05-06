@@ -11,7 +11,7 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 import java.lang.reflect.Type
 
-data class Course(val id: Int?,
+data class Course(var id: Int?,
                   val name: String,
                   val description: String,
                   val instructorId: Int,

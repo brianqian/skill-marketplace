@@ -43,7 +43,7 @@ fun Application.courses_module() {
 
                 transaction(DbSettings.db) {
                     coursesQuery.forEach {
-                        val courseId: Int = it[Courses.id]
+                        val courseId: Int = it[Courses.id].value
                         val instructorId: Int = it[Courses.instructor_id]
                         if (courses[instructorId] == null) {
                             courses[instructorId] = arrayListOf()

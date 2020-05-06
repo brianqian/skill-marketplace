@@ -64,7 +64,7 @@ create table contact_info(
 create table ratings(
     user_id integer references users(id) on delete cascade not null,
     course_id integer references courses(id) on delete cascade not null,
-    rating smallint not null check(rating > 0 and rating < 6),
+    rating smallint not null check(rating >= 0 and rating < 6),
     comment varchar(512),
     primary key (user_id, course_id)
 );

@@ -6,4 +6,6 @@ object Routes {
     const val AUTHENTICATE: String = "/session/authenticate"
     const val COURSES: String = "/courses"
     const val USERS: String = "/users"
+    const val RATINGS: String = "/ratings"
+    const val COURSE_RATINGS: String = "$RATINGS/course"
 }

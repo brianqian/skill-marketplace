@@ -77,6 +77,7 @@ fun Application.ratings_module() {
             route("/{course_id}/{user_id}") {
                 get {
                     var rating: Rating? = null
+                    var ratingUser: User? = null
                     val course_id: Int = call.parameters["course_id"]!!.toInt()
                     val user_id: Int = call.parameters["user_id"]!!.toInt()
                     transaction(DbSettings.db) {
@@ -84,12 +85,16 @@ fun Application.ratings_module() {
                         if (result != null) {
                             rating = Ratings.toRating(result)
                         }
+                        val userResult: ResultRow? = Users.select {Users.id eq rating?.userId}.firstOrNull()
+                        if (userResult != null) {
+                            ratingUser = Users.toUser(userResult)
+                        }
                     }
-
                     if (rating == null) {
                         call.respond(HttpStatusCode.NoContent, Message("Rating not found!"))
                     } else {
-                        call.respond(rating!!)
+                        val ratingComponent = RatingComponent(rating!!.userId, rating!!.courseId, rating!!.ratingValue, rating!!.comment, ratingUser!!.firstName, ratingUser!!.lastName)
+                        call.respond(ratingComponent)
                     }
                 }
             }

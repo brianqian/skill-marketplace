@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test
 import kotlin.test.*
 
 class TestUsers : BaseTest() {
+    //TODO Valid Format Returned (Description included when it exists and not included when it doesn't
     //TODO Register logs user in
     //TODO Add Users Text Too Long
     //TODO Invalid Email & Password (once validation is added)

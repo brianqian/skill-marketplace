@@ -14,6 +14,7 @@ import org.junit.jupiter.api.*
 import kotlin.test.*
 
 class TestCourses : BaseTest() {
+    //TODO Add Courses with Ratings
     //TODO Add Course Text Fields too Long
     //TODO Edit Course
     //TODO Edit Course Unauthenticated
@@ -73,7 +74,7 @@ class TestCourses : BaseTest() {
     }
 
     @Test
-    fun addCourses() = withTestApplication({
+    fun addCoursesNoRatings() = withTestApplication({
         main(true)
         users_module()
         session_module()
