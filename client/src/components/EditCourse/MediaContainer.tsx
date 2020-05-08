@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef, SyntheticEvent } from 'react';
 import styled from 'styled-components/macro';
 import useUpload from '../../hooks/useUpload/useUpload';
 
@@ -10,15 +10,105 @@ const Container = styled.div`
   padding: 1rem;
 `;
 
-const MediaPlaceholder = styled.div`
-  width: 100px;
-  height: 100px;
-  border: 4px dashed lightgray;
-  border-radius: 8px;
+const InputContainer = styled.div`
+  width: 125px;
+  height: 125px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  border: 4px dashed lightgray;
+  border-radius: 8px;
 `;
+
+const ImageThumbnail = styled(InputContainer)`
+  border: none;
+`;
+
+const Image = styled.img`
+  width: 125px;
+  height: 125px;
+  object-fit: contain;
+`;
+
+type Props = {
+  media?: string[];
+  name: 'media';
+  setValue: any;
+  getValue: any;
+  onComplete?: (x: FileList) => FileList | string[];
+  register: any;
+};
+
+const MediaContainer = (props: Props) => {
+  const { media = [], setValue, getValue } = props;
+  const { addThumbnail, files, loading, resetState } = useUpload(media);
+  const uploadRef = useRef<HTMLInputElement>(null);
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const { files } = e.dataTransfer;
+    updateForm(files);
+    // return ui state to normal
+  };
+
+  const handleInput = (e: React.ChangeEvent) => {
+    const { files } = e.target as HTMLInputElement;
+    updateForm(files as FileList);
+  };
+
+  const updateForm = (newImages: FileList) => {
+    addThumbnail(newImages);
+    const media = getValue().media;
+    setValue('media', [...media, ...Array.from(newImages)]);
+  };
+
+  const stopDefault = (e: SyntheticEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const dragEnter = (e: SyntheticEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(e);
+    // change ui state to show file is entered/container is hovered over
+  };
+
+  const uploadClick = () => {
+    if (!uploadRef?.current) return;
+    uploadRef.current.click();
+  };
+
+  return (
+    <>
+      <Container onDragEnter={dragEnter} onDragOver={stopDefault} onDrop={handleDrop}>
+        {!!files.length &&
+          files.map(img => {
+            return (
+              <ImageThumbnail>
+                <Image src={img} />
+              </ImageThumbnail>
+            );
+          })}
+        <InputContainer onClick={uploadClick}>
+          <label htmlFor="media">Upload</label>
+          <input
+            type="file"
+            name="media"
+            ref={uploadRef}
+            onChange={handleInput}
+            className="visually-hidden"
+            multiple
+          />
+        </InputContainer>
+      </Container>
+    </>
+  );
+};
+
+export default MediaContainer;
 
 /**
  * 1. Container listens to images dragged on and uploaded
@@ -38,35 +128,18 @@ const MediaPlaceholder = styled.div`
  * 4. After all the options are gathered, they are URL encoded in the body of the request
  *  'file=https://www.example.com/sample.jpg&eager=w_400,h_300,c_pad|w_260,h_200,c_crop&timestamp=173719931&api_key=436464676&signature=a788d68f86a6f868af'
  * 5. Request returns eager transformed img urls that can be used as thumbnails to notify user of upload
- * 5b. Alternatively full image size thumbnails can be temporarily created until
+ * 5b. Alternatively full image size thumbnails can be temporarily created locally
  *
+ *
+ * Frontend State -- all managed by useUpload/Redux
+ *
+ *  1. Preexisting images are loaded into useUpload's files as URLs
+ *  2. As images are added, they are converted to base64 to provide an image preview
+ *  3. When the form is submitted, the raw FileList is submitted to the backend via Redux
+ *  4. In the Redux dispatch, the post request is made and gets the updated course back
+ *  5. Redux finds the correct course and updates
+ *
+ *  Image Deletion --
+ *  1. If images are marked for deletion, Redux handles the post request and returns a 2xx status code
+ *  2. Images are found in the course and removed.
  */
-
-type Props = {
-  media: string[];
-  name: 'media';
-  setValue: any;
-};
-
-const MediaContainer = React.forwardRef((props: Props, ref: React.Ref<HTMLInputElement>) => {
-  const [thumbnails, setThumbnails] = useState([]);
-  const { convert, files, loaded, resetState } = useUpload(props.media);
-
-  const handleChange = (e: any) => {};
-
-  return (
-    <>
-      <Container>
-        <MediaPlaceholder />
-        <MediaPlaceholder />
-        <MediaPlaceholder />
-        <MediaPlaceholder>
-          Add
-          <input type="file" name={props.name} onChange={handleChange} />
-        </MediaPlaceholder>
-      </Container>
-    </>
-  );
-});
-
-export default MediaContainer;

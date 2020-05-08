@@ -52,50 +52,14 @@ function EditProfile() {
           />
         </ProfileSubsection>
         <ProfileSubsection title="Contact">
-          <TextInput row={2} col={1} label="Phone" name="phone" type="text" ref={register} />
-          <TextInput row={3} col={1} label="Email" name="email" type="email" ref={register} />
+          <TextInput label="Phone" name="phone" type="text" ref={register} />
+          <TextInput label="Email" name="email" type="email" ref={register} />
         </ProfileSubsection>
         <ProfileSubsection title="Settings">
           <TextInput row={2} col={1} label="Password" name="password" type="text" ref={register} />
         </ProfileSubsection>
         <input type="submit" />
       </form>
-      {/* <BasicInformation
-          validationSchema={Yup.object({
-            firstName: Yup.string().required('*Required'),
-            lastName: Yup.string(),
-            specialization: Yup.string().required('*Required'),
-            rate: Yup.number().required('*Required'),
-          })}
-          title="Basic Information"
-        /> */}
-      {/* <AboutMe
-          formikInfo={{initialValues: state.aboutMe, onSubmit: handleSubmit}}
-        validationSchema={Yup.object({
-          description: Yup.string(),
-        })}
-        onSubmit={handleSubmit}
-        title="About Me"
-      />
-      <Contact
-        initialValues={state.contact}
-        validationSchema={Yup.object({
-          phone: Yup.string().min(10, 'Must be at least 10 digits'),
-          email: Yup.string()
-            .required('*Required')
-            .email('Invalid email'),
-        })}
-        onSubmit={handleSubmit}
-        title="Contact"
-      />
-      <Settings
-        initialValues={state.settings}
-        validationSchema={Yup.object({
-          password: Yup.string().min(6, 'Must be at least 6 digits'),
-        })}
-        onSubmit={handleSubmit}
-        title="Settings2"
-      /> */}
     </Layout>
   );
 }

@@ -1,13 +1,12 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch } from '../store';
 import Client from '../../utils/HTTPClient';
 import { COURSES_ROUTE, USERS_ROUTE, TOKEN_AUTH_ROUTE } from '../../Routes';
 import { ICategory, IUser, ICourse, IError } from '../../global';
-import f from '../../utils/format';
 
 type StateShape = {
   userData: IUser;
-  userCourses: Array<ICourse & { rating: number }>;
+  userCourses: ICourse[];
   error?: number;
   loading: 'idle' | 'pending';
 };
@@ -15,26 +14,27 @@ type StateShape = {
 const initialState: StateShape = {
   loading: 'idle',
   userData: {
-    id: '',
+    id: null,
     firstName: '',
     lastName: '',
     email: '',
     avatar: '',
     isInstructor: false,
     description: '',
+    role: 'Normal',
   },
   userCourses: [],
 };
 
 export const authenticateToken = createAsyncThunk('/users/authenticate', async () => {
   const resp = await Client.request(TOKEN_AUTH_ROUTE);
-  console.log('TOKEN AUTH', resp);
+  // console.log('TOKEN AUTH', resp);
   return resp;
 });
 
-export const fetchCourses = createAsyncThunk('/courses/getCourses', async () => {
+export const fetchOwnCourses = createAsyncThunk('/courses/getCourses', async () => {
   const resp = await Client.request(COURSES_ROUTE);
-  console.log('USERS COURSES', resp);
+
   return resp;
 });
 
@@ -53,11 +53,11 @@ const userSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(fetchCourses.fulfilled, (state, action) => {
+    builder.addCase(fetchOwnCourses.fulfilled, (state, action) => {
       const courses = action.payload.map((course: any) => {
-        return f.userCourses(course);
+        if (!course.course.media) course.course.media = [];
+        return course.course;
       });
-      console.log('COURSES', courses);
       state.userCourses = courses;
     });
     builder.addCase(authenticateToken.fulfilled, (state, action) => {

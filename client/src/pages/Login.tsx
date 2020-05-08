@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components/macro';
 import useFetch from '../hooks/useFetch/useFetch';
-import { BACKEND_LOGIN_ROUTE } from '../Routes';
-import { useHistory } from 'react-router-dom';
-import TextInput from '../components/TextInput';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { useHistory, Link } from 'react-router-dom';
+import { AppDispatch } from '../redux/store';
+import { authenticateToken } from '../redux/UserState/userSlice';
+import { BACKEND_LOGIN_ROUTE, REGISTER_ROUTE } from '../Routes';
 import Button from '../components/Button';
 import FlexDiv from '../components/FlexDiv';
 import Layout from '../components/Layout/AuthLayout';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../redux/store';
-import { authenticateToken } from '../redux/UserState/userSlice';
+import TextInput from '../components/TextInput';
 
 const Container = styled(FlexDiv)`
   height: 100%;
@@ -76,7 +76,9 @@ function Login() {
             Login
           </StyledButton>
           {!!error && <Error>{error.message}</Error>}
-          <p style={{ gridColumn: '1/3' }}>Don't have an account? Sign up here.</p>
+          <p style={{ gridColumn: '1/3' }}>
+            Don't have an account? Sign up {<Link to={REGISTER_ROUTE}>here</Link>}.
+          </p>
         </StyledForm>
       </Container>
     </Layout>

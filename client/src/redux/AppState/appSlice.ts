@@ -29,7 +29,6 @@ const userSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(getAllCategories.fulfilled, (state, action) => {
-      console.log('extra reducers, categories', action);
       if (action.payload.error) {
         state.error = action.payload.error;
         return;

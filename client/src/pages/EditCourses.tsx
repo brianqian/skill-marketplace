@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components/macro';
 import Layout from '../components/Layout/ProfilePageLayout';
-import Row from '../components/EditCourse/Row';
+import Row from '../components/EditCourse/CourseRow';
 import { Link } from 'react-router-dom';
 import Button from '../components/Button';
 import { ADD_CLASS_ROUTE } from '../Routes';
@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/reducer';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../redux/store';
-import { fetchCourses } from '../redux/UserState/userSlice';
+import { fetchOwnCourses } from '../redux/UserState/userSlice';
 
 type Flex = {
   flex?: number;
@@ -65,22 +65,22 @@ const AddClassLink = styled(Link)`
 // Media -- images/videos -- hidden in collapsable menu
 
 // prettier-ignore
-const tempCourses = [
-  { id: '1', name: 'Pottery', category: 'Arts & Crafts', rate: 22, description: '' ,media: ['test'] },
-  { id: '2', name: 'HTML & CSS', category: 'Web Development', rate: 40, description: '' ,media: [] },
-  { id: '3', name: 'Basic Sous Vide', category: 'Cooking', rate: 15, description: '' ,media: [] },
-  { id: '4', name: 'How to play Poker', category: 'Games', rate: 20, description: '' ,media: [] },
-];
+// const tempCourses = [
+//   { id: '1', name: 'Pottery', category: 'Arts & Crafts', rate: 22, description: '' ,media: ['test'] },
+//   { id: '2', name: 'HTML & CSS', category: 'Web Development', rate: 40, description: '' ,media: [] },
+//   { id: '3', name: 'Basic Sous Vide', category: 'Cooking', rate: 15, description: '' ,media: [] },
+//   { id: '4', name: 'How to play Poker', category: 'Games', rate: 20, description: '' ,media: [] },
+// ];
 
 function EditCourses() {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchCourses());
+    dispatch(fetchOwnCourses());
   }, []);
 
   const courses = useSelector((state: RootState) => state.user.userCourses);
-
+  console.log(courses);
   return (
     <Layout>
       <AddClassLink to={ADD_CLASS_ROUTE}>
@@ -95,7 +95,7 @@ function EditCourses() {
             <ColumnTitle>Category</ColumnTitle>
           </Column>
           <Column flex={1}>
-            <ColumnTitle>Rate</ColumnTitle>
+            <ColumnTitle>Rate (/hr)</ColumnTitle>
           </Column>
         </Header>
         <CourseTable>
