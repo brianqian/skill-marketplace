@@ -26,19 +26,21 @@ fun Application.courses_module() {
             get {
                 val instructor_id: Int? = call.parameters["instructor_id"]?.toIntOrNull()
                 val categories: List<String>? = call.parameters["categories"]?.split(',')
+                val page_size: Int = run { if (call.parameters["page_size"]?.toIntOrNull() != null) call.parameters["page_size"]!!.toInt() else 10}
+                val current_page: Int = run { if (call.parameters["page"]?.toIntOrNull() != null) call.parameters["page"]!!.toInt() else 1}
                 val courses: HashMap<Int, ArrayList<Course>> = HashMap()
                 val instructors: HashMap<Int, User> = HashMap()
                 val ratings: HashMap<Int, ArrayList<Rating>> = HashMap()
                 val courseComponents: ArrayList<CourseComponent> = arrayListOf()
                 lateinit var coursesQuery: Query
                 if (categories == null && instructor_id == null) {
-                    coursesQuery = Courses.selectAll()
+                    coursesQuery = Courses.selectAll().limit(page_size, offset = (page_size * (current_page-1)).toLong())
                 } else if (categories != null && instructor_id == null) {
-                    coursesQuery = Courses.select { Courses.category inList categories }
+                    coursesQuery = Courses.select { Courses.category inList categories }.limit(page_size, offset = (page_size * (current_page-1)).toLong())
                 } else if (categories == null && instructor_id != null) {
-                    coursesQuery = Courses.select { Courses.instructor_id eq instructor_id }
+                    coursesQuery = Courses.select { Courses.instructor_id eq instructor_id }.limit(page_size, offset = (page_size * (current_page-1)).toLong())
                 } else if (categories != null && instructor_id != null) {
-                    coursesQuery = Courses.select { (Courses.instructor_id eq instructor_id) and (Courses.category inList categories) }
+                    coursesQuery = Courses.select { (Courses.instructor_id eq instructor_id) and (Courses.category inList categories) }.limit(page_size, offset = (page_size * (current_page-1)).toLong())
                 }
 
                 transaction(DbSettings.db) {
