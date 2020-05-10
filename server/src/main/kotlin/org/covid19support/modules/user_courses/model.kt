@@ -22,6 +22,7 @@ object UserCourses : IntIdTable("user_courses") {
     val course_length: Column<Short> = short("course_length")
     override val primaryKey = PrimaryKey(id, name = "PK_User_Courses_Id")
 
+    //Must only ever be called from within a transaction
     fun insertUserCourseAndGetId(userCourse: UserCourse) : Int {
         return insertAndGetId {
             it[user_id] = userCourse.userId
@@ -32,6 +33,7 @@ object UserCourses : IntIdTable("user_courses") {
         }.value
     }
 
+    //Must only ever be called from within a transaction
     fun insertUserCourse(userCourse: UserCourse) {
         insert {
             it[user_id] = userCourse.userId

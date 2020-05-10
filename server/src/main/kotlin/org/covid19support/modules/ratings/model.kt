@@ -23,6 +23,7 @@ object Ratings : Table("ratings") {
     val comment: Column<String> = varchar("comment", 512)
     override val primaryKey = PrimaryKey(user_id, course_id, name = "PK_Ratings_Id")
 
+    //Must only ever be called from within a transaction
     fun insertRating(rating: Rating) {
         insert {
             it[user_id] = rating.userId

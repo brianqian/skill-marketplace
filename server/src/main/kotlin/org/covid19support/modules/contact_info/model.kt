@@ -15,6 +15,7 @@ object ContactInfoTable : IntIdTable("contact_info") {
     val contact_method: Column<String> = varchar("contact_method", 128).references(ContactMethods.name)
     val contact_info: Column<String> = varchar("contact_info", 256)
 
+    //Must only ever be called from within a transaction
     fun insertContactInfoAndGetId(contactInfo: ContactInfo) : Int {
         return insertAndGetId {
             it[user_id] = contactInfo.userId
@@ -23,6 +24,7 @@ object ContactInfoTable : IntIdTable("contact_info") {
         }.value
     }
 
+    //Must only ever be called from within a transaction
     fun insertContactInfo(contactInfo: ContactInfo) {
         insert {
             it[user_id] = contactInfo.userId

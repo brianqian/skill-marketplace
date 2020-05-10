@@ -60,6 +60,7 @@ object Users : IntIdTable("users") {
         }.value
     }
 
+    //Must only ever be called from within a transaction
     fun insertUser(user: User) {
         val passhash = BCrypt.hashpw(user.password, BCrypt.gensalt())
         Users.insert {

@@ -57,6 +57,7 @@ object Courses : IntIdTable("courses") {
     val category: Column<String> = varchar("category", 128).references(Categories.name)
     val rate: Column<Float> = float("rate")
 
+    //Must only ever be called from within a transaction
     fun insertCourseAndGetId(course: Course) : Int {
         return insertAndGetId {
             it[name] = course.name
@@ -67,6 +68,7 @@ object Courses : IntIdTable("courses") {
         }.value
     }
 
+    //Must only ever be called from within a transaction
     fun insertCourse(course: Course) {
         insert {
             it[name] = course.name
