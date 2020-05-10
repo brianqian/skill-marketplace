@@ -5,8 +5,10 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import org.covid19support.modules.roles.Roles
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
+import org.mindrot.jbcrypt.BCrypt
 import java.lang.reflect.Type
 
 data class User(
@@ -43,6 +45,33 @@ object Users : IntIdTable("users") {
     val description: Column<String?> = varchar("description", 1024).nullable()
     val is_instructor: Column<Boolean> = bool("is_instructor").default(false)
     val role: Column<String> = varchar("role", 128).references(Roles.name).default("Normal")
+
+    //Must only ever be called from within a transaction
+    fun insertUserAndGetId(user: User) : Int {
+        val passhash = BCrypt.hashpw(user.password, BCrypt.gensalt())
+        return Users.insertAndGetId {
+            it[email] = user.email
+            it[password] = passhash
+            it[first_name] = user.firstName
+            it[last_name] = user.lastName
+            it[description] = user.description
+            it[is_instructor] = user.isInstructor
+            it[role] = user.role
+        }.value
+    }
+
+    fun insertUser(user: User) {
+        val passhash = BCrypt.hashpw(user.password, BCrypt.gensalt())
+        Users.insert {
+            it[email] = user.email
+            it[password] = passhash
+            it[first_name] = user.firstName
+            it[last_name] = user.lastName
+            it[description] = user.description
+            it[is_instructor] = user.isInstructor
+            it[role] = user.role
+        }
+    }
 
     fun toUser(resultRow: ResultRow): User {
         return User(resultRow[id].value, resultRow[email], resultRow[password], resultRow[first_name], resultRow[last_name], resultRow[description], resultRow[is_instructor], resultRow[role])

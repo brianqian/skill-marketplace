@@ -57,6 +57,26 @@ object Courses : IntIdTable("courses") {
     val category: Column<String> = varchar("category", 128).references(Categories.name)
     val rate: Column<Float> = float("rate")
 
+    fun insertCourseAndGetId(course: Course) : Int {
+        return insertAndGetId {
+            it[name] = course.name
+            it[description] = course.description
+            it[instructor_id] = course.instructorId
+            it[category] = course.category
+            it[rate] = course.rate
+        }.value
+    }
+
+    fun insertCourse(course: Course) {
+        insert {
+            it[name] = course.name
+            it[description] = course.description
+            it[instructor_id] = course.instructorId
+            it[category] = course.category
+            it[rate] = course.rate
+        }
+    }
+
     fun toCourse(resultRow: ResultRow): Course {
         return Course(resultRow[id].value, resultRow[name], resultRow[description], resultRow[instructor_id], resultRow[category], resultRow[rate])
     }

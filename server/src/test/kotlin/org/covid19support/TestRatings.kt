@@ -20,11 +20,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import kotlin.test.*
 
-fun test(hmmmm: () -> Unit) : Int {
-    hmmmm.invoke()
-    return 5
-}
-
 class TestRatings : BaseTest() {
 
     //TODO Add Ratings Failure (Text Too Long) - Not Implemented Yet
@@ -290,5 +285,27 @@ class TestRatings : BaseTest() {
         with(handleRequest(HttpMethod.Get, "${Routes.RATINGS}/5/2")) {
             assertEquals(HttpStatusCode.NoContent, response.status())
         }
+    }
+
+    @Test
+    fun getRatingsPagination(): Unit = withTestApplication({
+        main(true)
+        ratings_module()
+    }) {
+        val instructor = User(null, "instructor@test.org", "password", "Instructor", "Test", "Blah blah blah", true)
+        val users = arrayOf(
+                User(null, "user1@test.org", "password", "User1", "Test", null),
+                User(null, "user2@test.org", "password", "User2", "Test", null),
+                User(null, "user3@test.org", "password", "User3", "Test", null),
+                User(null, "user4@test.org", "password", "User4", "Test", null),
+                User(null, "user5@test.org", "password", "User5", "Test", null),
+                User(null, "user6@test.org", "password", "User6", "Test", null),
+                User(null, "user7@test.org", "password", "User7", "Test", null)
+        )
+        assertNull(instructor.id)
+        transaction(DbSettings.db) {
+            instructor.id = Users.insertUserAndGetId(instructor)
+        }
+        assertNotNull(instructor.id)
     }
 }

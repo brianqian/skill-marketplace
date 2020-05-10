@@ -22,6 +22,26 @@ object UserCourses : IntIdTable("user_courses") {
     val course_length: Column<Short> = short("course_length")
     override val primaryKey = PrimaryKey(id, name = "PK_User_Courses_Id")
 
+    fun insertUserCourseAndGetId(userCourse: UserCourse) : Int {
+        return insertAndGetId {
+            it[user_id] = userCourse.userId
+            it[course_id] = userCourse.courseId
+            it[course_date] = userCourse.courseDate
+            it[course_time] = userCourse.courseTime
+            it[course_length] = userCourse.courseLength
+        }.value
+    }
+
+    fun insertUserCourse(userCourse: UserCourse) {
+        insert {
+            it[user_id] = userCourse.userId
+            it[course_id] = userCourse.courseId
+            it[course_date] = userCourse.courseDate
+            it[course_time] = userCourse.courseTime
+            it[course_length] = userCourse.courseLength
+        }
+    }
+
     fun toUserCourse(resultRow: ResultRow): UserCourse {
         return UserCourse(resultRow[id].value, resultRow[user_id], resultRow[course_id], resultRow[course_date], resultRow[course_time], resultRow[course_length])
     }

@@ -15,6 +15,22 @@ object ContactInfoTable : IntIdTable("contact_info") {
     val contact_method: Column<String> = varchar("contact_method", 128).references(ContactMethods.name)
     val contact_info: Column<String> = varchar("contact_info", 256)
 
+    fun insertContactInfoAndGetId(contactInfo: ContactInfo) : Int {
+        return insertAndGetId {
+            it[user_id] = contactInfo.userId
+            it[contact_info] = contactInfo.contactInfo
+            it[contact_method] = contactInfo.contactMethod
+        }.value
+    }
+
+    fun insertContactInfo(contactInfo: ContactInfo) {
+        insert {
+            it[user_id] = contactInfo.userId
+            it[contact_info] = contactInfo.contactInfo
+            it[contact_method] = contactInfo.contactMethod
+        }
+    }
+
     fun toContactInfo(resultRow: ResultRow): ContactInfo {
         return ContactInfo(resultRow[id].value, resultRow[user_id], resultRow[contact_method], resultRow[contact_info])
     }

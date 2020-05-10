@@ -23,6 +23,15 @@ object Ratings : Table("ratings") {
     val comment: Column<String> = varchar("comment", 512)
     override val primaryKey = PrimaryKey(user_id, course_id, name = "PK_Ratings_Id")
 
+    fun insertRating(rating: Rating) {
+        insert {
+            it[user_id] = rating.userId
+            it[course_id] = rating.courseId
+            it[rating_value] = rating.ratingValue
+            it[comment] = rating.comment
+        }
+    }
+
     fun toRating(resultRow: ResultRow): Rating {
         return Rating(resultRow[user_id], resultRow[course_id], resultRow[rating_value], resultRow[comment])
     }
