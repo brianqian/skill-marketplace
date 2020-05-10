@@ -53,11 +53,13 @@ fun Application.ratings_module() {
             route("/course/{course_id}") {
                 get {
                     val id: Int = call.parameters["course_id"]!!.toInt()
+                    val page_size: Int = run { if (call.parameters["page_size"]?.toIntOrNull() != null) call.parameters["page_size"]!!.toInt() else 10}
+                    val current_page: Int = run { if (call.parameters["page"]?.toIntOrNull() != null) call.parameters["page"]!!.toInt() else 1}
                     val ratings: ArrayList<Rating> = arrayListOf()
                     val users: ArrayList<User> = arrayListOf()
                     val ratingsComponents: ArrayList<RatingComponent> = arrayListOf()
                     transaction {
-                        val results: List<ResultRow> = Ratings.select { Ratings.course_id eq id }.toList()
+                        val results: List<ResultRow> = Ratings.select { Ratings.course_id eq id }.limit(page_size, offset = (page_size * (current_page-1)).toLong()).toList()
                         results.forEach {
                             ratings.add(Ratings.toRating(it))
                             users.add(Users.toUser(Users.select { Users.id eq ratings.last().userId }.first()))

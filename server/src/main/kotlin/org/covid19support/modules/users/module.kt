@@ -26,8 +26,10 @@ fun Application.users_module() {
         route("/users") {
             get {
                 val users: ArrayList<User> = arrayListOf()
+                val page_size: Int = run { if (call.parameters["page_size"]?.toIntOrNull() != null) call.parameters["page_size"]!!.toInt() else 10}
+                val current_page: Int = run { if (call.parameters["page"]?.toIntOrNull() != null) call.parameters["page"]!!.toInt() else 1}
                 transaction(DbSettings.db) {
-                    val results:List<ResultRow> = Users.selectAll().toList()
+                    val results:List<ResultRow> = Users.selectAll().limit(page_size, offset = (page_size * (current_page-1)).toLong()).toList()
                     results.forEach {
                         users.add(Users.toUser(it))
                     }
