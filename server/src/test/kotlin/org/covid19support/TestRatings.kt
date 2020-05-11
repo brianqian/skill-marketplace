@@ -18,6 +18,8 @@ import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+import kotlin.random.Random
+import kotlin.random.nextInt
 import kotlin.test.*
 
 class TestRatings : BaseTest() {
@@ -60,13 +62,7 @@ class TestRatings : BaseTest() {
             }
             testCourse = Course(null, "Unit Testing 101", "Introduction to unit testing", instructor.id!!, "Coding", 5f)
             transaction(DbSettings.db) {
-                testCourse.id = Courses.insertAndGetId {
-                    it[name] = testCourse.name
-                    it[description] = testCourse.description
-                    it[instructor_id] = testCourse.instructorId
-                    it[category] = testCourse.category
-                    it[rate] = testCourse.rate
-                }.value
+                testCourse.id = Courses.insertCourseAndGetId(testCourse)
             }
 
         }
@@ -83,13 +79,7 @@ class TestRatings : BaseTest() {
             }
             testCourse2 = Course(null, "How to Make a Cheesey Game", "You won't believe how goulda this course is!", instructor2.id!!, "Coding", 5f)
             transaction(DbSettings.db) {
-                testCourse2.id = Courses.insertAndGetId {
-                    it[name] = testCourse2.name
-                    it[description] = testCourse2.description
-                    it[instructor_id] = testCourse2.instructorId
-                    it[category] = testCourse2.category
-                    it[rate] = testCourse2.rate
-                }.value
+                testCourse2.id = Courses.insertCourseAndGetId(testCourse2)
             }
 
         }
@@ -215,37 +205,15 @@ class TestRatings : BaseTest() {
                 User(null, "no@no.no", "oraoraora", "Jotaro", "Kujo", "Yare Yare Daze...", false)
                 )
         transaction(DbSettings.db) {
-            instructor.id = Users.insertAndGetId {
-                it[email] = instructor.email
-                it[password] = instructor.password
-                it[first_name] = instructor.firstName
-                it[last_name] = instructor.lastName
-                it[description] = instructor.description
-                it[is_instructor] = instructor.isInstructor
-                it[role] = instructor.role
-            }.value
+            instructor.id = Users.insertUserAndGetId(instructor)
         }
         val courses = arrayOf(Course(null, "Meh", "Meh", instructor.id!!, "Coding", 5f),
                 Course(null, "Hmmm", "hmmmm", instructor.id!!, "Cooking", 5f)
         )
         transaction(DbSettings.db) {
             for (i in 0 until 2) {
-                testUsers[i].id = Users.insertAndGetId {
-                    it[email] = testUsers[i].email
-                    it[password] = testUsers[i].password
-                    it[first_name] = testUsers[i].firstName
-                    it[last_name] = testUsers[i].lastName
-                    it[description] = testUsers[i].description
-                    it[is_instructor] = testUsers[i].isInstructor
-                    it[role] = instructor.role
-                }.value
-                courses[i].id = Courses.insertAndGetId {
-                    it[name] = courses[i].name
-                    it[description] = courses[i].description
-                    it[instructor_id] = courses[i].instructorId
-                    it[category] = courses[i].category
-                    it[rate] = courses[i].rate
-                }.value
+                testUsers[i].id = Users.insertUserAndGetId(testUsers[i])
+                courses[i].id = Courses.insertCourseAndGetId(courses[i])
             }
         }
         val ratings = arrayOf(Rating(testUsers[0].id!!, courses[0].id!!, 5, "blah"),
@@ -254,12 +222,7 @@ class TestRatings : BaseTest() {
         )
         transaction(DbSettings.db) {
             for (rating in ratings) {
-                Ratings.insert {
-                    it[user_id] = rating.userId
-                    it[course_id] = rating.courseId
-                    it[rating_value] = rating.ratingValue
-                    it[comment] = rating.comment
-                }
+                Ratings.insertRating(rating)
             }
         }
         for (rating in ratings) {
@@ -302,10 +265,33 @@ class TestRatings : BaseTest() {
                 User(null, "user6@test.org", "password", "User6", "Test", null),
                 User(null, "user7@test.org", "password", "User7", "Test", null)
         )
-        assertNull(instructor.id)
         transaction(DbSettings.db) {
             instructor.id = Users.insertUserAndGetId(instructor)
+            for (user in users) {
+                user.id = Users.insertUserAndGetId(user)
+            }
         }
-        assertNotNull(instructor.id)
+        val course = Course(null, "Bad Course", "Blah blah", instructor.id!!, "Cooking", 5f)
+        transaction(DbSettings.db) {
+            course.id = Courses.insertCourseAndGetId(course)
+            for (user in users) {
+                Ratings.insertRating(Rating(user.id!!, course.id!!, Random(315).nextInt(0 .. 5).toShort(),"Comment"))
+            }
+        }
+
+        for (i in 1 .. 3) {
+            with(handleRequest(HttpMethod.Get, "${Routes.COURSE_RATINGS}/${course.id}?page_size=2&page=$i")) {
+                assertEquals(HttpStatusCode.OK, response.status())
+                assertDoesNotThrow { gson.fromJson(response.content, Array<RatingComponent>::class.java) }
+                val ratingComponents = gson.fromJson(response.content, Array<RatingComponent>::class.java)
+                assertEquals(2, ratingComponents.size)
+            }
+        }
+        with(handleRequest(HttpMethod.Get, "${Routes.COURSE_RATINGS}/${course.id}?page_size=2&page=4")) {
+            assertEquals(HttpStatusCode.OK, response.status())
+            assertDoesNotThrow { gson.fromJson(response.content, Array<RatingComponent>::class.java) }
+            val ratingComponents = gson.fromJson(response.content, Array<RatingComponent>::class.java)
+            assertEquals(1, ratingComponents.size)
+        }
     }
 }
