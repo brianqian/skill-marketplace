@@ -15,7 +15,7 @@ fun Application.contactMethods_module() {
     routing {
         route("/contact_methods") {
             get {
-                val contactMethods: MutableList<ContactMethod> = mutableListOf<ContactMethod>()
+                val contactMethods: ArrayList<ContactMethod> = arrayListOf()
                 transaction(DbSettings.db) {
                     val results:List<ResultRow> = ContactMethods.selectAll().toList()
                     results.forEach {

@@ -9,7 +9,6 @@ import io.ktor.routing.*
 import io.ktor.sessions.*
 import org.covid19support.*
 import org.covid19support.authentication.*
-import org.covid19support.constants.AUTHORIZED
 import org.covid19support.constants.INVALID_BODY
 import org.covid19support.constants.Message
 import org.covid19support.modules.users.User
@@ -18,6 +17,7 @@ import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.mindrot.jbcrypt.BCrypt
+import java.lang.IllegalStateException
 
 fun Application.session_module() {
     routing {
@@ -42,13 +42,13 @@ fun Application.session_module() {
             }
             route("/login") {
                 post {
-
-                    val loginInfo: Login? = call.receive<Login>()
-                    var result: ResultRow? = null
-                    var success:Boolean = false
-                    log.info(loginInfo?.email)
-                    log.info(loginInfo?.password)
-                    if (loginInfo != null) {
+                    try {
+                        val loginInfo: Login = call.receive<Login>()
+                        var result: ResultRow? = null
+                        val user: User
+                        var success:Boolean = false
+                        log.info(loginInfo.email)
+                        log.info(loginInfo.password)
                         transaction(DbSettings.db) {
                             result = Users.select{ Users.email eq loginInfo.email}.firstOrNull()
                         }
@@ -63,16 +63,15 @@ fun Application.session_module() {
                             }
                         }
                         if (success) {
-                            log.info("validated")
+                            user = Users.toUser(result!!)
                             call.sessions.set(SessionAuth(Token.create(result!![Users.id].value, loginInfo.email)))
-                            call.respond(HttpStatusCode.OK, Message("Successfully logged in!"))
+                            call.respond(HttpStatusCode.OK, user)
                         }
                         else {
-                            log.info("nope")
                             call.respond(HttpStatusCode.BadRequest, Message("Invalid email or password"))
                         }
                     }
-                    else {
+                    catch(ex:IllegalStateException) {
                         call.respond(HttpStatusCode.BadRequest, Message(INVALID_BODY))
                     }
                 }

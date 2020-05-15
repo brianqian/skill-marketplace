@@ -18,13 +18,14 @@ import org.jetbrains.exposed.exceptions.*
 import org.mindrot.jbcrypt.BCrypt
 import org.covid19support.authentication.Token
 import org.covid19support.constants.Message
+import java.lang.IllegalStateException
 
 
 fun Application.users_module() {
     routing {
         route("/users") {
             get {
-                val users: MutableList<User> = mutableListOf<User>()
+                val users: ArrayList<User> = arrayListOf()
                 transaction(DbSettings.db) {
                     val results:List<ResultRow> = Users.selectAll().toList()
                     results.forEach {
@@ -35,27 +36,28 @@ fun Application.users_module() {
                     call.respond(HttpStatusCode.NoContent, Message("No users found!"))
                 }
                 else {
-                    call.respond(users)
+                    call.respond(HttpStatusCode.OK, users)
                 }
             }
 
             post {
-                val newUser: User? = call.receive<User>()
-                var id:Int = -1
-                if (newUser != null) {
+                try {
+                    val newUser: User = call.receive()
+                    var id:Int = -1
                     try {
                         val passhash = BCrypt.hashpw(newUser.password, BCrypt.gensalt())
                         transaction (DbSettings.db) {
                             id = Users.insertAndGetId {
                                 it[email] = newUser.email
                                 it[password] = passhash
-                                it[first_name] = newUser.first_name
-                                it[last_name] = newUser.last_name
+                                it[first_name] = newUser.firstName
+                                it[last_name] = newUser.lastName
                                 it[description] = newUser.description
                             }.value
                         }
+                        newUser.id = id
                         call.sessions.set(SessionAuth(Token.create(id, newUser.email)))
-                        call.respond(HttpStatusCode.Created, Message("Successfully registered " + newUser.email))
+                        call.respond(HttpStatusCode.Created, newUser)
                     }
                     catch (ex:ExposedSQLException) {
                         log.error(ex.message)
@@ -66,7 +68,7 @@ fun Application.users_module() {
                         }
                     }
                 }
-                else {
+                catch(ex:IllegalStateException) {
                     call.respond(HttpStatusCode.BadRequest, Message(INVALID_BODY))
                 }
             }

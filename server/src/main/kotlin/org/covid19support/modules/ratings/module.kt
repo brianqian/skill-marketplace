@@ -17,6 +17,7 @@ import org.covid19support.modules.users.Users
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.lang.IllegalStateException
 
 fun Application.ratings_module() {
     routing {
@@ -24,14 +25,14 @@ fun Application.ratings_module() {
             post {
                 val decodedToken: DecodedJWT? = authenticate(call)
                 if (decodedToken != null) {
-                    val rating: Rating? = call.receive<Rating>()
-                    if (rating != null) {
+                    try {
+                        val rating: Rating = call.receive<Rating>()
                         try {
                             transaction(DbSettings.db) {
                                 Ratings.insert {
                                     it[user_id] = decodedToken.claims["id"]!!.asInt()
-                                    it[course_id] = rating.course_id
-                                    it[rating_value] = rating.rating_value
+                                    it[course_id] = rating.courseId
+                                    it[rating_value] = rating.ratingValue
                                     it[comment] = rating.comment
                                 }
                             }
@@ -43,7 +44,8 @@ fun Application.ratings_module() {
                                 else -> call.respond(HttpStatusCode.InternalServerError, Message(INTERNAL_ERROR))
                             }
                         }
-                    } else {
+                    }
+                    catch (ex: IllegalStateException) {
                         call.respond(HttpStatusCode.BadRequest, Message(INVALID_BODY))
                     }
                 }
@@ -51,19 +53,19 @@ fun Application.ratings_module() {
             route("/course/{course_id}") {
                 get {
                     val id: Int = call.parameters["course_id"]!!.toInt()
-                    val ratings: MutableList<Rating> = mutableListOf()
-                    val users: MutableList<User> = mutableListOf()
-                    val ratingsComponents: MutableList<RatingComponent> = mutableListOf()
+                    val ratings: ArrayList<Rating> = arrayListOf()
+                    val users: ArrayList<User> = arrayListOf()
+                    val ratingsComponents: ArrayList<RatingComponent> = arrayListOf()
                     transaction {
                         val results: List<ResultRow> = Ratings.select { Ratings.course_id eq id }.toList()
                         results.forEach {
                             ratings.add(Ratings.toRating(it))
-                            users.add(Users.toUser(Users.select { Users.id eq ratings.last().user_id }.first()))
+                            users.add(Users.toUser(Users.select { Users.id eq ratings.last().userId }.first()))
                         }
                     }
                     for (i in 0 until ratings.size) {
-                        ratingsComponents.add(RatingComponent(ratings[i].user_id, ratings[i].course_id, ratings[i].rating_value,
-                                                              ratings[i].comment, users[i].first_name, users[i].last_name))
+                        ratingsComponents.add(RatingComponent(ratings[i].userId, ratings[i].courseId, ratings[i].ratingValue,
+                                                              ratings[i].comment, users[i].firstName, users[i].lastName))
                     }
                     if (ratingsComponents.isEmpty()) {
                         call.respond(HttpStatusCode.NoContent, Message("No ratings found!"))
@@ -75,6 +77,7 @@ fun Application.ratings_module() {
             route("/{course_id}/{user_id}") {
                 get {
                     var rating: Rating? = null
+                    var ratingUser: User? = null
                     val course_id: Int = call.parameters["course_id"]!!.toInt()
                     val user_id: Int = call.parameters["user_id"]!!.toInt()
                     transaction(DbSettings.db) {
@@ -82,12 +85,16 @@ fun Application.ratings_module() {
                         if (result != null) {
                             rating = Ratings.toRating(result)
                         }
+                        val userResult: ResultRow? = Users.select {Users.id eq rating?.userId}.firstOrNull()
+                        if (userResult != null) {
+                            ratingUser = Users.toUser(userResult)
+                        }
                     }
-
                     if (rating == null) {
                         call.respond(HttpStatusCode.NoContent, Message("Rating not found!"))
                     } else {
-                        call.respond(rating as Rating)
+                        val ratingComponent = RatingComponent(rating!!.userId, rating!!.courseId, rating!!.ratingValue, rating!!.comment, ratingUser!!.firstName, ratingUser!!.lastName)
+                        call.respond(ratingComponent)
                     }
                 }
             }

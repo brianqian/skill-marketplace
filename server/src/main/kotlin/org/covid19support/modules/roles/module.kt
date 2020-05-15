@@ -12,7 +12,7 @@ import org.covid19support.constants.Message
 fun Application.roles_module() {
     routing {
         get("/roles") {
-            val roles: MutableList<Role> = mutableListOf<Role>()
+            val roles: ArrayList<Role> = arrayListOf<Role>()
             transaction(DbSettings.db) {
                 val results: List<ResultRow> = Roles.selectAll().toList()
                 results.forEach {

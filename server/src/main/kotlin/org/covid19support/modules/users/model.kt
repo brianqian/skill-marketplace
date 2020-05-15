@@ -10,13 +10,13 @@ import org.jetbrains.exposed.sql.*
 import java.lang.reflect.Type
 
 data class User(
-        val id: Int?,
+        var id: Int?,
         val email: String,
         val password: String,
-        val first_name: String,
-        val last_name: String,
+        val firstName: String,
+        val lastName: String,
         val description: String?,
-        val is_instructor: Boolean = false,
+        val isInstructor: Boolean = false,
         val role: String = "Normal"
 )
 
@@ -25,10 +25,10 @@ class UserSerializer : JsonSerializer<User> {
         val output: JsonObject = JsonObject()
         output.addProperty("id", src?.id)
         output.addProperty("email", src?.email)
-        output.addProperty("firstName", src?.first_name)
-        output.addProperty("lastName", src?.last_name)
+        output.addProperty("firstName", src?.firstName)
+        output.addProperty("lastName", src?.lastName)
         output.addProperty("description", src?.description)
-        output.addProperty("isInstructor", src?.is_instructor)
+        output.addProperty("isInstructor", src?.isInstructor)
         output.addProperty("role", src?.role)
         return output
     }

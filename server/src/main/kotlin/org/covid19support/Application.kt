@@ -2,6 +2,7 @@ package org.covid19support
 
 import io.github.cdimascio.dotenv.Dotenv
 import io.ktor.application.*
+import io.ktor.config.MapApplicationConfig
 import io.ktor.features.*
 import io.ktor.gson.gson
 import io.ktor.sessions.*
@@ -12,12 +13,14 @@ import org.covid19support.modules.users.UserSerializer
 
 
 
-fun main(args: Array<String>) {
-    dotenv = Dotenv.load()
-    io.ktor.server.netty.EngineMain.main(args)
-}
+fun main(args: Array<String>) = io.ktor.server.netty.EngineMain.main(args)
 
-fun Application.main() {
+fun Application.main(isTesting: Boolean = false) {
+    dotenv = Dotenv.load()
+    DbSettings.init(isTesting)
+    if(isTesting) {
+        clearDataBase()
+    }
     install(DefaultHeaders)
     install(ContentNegotiation) {
         gson {
